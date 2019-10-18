@@ -1,0 +1,20 @@
+beancount.prices
+================
+
+.. automodule:: beancount.prices
+
+beancount.prices.find_prices
+----------------------------
+
+.. automodule:: beancount.prices.find_prices
+
+beancount.prices.price
+----------------------
+
+.. automodule:: beancount.prices.price
+
+beancount.prices.source
+-----------------------
+
+.. automodule:: beancount.prices.source
+

@@ -1,0 +1,50 @@
+beancount.ingest
+================
+
+.. automodule:: beancount.ingest
+
+beancount.ingest.cache
+----------------------
+
+.. automodule:: beancount.ingest.cache
+
+beancount.ingest.extract
+------------------------
+
+.. automodule:: beancount.ingest.extract
+
+beancount.ingest.file
+---------------------
+
+.. automodule:: beancount.ingest.file
+
+beancount.ingest.identify
+-------------------------
+
+.. automodule:: beancount.ingest.identify
+
+beancount.ingest.importer
+-------------------------
+
+.. automodule:: beancount.ingest.importer
+
+beancount.ingest.regression
+---------------------------
+
+.. automodule:: beancount.ingest.regression
+
+beancount.ingest.regression_pytest
+----------------------------------
+
+.. automodule:: beancount.ingest.regression_pytest
+
+beancount.ingest.scripts_utils
+------------------------------
+
+.. automodule:: beancount.ingest.scripts_utils
+
+beancount.ingest.similar
+------------------------
+
+.. automodule:: beancount.ingest.similar
+

@@ -1,0 +1,25 @@
+beancount.prices.sources
+========================
+
+.. automodule:: beancount.prices.sources
+
+beancount.prices.sources.iex
+----------------------------
+
+.. automodule:: beancount.prices.sources.iex
+
+beancount.prices.sources.oanda
+------------------------------
+
+.. automodule:: beancount.prices.sources.oanda
+
+beancount.prices.sources.quandl
+-------------------------------
+
+.. automodule:: beancount.prices.sources.quandl
+
+beancount.prices.sources.yahoo
+------------------------------
+
+.. automodule:: beancount.prices.sources.yahoo
+

@@ -1,0 +1,1069 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>beancount.ingest &#8212; Fava  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="beancount.ingest.importers" href="beancount.ingest.importers.html" />
+    <link rel="prev" title="beancount.core" href="beancount.core.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-beancount.ingest">
+<span id="beancount-ingest"></span><h1>beancount.ingest<a class="headerlink" href="#module-beancount.ingest" title="Permalink to this headline">¶</a></h1>
+<p>Code to help identify, extract, and file external downloads.</p>
+<p>This packages contains code to help you build importers and drive the process of
+identifying which importer to run on an externally downloaded file, extract
+transactions from them and file away these files under a clean and rigidly named
+hierarchy for preservation.</p>
+<div class="section" id="module-beancount.ingest.cache">
+<span id="beancount-ingest-cache"></span><h2>beancount.ingest.cache<a class="headerlink" href="#module-beancount.ingest.cache" title="Permalink to this headline">¶</a></h2>
+<p>A file wrapper which acts as a cache for on-demand evaluation of conversions.</p>
+<p>This object is used in lieu of a file in order to allow the various importers to
+reuse each others’ conversion results. Converting file contents, e.g. PDF to
+text, can be expensive.</p>
+<dl class="function">
+<dt id="beancount.ingest.cache.contents">
+<code class="sig-prename descclassname">beancount.ingest.cache.</code><code class="sig-name descname">contents</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.cache.contents" title="Permalink to this definition">¶</a></dt>
+<dd><p>A converter that just reads the entire contents of a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>num_bytes</strong> – The number of bytes to read.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A converter function.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.ingest.cache.get_file">
+<code class="sig-prename descclassname">beancount.ingest.cache.</code><code class="sig-name descname">get_file</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.cache.get_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create or reuse a globally registered instance of a FileMemo.</p>
+<p>Note: the FileMemo objects’ lifetimes are reused for the duration of the
+process. This is usually the intended behavior. Always create them by
+calling this constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> – A path string, the absolute name of the file whose memo to create.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A FileMemo instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.ingest.cache.head">
+<code class="sig-prename descclassname">beancount.ingest.cache.</code><code class="sig-name descname">head</code><span class="sig-paren">(</span><em class="sig-param">num_bytes=8192</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.cache.head" title="Permalink to this definition">¶</a></dt>
+<dd><p>A converter that just reads the first bytes of a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>num_bytes</strong> – The number of bytes to read.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A converter function.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.ingest.cache.mimetype">
+<code class="sig-prename descclassname">beancount.ingest.cache.</code><code class="sig-name descname">mimetype</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.cache.mimetype" title="Permalink to this definition">¶</a></dt>
+<dd><p>A converter that computes the MIME type of the file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A converter function.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.ingest.extract">
+<span id="beancount-ingest-extract"></span><h2>beancount.ingest.extract<a class="headerlink" href="#module-beancount.ingest.extract" title="Permalink to this headline">¶</a></h2>
+<p>Extract script.</p>
+<p>Read an import script and a list of downloaded filenames or directories of
+downloaded files, and for each of those files, extract transactions from it.</p>
+<dl class="function">
+<dt id="beancount.ingest.extract.add_arguments">
+<code class="sig-prename descclassname">beancount.ingest.extract.</code><code class="sig-name descname">add_arguments</code><span class="sig-paren">(</span><em class="sig-param">parser</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.extract.add_arguments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add arguments for the extract command.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.ingest.extract.extract">
+<code class="sig-prename descclassname">beancount.ingest.extract.</code><code class="sig-name descname">extract</code><span class="sig-paren">(</span><em class="sig-param">importer_config</em>, <em class="sig-param">files_or_directories</em>, <em class="sig-param">output</em>, <em class="sig-param">entries=None</em>, <em class="sig-param">options_map=None</em>, <em class="sig-param">mindate=None</em>, <em class="sig-param">ascending=True</em>, <em class="sig-param">detect_duplicates_func=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.extract.extract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given an importer configuration, search for files that can be imported in the
+list of files or directories, run the signature checks on them, and if it
+succeeds, run the importer on the file.</p>
+<p>A list of entries for an existing ledger can be provided in order to perform
+de-duplication and a minimum date can be provided to filter out old entries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>importer_config</strong> – A list of (regexps, importer) pairs, the configuration.</p></li>
+<li><p><strong>files_or_directories</strong> – A list of strings, filenames or directories to be processed.</p></li>
+<li><p><strong>output</strong> – A file object, to be written to.</p></li>
+<li><p><strong>entries</strong> – A list of directives loaded from the existing file for the newly
+extracted entries to be merged in.</p></li>
+<li><p><strong>options_map</strong> – The options parsed from existing file.</p></li>
+<li><p><strong>mindate</strong> – Optional minimum date to output transactions for.</p></li>
+<li><p><strong>ascending</strong> – A boolean, true to print entries in ascending order, false if
+descending is desired.</p></li>
+<li><p><strong>detect_duplicates_func</strong> – An optional function which accepts a list of
+lists of imported entries and a list of entries already existing in
+the user’s ledger. See function find_duplicate_entries(), which is the
+default implementation for this.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.ingest.extract.extract_from_file">
+<code class="sig-prename descclassname">beancount.ingest.extract.</code><code class="sig-name descname">extract_from_file</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">importer</em>, <em class="sig-param">existing_entries=None</em>, <em class="sig-param">min_date=None</em>, <em class="sig-param">allow_none_for_tags_and_links=False</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.extract.extract_from_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Import entries from file ‘filename’ with the given matches,</p>
+<p>Also cross-check against a list of provided ‘existing_entries’ entries,
+de-duplicating and possibly auto-categorizing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> – The name of the file to import.</p></li>
+<li><p><strong>importer</strong> – An importer object that matched the file.</p></li>
+<li><p><strong>existing_entries</strong> – A list of existing entries parsed from a ledger, used to
+detect duplicates and automatically complete or categorize transactions.</p></li>
+<li><p><strong>min_date</strong> – A date before which entries should be ignored. This is useful
+when an account has a valid check/assert; we could just ignore whatever
+comes before, if desired.</p></li>
+<li><p><strong>allow_none_for_tags_and_links</strong> – A boolean, whether to allow plugins to
+generate Transaction objects with None as value for the ‘tags’ or ‘links’
+attributes.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of new imported entries.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>Exception</strong> – If there is an error in the importer’s extract() method.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.ingest.extract.find_duplicate_entries">
+<code class="sig-prename descclassname">beancount.ingest.extract.</code><code class="sig-name descname">find_duplicate_entries</code><span class="sig-paren">(</span><em class="sig-param">new_entries_list</em>, <em class="sig-param">existing_entries</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.extract.find_duplicate_entries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flag potentially duplicate entries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>new_entries_list</strong> – A list of pairs of (key, lists of imported entries), one
+for each importer. The key identifies the filename and/or importer that
+yielded those new entries.</p></li>
+<li><p><strong>existing_entries</strong> – A list of previously existing entries from the target
+ledger.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of lists of modified new entries (like new_entries_list),
+potentially with modified metadata to indicate those which are duplicated.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.ingest.extract.main">
+<code class="sig-prename descclassname">beancount.ingest.extract.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.extract.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="beancount.ingest.extract.print_extracted_entries">
+<code class="sig-prename descclassname">beancount.ingest.extract.</code><code class="sig-name descname">print_extracted_entries</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.extract.print_extracted_entries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print a list of entries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of extracted entries.</p></li>
+<li><p><strong>file</strong> – A file object to write to.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.ingest.extract.run">
+<code class="sig-prename descclassname">beancount.ingest.extract.</code><code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">_</em>, <em class="sig-param">importers_list</em>, <em class="sig-param">files_or_directories</em>, <em class="sig-param">detect_duplicates_func=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.extract.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the subcommand.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.ingest.file">
+<span id="beancount-ingest-file"></span><h2>beancount.ingest.file<a class="headerlink" href="#module-beancount.ingest.file" title="Permalink to this headline">¶</a></h2>
+<p>Filing script.</p>
+<p>Read an import script and a list of downloaded filenames or directories of
+downloaded files, and for each of those files, move the file under an account
+corresponding to the filing directory.</p>
+<dl class="function">
+<dt id="beancount.ingest.file.add_arguments">
+<code class="sig-prename descclassname">beancount.ingest.file.</code><code class="sig-name descname">add_arguments</code><span class="sig-paren">(</span><em class="sig-param">parser</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.file.add_arguments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add arguments for the extract command.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.ingest.file.file">
+<code class="sig-prename descclassname">beancount.ingest.file.</code><code class="sig-name descname">file</code><span class="sig-paren">(</span><em class="sig-param">importer_config</em>, <em class="sig-param">files_or_directories</em>, <em class="sig-param">destination</em>, <em class="sig-param">dry_run=False</em>, <em class="sig-param">mkdirs=False</em>, <em class="sig-param">overwrite=False</em>, <em class="sig-param">idify=False</em>, <em class="sig-param">logfile=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.file.file" title="Permalink to this definition">¶</a></dt>
+<dd><p>File importable files under a destination directory.</p>
+<p>Given an importer configuration object, search for files that can be
+imported under the given list of files or directories and moved them under
+the given destination directory with the date computed by the module
+prepended to the filename. If the date cannot be extracted, use a reasonable
+default for the date (e.g. the last modified time of the file itself).</p>
+<p>If ‘mkdirs’ is True, create the destination directories before moving the
+files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>importer_config</strong> – A list of importer instances that define the config.</p></li>
+<li><p><strong>files_or_directories</strong> – a list of files of directories to walk recursively and
+hunt for files to import.</p></li>
+<li><p><strong>destination</strong> – A string, the root destination directory where the files are
+to be filed. The files are organized there under a hierarchy mirrorring
+that of the chart of accounts.</p></li>
+<li><p><strong>dry_run</strong> – A flag, if true, don’t actually move the files.</p></li>
+<li><p><strong>mkdirs</strong> – A flag, if true, make all the intervening directories; otherwise,
+fail to move files to non-existing dirs.</p></li>
+<li><p><strong>overwrite</strong> – A flag, if true, overwrite an existing destination file.</p></li>
+<li><p><strong>idify</strong> – A flag, if true, remove whitespace and funky characters in the destination
+filename.</p></li>
+<li><p><strong>logfile</strong> – A file object to write log entries to, or None, in which case no log is
+written out.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.ingest.file.file_one_file">
+<code class="sig-prename descclassname">beancount.ingest.file.</code><code class="sig-name descname">file_one_file</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">importers</em>, <em class="sig-param">destination</em>, <em class="sig-param">idify=False</em>, <em class="sig-param">logfile=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.file.file_one_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move a single filename using its matched importers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> – A string, the name of the downloaded file to be processed.</p></li>
+<li><p><strong>importers</strong> – A list of importer instances that handle this file.</p></li>
+<li><p><strong>destination</strong> – A string, the root destination directory where the files are
+to be filed. The files are organized there under a hierarchy mirrorring
+that of the chart of accounts.</p></li>
+<li><p><strong>idify</strong> – A flag, if true, remove whitespace and funky characters in the destination
+filename.</p></li>
+<li><p><strong>logfile</strong> – A file object to write log entries to, or None, in which case no log is
+written out.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The full new destination filename on success, and None if there was an error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.ingest.file.main">
+<code class="sig-prename descclassname">beancount.ingest.file.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.file.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="beancount.ingest.file.move_xdev_file">
+<code class="sig-prename descclassname">beancount.ingest.file.</code><code class="sig-name descname">move_xdev_file</code><span class="sig-paren">(</span><em class="sig-param">src_filename</em>, <em class="sig-param">dst_filename</em>, <em class="sig-param">mkdirs=False</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.file.move_xdev_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move a file, potentially across devices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>src_filename</strong> – A string, the name of the file to copy.</p></li>
+<li><p><strong>dst_filename</strong> – A string, where to copy the file.</p></li>
+<li><p><strong>mkdirs</strong> – A flag, true if we should create a non-existing destination directory.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.ingest.file.run">
+<code class="sig-prename descclassname">beancount.ingest.file.</code><code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">parser</em>, <em class="sig-param">importers_list</em>, <em class="sig-param">files_or_directories</em>, <em class="sig-param">detect_duplicates_func=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.file.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the subcommand.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.ingest.identify">
+<span id="beancount-ingest-identify"></span><h2>beancount.ingest.identify<a class="headerlink" href="#module-beancount.ingest.identify" title="Permalink to this headline">¶</a></h2>
+<p>Identify script.</p>
+<p>Read an import script and a list of downloaded filenames or directories of
+2downloaded files, and for each of those files, identify which importer it should
+be associated with.</p>
+<dl class="function">
+<dt id="beancount.ingest.identify.add_arguments">
+<code class="sig-prename descclassname">beancount.ingest.identify.</code><code class="sig-name descname">add_arguments</code><span class="sig-paren">(</span><em class="sig-param">parser</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.identify.add_arguments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add arguments for the identify command.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.ingest.identify.find_imports">
+<code class="sig-prename descclassname">beancount.ingest.identify.</code><code class="sig-name descname">find_imports</code><span class="sig-paren">(</span><em class="sig-param">importer_config</em>, <em class="sig-param">files_or_directories</em>, <em class="sig-param">logfile=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.identify.find_imports" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given an importer configuration, search for files that can be imported in the
+list of files or directories, run the signature checks on them and return a list
+of (filename, importers), where ‘importers’ is a list of importers that matched
+the file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>importer_config</strong> – a list of importer instances that define the config.</p></li>
+<li><p><strong>files_or_directories</strong> – a list of files of directories to walk recursively and
+hunt for files to import.</p></li>
+<li><p><strong>logfile</strong> – A file object to write log entries to, or None, in which case no log is
+written out.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p>Triples of filename found, textified contents of the file, and list of
+importers matching this file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.ingest.identify.identify">
+<code class="sig-prename descclassname">beancount.ingest.identify.</code><code class="sig-name descname">identify</code><span class="sig-paren">(</span><em class="sig-param">importers_list</em>, <em class="sig-param">files_or_directories</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.identify.identify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the identification loop.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>importers_list</strong> – A list of importer instances.</p></li>
+<li><p><strong>files_or_directories</strong> – A list of strings, files or directories.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.ingest.identify.main">
+<code class="sig-prename descclassname">beancount.ingest.identify.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.identify.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="beancount.ingest.identify.run">
+<code class="sig-prename descclassname">beancount.ingest.identify.</code><code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">_</em>, <em class="sig-param">__</em>, <em class="sig-param">importers_list</em>, <em class="sig-param">files_or_directories</em>, <em class="sig-param">detect_duplicates_func=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.identify.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the subcommand.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.ingest.importer">
+<span id="beancount-ingest-importer"></span><h2>beancount.ingest.importer<a class="headerlink" href="#module-beancount.ingest.importer" title="Permalink to this headline">¶</a></h2>
+<p>Importer protocol.</p>
+<p>All importers must comply with this interface and implement at least some of its
+methods. A configuration consists in a simple list of such importer instances.
+The importer processes run through the importers, calling some of its methods in
+order to identify, extract and file the downloaded files.</p>
+<p>Each of the methods accept a cache.FileMemo object which has a ‘name’ attribute
+with the filename to process, but which also provides a place to cache
+conversions. Use its convert() method whenever possible to avoid carrying out
+the same conversion multiple times. See beancount.ingest.cache for more details.</p>
+<p>Synopsis:</p>
+<blockquote>
+<div><p>name(): Return a unique identifier for the importer instance.
+identify(): Return true if the identifier is able to process the file.
+extract(): Extract directives from a file’s contents and return of list of entries.
+file_account(): Return an account name associated with the given file for this importer.
+file_date(): Return a date associated with the downloaded file (e.g., the statement date).
+file_name(): Return a cleaned up filename for storage (optional).</p>
+</div></blockquote>
+<p>Just to be clear: Although this importer will not raise NotImplementedError
+exceptions (it returns default values for each method), you NEED to derive from
+it in order to do anything meaningful. Simply instantiating this importer will
+not match not provide any useful information. It just defines the protocol for
+all importers.</p>
+<dl class="class">
+<dt id="beancount.ingest.importer.ImporterProtocol">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.ingest.importer.</code><code class="sig-name descname">ImporterProtocol</code><a class="headerlink" href="#beancount.ingest.importer.ImporterProtocol" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interface that all source importers need to comply with.</p>
+<dl class="attribute">
+<dt id="beancount.ingest.importer.ImporterProtocol.FLAG">
+<code class="sig-name descname">FLAG</code><em class="property"> = '*'</em><a class="headerlink" href="#beancount.ingest.importer.ImporterProtocol.FLAG" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.ingest.importer.ImporterProtocol.extract">
+<code class="sig-name descname">extract</code><span class="sig-paren">(</span><em class="sig-param">file</em>, <em class="sig-param">existing_entries=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.importer.ImporterProtocol.extract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract transactions from a file.</p>
+<p>If the importer would like to flag a returned transaction as a known
+duplicate, it may opt to set the special flag “__duplicate__” to True,
+and the transaction should be treated as a duplicate by the extraction
+code. This is a way to let the importer use particular information about
+previously imported transactions in order to flag them as duplicates.
+For example, if an importer has a way to get a persistent unique id for
+each of the imported transactions. (See this discussion for context:
+<a class="reference external" href="https://groups.google.com/d/msg/beancount/0iV-ipBJb8g/-uk4wsH2AgAJ">https://groups.google.com/d/msg/beancount/0iV-ipBJb8g/-uk4wsH2AgAJ</a>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file</strong> – A cache.FileMemo instance.</p></li>
+<li><p><strong>existing_entries</strong> – An optional list of existing directives loaded from
+the ledger which is intended to contain the extracted entries. This
+is only provided if the user provides them via a flag in the
+extractor program.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of new, imported directives (usually mostly Transactions)
+extracted from the file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.ingest.importer.ImporterProtocol.file_account">
+<code class="sig-name descname">file_account</code><span class="sig-paren">(</span><em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.importer.ImporterProtocol.file_account" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an account associated with the given file.</p>
+<p>Note: If you don’t implement this method you won’t be able to move the
+files into its preservation hierarchy; the bean-file command won’t
+work.</p>
+<p>Also, normally the returned account is not a function of the input
+file–just of the importer–but it is provided anyhow.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file</strong> – A cache.FileMemo instance.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The name of the account that corresponds to this importer.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.ingest.importer.ImporterProtocol.file_date">
+<code class="sig-name descname">file_date</code><span class="sig-paren">(</span><em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.importer.ImporterProtocol.file_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempt to obtain a date that corresponds to the given file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file</strong> – A cache.FileMemo instance.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A date object, if successful, or None if a date could not be extracted.
+(If no date is returned, the file creation time is used. This is the
+default.)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.ingest.importer.ImporterProtocol.file_name">
+<code class="sig-name descname">file_name</code><span class="sig-paren">(</span><em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.importer.ImporterProtocol.file_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>A filter that optionally renames a file before filing.</p>
+<p>This is used to make tidy filenames for filed/stored document files. If
+you don’t implement this and return None, the same filename is used.
+Note that if you return a filename, a simple, RELATIVE filename must be
+returned, not an absolute filename.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file</strong> – A cache.FileMemo instance.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The tidied up, new filename to store it as.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.ingest.importer.ImporterProtocol.identify">
+<code class="sig-name descname">identify</code><span class="sig-paren">(</span><em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.importer.ImporterProtocol.identify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return true if this importer matches the given file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file</strong> – A cache.FileMemo instance.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A boolean, true if this importer can handle this file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.ingest.importer.ImporterProtocol.name">
+<code class="sig-name descname">name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.importer.ImporterProtocol.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a unique id/name for this importer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A string which uniquely identifies this importer.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.ingest.regression">
+<span id="beancount-ingest-regression"></span><h2>beancount.ingest.regression<a class="headerlink" href="#module-beancount.ingest.regression" title="Permalink to this headline">¶</a></h2>
+<p>Support for implementing regression tests on sample files using nose.</p>
+<p>NOTE: This itself is not a regression test. It’s a library used to create
+regression tests for your importers. Use it like this in your own importer code:</p>
+<blockquote>
+<div><dl>
+<dt>def test():</dt><dd><dl class="simple">
+<dt>importer = Importer([], {</dt><dd><p>‘FILE’  : ‘Assets:US:MyBank:Main’,</p>
+</dd>
+</dl>
+<p>})
+yield from regression.compare_sample_files(importer, __file__)</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>WARNING: This is deprecated. Nose itself has been deprecated for a while and
+Beancount is now using only pytest. Ignore this and use
+beancount.ingest.regression_ptest instead.</p>
+<dl class="class">
+<dt id="beancount.ingest.regression.ImportFileTestCase">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.ingest.regression.</code><code class="sig-name descname">ImportFileTestCase</code><span class="sig-paren">(</span><em class="sig-param">importer</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.regression.ImportFileTestCase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for importer tests that compare output to an expected output
+text.</p>
+<dl class="attribute">
+<dt id="beancount.ingest.regression.ImportFileTestCase.maxDiff">
+<code class="sig-name descname">maxDiff</code><em class="property"> = None</em><a class="headerlink" href="#beancount.ingest.regression.ImportFileTestCase.maxDiff" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.ingest.regression.ImportFileTestCase.test_expect_extract">
+<code class="sig-name descname">test_expect_extract</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">msg</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.regression.ImportFileTestCase.test_expect_extract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract entries from a test file and compare against expected output.</p>
+<p>If an expected file (as &lt;filename&gt;.extract) is not present, we issue a
+warning. Missing expected files can be written out by removing them
+before running the tests.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> – A string, the name of the file to import using self.importer.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>AssertionError</strong> – If the contents differ from the expected file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.ingest.regression.ImportFileTestCase.test_expect_file_date">
+<code class="sig-name descname">test_expect_file_date</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">msg</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.regression.ImportFileTestCase.test_expect_file_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the imported file date and compare to an expected output.</p>
+<p>If an expected file (as &lt;filename&gt;.file_date) is not present, we issue a
+warning. Missing expected files can be written out by removing them
+before running the tests.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> – A string, the name of the file to import using self.importer.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>AssertionError</strong> – If the contents differ from the expected file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.ingest.regression.ImportFileTestCase.test_expect_file_name">
+<code class="sig-name descname">test_expect_file_name</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">msg</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.regression.ImportFileTestCase.test_expect_file_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the imported file name and compare to an expected output.</p>
+<p>If an expected file (as &lt;filename&gt;.file_name) is not present, we issue a
+warning. Missing expected files can be written out by removing them
+before running the tests.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> – A string, the name of the file to import using self.importer.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>AssertionError</strong> – If the contents differ from the expected file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.ingest.regression.ImportFileTestCase.test_expect_identify">
+<code class="sig-name descname">test_expect_identify</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">msg</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.regression.ImportFileTestCase.test_expect_identify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempt to identify a file and expect results to be true.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> – A string, the name of the file to import using self.importer.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>AssertionError</strong> – If the contents differ from the expected file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="beancount.ingest.regression.ToolNotInstalled">
+<em class="property">exception </em><code class="sig-prename descclassname">beancount.ingest.regression.</code><code class="sig-name descname">ToolNotInstalled</code><a class="headerlink" href="#beancount.ingest.regression.ToolNotInstalled" title="Permalink to this definition">¶</a></dt>
+<dd><p>An error to be used by converters when necessary software isn’t there.</p>
+<p>Raising this exception from your converter code when the tool is not
+installed will make the tests defined in this file skipped instead of
+failing. This will happen when you test your converters on different
+computers and/or platforms.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.ingest.regression.compare_sample_files">
+<code class="sig-prename descclassname">beancount.ingest.regression.</code><code class="sig-name descname">compare_sample_files</code><span class="sig-paren">(</span><em class="sig-param">importer</em>, <em class="sig-param">directory=None</em>, <em class="sig-param">ignore_cls=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.regression.compare_sample_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare the sample files under a directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>importer</strong> – An instance of an Importer.</p></li>
+<li><p><strong>directory</strong> – A string, the directory to scour for sample files or a filename
+in that directory. If a directory is not provided, the directory of
+the file from which the importer class is defined is used.</p></li>
+<li><p><strong>ignore_cls</strong> – An optional base class of the importer whose methods should
+not trigger the addition of a test. For example, if you are deriving
+from a base class which is already well-tested, you may not want to have
+a regression test case generated for those methods. This was used to
+ignore methods provided from a common backwards compatibility support
+class.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p>Generated tests as per nose’s requirements (a callable and arguments for
+it).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.ingest.regression.find_input_files">
+<code class="sig-prename descclassname">beancount.ingest.regression.</code><code class="sig-name descname">find_input_files</code><span class="sig-paren">(</span><em class="sig-param">directory</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.regression.find_input_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the input files in the module where the class is defined.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>directory</strong> – A string, the path to a root directory to check for.</p>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p>Strings, the absolute filenames of sample input and expected files.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.ingest.regression_pytest">
+<span id="beancount-ingest-regression-pytest"></span><h2>beancount.ingest.regression_pytest<a class="headerlink" href="#module-beancount.ingest.regression_pytest" title="Permalink to this headline">¶</a></h2>
+<p>Support for implementing regression tests on sample files using pytest.</p>
+<p>This module provides definitions for testing a custom importer against a set of
+existing downloaded files, running the various importer interface methods on it,
+and comparing the output to an expected text file. (Expected test files can be
+auto-generated using the –generate option). You use it like this:</p>
+<blockquote>
+<div><p>from beancount.ingest import regression_pytest
+…
+import mymodule
+…</p>
+<p># Create your importer instance used for testing.
+importer = mymodule.Importer(…)</p>
+<p># Select a directory where your test files are to be located.
+directory = …</p>
+<p># Create a test case using the base in this class.</p>
+<p>&#64;regression_pytest.with_importer(importer)
+&#64;regression_pytest.with_testdir(directory)
+class TestImporter(regtest.ImporterTestBase):</p>
+<blockquote>
+<div><p>pass</p>
+</div></blockquote>
+</div></blockquote>
+<p>Also, to add the –generate option to ‘pytest’, you must create a conftest.py
+somewhere in one of the roots above your importers with this module as a plugin:</p>
+<blockquote>
+<div><p>pytest_plugins = “beancount.ingest.regression_pytest”</p>
+</div></blockquote>
+<p>See beancount/example/ingest for a full working example.</p>
+<p>How to invoke the tests:</p>
+<p>Via pytest. First run your test with the –generate option to generate all the
+expected files. Then inspect them visually for correctness. Finally, check them
+in to preserve them. You should be able to regress against those correct outputs
+in the future. Use version control to your advantage to visualize the
+differences.</p>
+<dl class="class">
+<dt id="beancount.ingest.regression_pytest.ImporterTestBase">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.ingest.regression_pytest.</code><code class="sig-name descname">ImporterTestBase</code><a class="headerlink" href="#beancount.ingest.regression_pytest.ImporterTestBase" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="beancount.ingest.regression_pytest.ImporterTestBase.test_extract">
+<code class="sig-name descname">test_extract</code><span class="sig-paren">(</span><em class="sig-param">importer</em>, <em class="sig-param">file</em>, <em class="sig-param">pytestconfig</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.regression_pytest.ImporterTestBase.test_extract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract entries from a test file and compare against expected output.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.ingest.regression_pytest.ImporterTestBase.test_file_account">
+<code class="sig-name descname">test_file_account</code><span class="sig-paren">(</span><em class="sig-param">importer</em>, <em class="sig-param">file</em>, <em class="sig-param">pytestconfig</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.regression_pytest.ImporterTestBase.test_file_account" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the selected filing account and compare to an expected output.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.ingest.regression_pytest.ImporterTestBase.test_file_date">
+<code class="sig-name descname">test_file_date</code><span class="sig-paren">(</span><em class="sig-param">importer</em>, <em class="sig-param">file</em>, <em class="sig-param">pytestconfig</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.regression_pytest.ImporterTestBase.test_file_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the imported file date and compare to an expected output.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.ingest.regression_pytest.ImporterTestBase.test_file_name">
+<code class="sig-name descname">test_file_name</code><span class="sig-paren">(</span><em class="sig-param">importer</em>, <em class="sig-param">file</em>, <em class="sig-param">pytestconfig</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.regression_pytest.ImporterTestBase.test_file_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the imported file name and compare to an expected output.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.ingest.regression_pytest.ImporterTestBase.test_identify">
+<code class="sig-name descname">test_identify</code><span class="sig-paren">(</span><em class="sig-param">importer</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.regression_pytest.ImporterTestBase.test_identify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempt to identify a file and expect results to be true.</p>
+<p>This method does not need to check against an existing expect file. It
+is just assumed it should return True if your test is setup well (the
+importer should always identify the test file).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.ingest.regression_pytest.compare_contents_or_generate">
+<code class="sig-prename descclassname">beancount.ingest.regression_pytest.</code><code class="sig-name descname">compare_contents_or_generate</code><span class="sig-paren">(</span><em class="sig-param">actual_string</em>, <em class="sig-param">expect_fn</em>, <em class="sig-param">generate</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.regression_pytest.compare_contents_or_generate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare a string to the contents of an expect file.</p>
+<p>Assert if different; auto-generate otherwise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>actual_string</strong> – The expected string contents.</p></li>
+<li><p><strong>expect_fn</strong> – The filename whose contents to read and compare against.</p></li>
+<li><p><strong>generate</strong> – A boolean, true if we are to generate the tests.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.ingest.regression_pytest.find_input_files">
+<code class="sig-prename descclassname">beancount.ingest.regression_pytest.</code><code class="sig-name descname">find_input_files</code><span class="sig-paren">(</span><em class="sig-param">directory</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.regression_pytest.find_input_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the input files in the module where the class is defined.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>directory</strong> – A string, the path to a root directory to check for.</p>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p>Strings, the absolute filenames of sample input and expected files.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.ingest.regression_pytest.pytest_addoption">
+<code class="sig-prename descclassname">beancount.ingest.regression_pytest.</code><code class="sig-name descname">pytest_addoption</code><span class="sig-paren">(</span><em class="sig-param">parser</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.regression_pytest.pytest_addoption" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an option to generate the expected files for the tests.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.ingest.regression_pytest.with_importer">
+<code class="sig-prename descclassname">beancount.ingest.regression_pytest.</code><code class="sig-name descname">with_importer</code><span class="sig-paren">(</span><em class="sig-param">importer</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.regression_pytest.with_importer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parametrizing fixture that provides the importer to test.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.ingest.regression_pytest.with_testdir">
+<code class="sig-prename descclassname">beancount.ingest.regression_pytest.</code><code class="sig-name descname">with_testdir</code><span class="sig-paren">(</span><em class="sig-param">directory</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.regression_pytest.with_testdir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parametrizing fixture that provides files from a directory.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.ingest.scripts_utils">
+<span id="beancount-ingest-scripts-utils"></span><h2>beancount.ingest.scripts_utils<a class="headerlink" href="#module-beancount.ingest.scripts_utils" title="Permalink to this headline">¶</a></h2>
+<p>Common front-end to all ingestion tools.</p>
+<dl class="class">
+<dt id="beancount.ingest.scripts_utils.TestScriptsBase">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.ingest.scripts_utils.</code><code class="sig-name descname">TestScriptsBase</code><span class="sig-paren">(</span><em class="sig-param">methodName='runTest'</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.scripts_utils.TestScriptsBase" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="beancount.ingest.scripts_utils.TestScriptsBase.FILES">
+<code class="sig-name descname">FILES</code><em class="property"> = {'Downloads/Subdir/bank.csv': 'DATE,TRANSACTION ID,DESCRIPTION,QUANTITY,SYMBOL,PRICE,COMMISSION,AMOUNT,NET CASH BALANCE,REG FEE,SHORT-TERM RDM FEE,FUND REDEMPTION FEE, DEFERRED SALES CHARGE\n07/02/2013,10223506553,ORDINARY DIVIDEND (HDV),,HDV,,,31.04,31.04,,,,\n07/02/2013,10224851005,MONEY MARKET PURCHASE,,,,,-31.04,0.00,,,,\n07/02/2013,10224851017,MONEY MARKET PURCHASE (MMDA10),31.04,MMDA10,,,0.00,0.00,,,,\n09/30/2013,10561187188,ORDINARY DIVIDEND (HDV),,HDV,,,31.19,31.19,,,,\n09/30/2013,10563719172,MONEY MARKET PURCHASE,,,,,-31.19,0.00,,,,\n09/30/2013,10563719198,MONEY MARKET PURCHASE (MMDA10),31.19,MMDA10,,,0.00,0.00,,,,\n***END OF FILE***\n', 'Downloads/Subdir/readme.txt': 'Some random text file.\n', 'Downloads/ofxdownload.ofx': &quot;OFXHEADER:100\nDATA:OFXSGML\nVERSION:102\nSECURITY:NONE\nENCODING:USASCII\nCHARSET:1252\nCOMPRESSION:NONE\nOLDFILEUID:NONE\nNEWFILEUID:NONE\n\n&lt;OFX&gt;&lt;SIGNONMSGSRSV1&gt;&lt;SONRS&gt;&lt;STATUS&gt;&lt;CODE&gt;0&lt;SEVERITY&gt;INFO&lt;MESSAGE&gt;Login successful&lt;/STATUS&gt;&lt;DTSERVER&gt;20131217204544.559[-7:MST]&lt;LANGUAGE&gt;ENG&lt;FI&gt;&lt;ORG&gt;OFCT&lt;FID&gt;3011&lt;/FI&gt;&lt;ORIGIN.ID&gt;FMPWeb&lt;START.TIME&gt;20131217204544&lt;/SONRS&gt;&lt;/SIGNONMSGSRSV1&gt;&lt;CREDITCARDMSGSRSV1&gt;&lt;CCSTMTTRNRS&gt;&lt;TRNUID&gt;0&lt;STATUS&gt;&lt;CODE&gt;0&lt;SEVERITY&gt;INFO&lt;/STATUS&gt;&lt;CCSTMTRS&gt;&lt;CURDEF&gt;USD&lt;CCACCTFROM&gt;&lt;ACCTID&gt;092243467384967&lt;DOWNLOAD.FLAG&gt;false&lt;DOWNLOAD.TYPE&gt;downloadSince&lt;AMEX.BASICACCT&gt;090341355486768&lt;DAYS.SINCE&gt;true&lt;AMEX.ROLE&gt;B&lt;AMEX.UNIVID&gt;iHJPMCPVMUZESUMTMIASKPSHBZOJZQMZ&lt;/CCACCTFROM&gt;&lt;BANKTRANLIST&gt;&lt;DTSTART&gt;20131213050000.000[-7:MST]&lt;DTEND&gt;20131217050000.000[-7:MST]&lt;STMTTRN&gt;&lt;TRNTYPE&gt;DEBIT&lt;DTPOSTED&gt;20131206000000.000[-7:MST]&lt;DTUSER&gt;20131206000000.000[-7:MST]&lt;TRNAMT&gt;-75&lt;FITID&gt;132124581254980455&lt;REFNUM&gt;140941621247980353&lt;NAME&gt;Cvzndybfhlgsy Kbptkt010-743-2492&lt;MEMO&gt;87278814438304-062-9392&lt;/STMTTRN&gt;&lt;STMTTRN&gt;&lt;TRNTYPE&gt;DEBIT&lt;DTPOSTED&gt;20131208000000.000[-7:MST]&lt;DTUSER&gt;20131207000000.000[-7:MST]&lt;TRNAMT&gt;-29.5&lt;FITID&gt;139251640671720832&lt;REFNUM&gt;411944529384600439&lt;NAME&gt;YJTEJSYC JXJ 38137 80223112202&lt;MEMO&gt;841814901332133213240&lt;/STMTTRN&gt;&lt;STMTTRN&gt;&lt;TRNTYPE&gt;DEBIT&lt;DTPOSTED&gt;20131208000000.000[-7:MST]&lt;DTUSER&gt;20131208000000.000[-7:MST]&lt;TRNAMT&gt;-96.73&lt;FITID&gt;518223640481029842&lt;REFNUM&gt;349922421383839452&lt;NAME&gt;TEMSRB TQBHHWZO CZYKCGDX.LAR/CD&lt;MEMO&gt;BVR5D49Q7S3 IWOUXSFCCIZ&lt;/STMTTRN&gt;&lt;STMTTRN&gt;&lt;TRNTYPE&gt;DEBIT&lt;DTPOSTED&gt;20131209000000.000[-7:MST]&lt;DTUSER&gt;20131208000000.000[-7:MST]&lt;TRNAMT&gt;-45.49&lt;FITID&gt;410313240598642566&lt;REFNUM&gt;201153532386740368&lt;NAME&gt;JWNNJ VPVHHV -  HWKZIGH QXWR   &lt;MEMO&gt;35905       UJGZDQD IUTFL&lt;/STMTTRN&gt;&lt;STMTTRN&gt;&lt;TRNTYPE&gt;DEBIT&lt;DTPOSTED&gt;20131209000000.000[-7:MST]&lt;DTUSER&gt;20131208000000.000[-7:MST]&lt;TRNAMT&gt;-01.7&lt;FITID&gt;118954331459601590&lt;REFNUM&gt;112944250496740196&lt;NAME&gt;ZPIKRWGV EBQVUE 4521XJT AYDM   &lt;MEMO&gt;227092130   2924489277&lt;/STMTTRN&gt;&lt;STMTTRN&gt;&lt;TRNTYPE&gt;DEBIT&lt;DTPOSTED&gt;20131209000000.000[-7:MST]&lt;DTUSER&gt;20131208000000.000[-7:MST]&lt;TRNAMT&gt;-30.9&lt;FITID&gt;118335238578609388&lt;REFNUM&gt;542324610398801568&lt;NAME&gt;SBMUZYXG XRB 98038 03324302420&lt;MEMO&gt;853700608200014392232&lt;/STMTTRN&gt;&lt;STMTTRN&gt;&lt;TRNTYPE&gt;DEBIT&lt;DTPOSTED&gt;20131209000000.000[-7:MST]&lt;DTUSER&gt;20131206000000.000[-7:MST]&lt;TRNAMT&gt;-39.72&lt;FITID&gt;141044448255701269&lt;REFNUM&gt;230245232285603469&lt;NAME&gt;SITEH NIHOX HTYZBAWP392-139-734&lt;MEMO&gt;84165624260 423-151-8227&lt;/STMTTRN&gt;&lt;STMTTRN&gt;&lt;TRNTYPE&gt;DEBIT&lt;DTPOSTED&gt;20131209000000.000[-7:MST]&lt;DTUSER&gt;20131208000000.000[-7:MST]&lt;TRNAMT&gt;-22.09&lt;FITID&gt;111921351569432591&lt;REFNUM&gt;101153620388713392&lt;NAME&gt;HGJQJEOB PCQ 08418 1KVO VVDJ   &lt;MEMO&gt;84408170244 1144012409&lt;/STMTTRN&gt;&lt;STMTTRN&gt;&lt;TRNTYPE&gt;DEBIT&lt;DTPOSTED&gt;20131211000000.000[-7:MST]&lt;DTUSER&gt;20131210000000.000[-7:MST]&lt;TRNAMT&gt;-22.14&lt;FITID&gt;548935642111458816&lt;REFNUM&gt;328141439181292814&lt;NAME&gt;LILFN DVRIFI -  LJBPFDT HYSF   &lt;MEMO&gt;32793       IBTSNAF UDOMK&lt;/STMTTRN&gt;&lt;STMTTRN&gt;&lt;TRNTYPE&gt;DEBIT&lt;DTPOSTED&gt;20131211000000.000[-7:MST]&lt;DTUSER&gt;20131210000000.000[-7:MST]&lt;TRNAMT&gt;-12.67&lt;FITID&gt;330054241010450007&lt;REFNUM&gt;342912468199362629&lt;NAME&gt;PEHKXNPZ PNW 91458 21015119128&lt;MEMO&gt;823891919293222482430&lt;/STMTTRN&gt;&lt;STMTTRN&gt;&lt;TRNTYPE&gt;DEBIT&lt;DTPOSTED&gt;20131214000000.000[-7:MST]&lt;DTUSER&gt;20131212000000.000[-7:MST]&lt;TRNAMT&gt;-31&lt;FITID&gt;402252668937162476&lt;REFNUM&gt;448222302958184678&lt;NAME&gt;YHVWV NNPYW HRQZDUOJ201-251-533&lt;MEMO&gt;65093823538 334-432-6338&lt;/STMTTRN&gt;&lt;STMTTRN&gt;&lt;TRNTYPE&gt;DEBIT&lt;DTPOSTED&gt;20131214000000.000[-7:MST]&lt;DTUSER&gt;20131213000000.000[-7:MST]&lt;TRNAMT&gt;-64.25&lt;FITID&gt;542124402167304547&lt;REFNUM&gt;222333308839462735&lt;NAME&gt;MRKW'G #814 HYLDQF OVNN PSCS   &lt;MEMO&gt;89318083925 WOQO'G&lt;/STMTTRN&gt;&lt;STMTTRN&gt;&lt;TRNTYPE&gt;DEBIT&lt;DTPOSTED&gt;20131216000000.000[-7:MST]&lt;DTUSER&gt;20131215000000.000[-7:MST]&lt;TRNAMT&gt;-42.01&lt;FITID&gt;210943512087240724&lt;REFNUM&gt;501152389299358014&lt;NAME&gt;ICPBVFY #2321 929883SXU QRKN   &lt;MEMO&gt;12054513980 3062749128&lt;/STMTTRN&gt;&lt;STMTTRN&gt;&lt;TRNTYPE&gt;DEBIT&lt;DTPOSTED&gt;20131216000000.000[-7:MST]&lt;DTUSER&gt;20131215000000.000[-7:MST]&lt;TRNAMT&gt;-5&lt;FITID&gt;310215309277250199&lt;REFNUM&gt;448945618978219897&lt;NAME&gt;LON BXBZA 409 QEPNUAMCO WDOD   &lt;MEMO&gt;31345520940 4169979285&lt;/STMTTRN&gt;&lt;STMTTRN&gt;&lt;TRNTYPE&gt;DEBIT&lt;DTPOSTED&gt;20131216000000.000[-7:MST]&lt;DTUSER&gt;20131215000000.000[-7:MST]&lt;TRNAMT&gt;-0.69&lt;FITID&gt;430314310166238818&lt;REFNUM&gt;109924680968112897&lt;NAME&gt;CFXUF LGTXVL -  VXCJCNI EBUH   &lt;MEMO&gt;308496      NSIWFWL RHSFP&lt;/STMTTRN&gt;&lt;STMTTRN&gt;&lt;TRNTYPE&gt;DEBIT&lt;DTPOSTED&gt;20131216000000.000[-7:MST]&lt;DTUSER&gt;20131214000000.000[-7:MST]&lt;TRNAMT&gt;-34.43&lt;FITID&gt;330252321978428019&lt;REFNUM&gt;511914698876210997&lt;NAME&gt;DGCV GXD MJKRYD     JLC IYLM   &lt;MEMO&gt;67935504527 134-064-6852&lt;/STMTTRN&gt;&lt;STMTTRN&gt;&lt;TRNTYPE&gt;DEBIT&lt;DTPOSTED&gt;20131215000000.000[-7:MST]&lt;DTUSER&gt;20131214000000.000[-7:MST]&lt;TRNAMT&gt;-24&lt;FITID&gt;149941491182603315&lt;REFNUM&gt;429354298891572407&lt;NAME&gt;UPTMFSAD DSD 12354 14003323410&lt;MEMO&gt;963402919381906089541&lt;/STMTTRN&gt;&lt;/BANKTRANLIST&gt;&lt;LEDGERBAL&gt;&lt;BALAMT&gt;-3609.07&lt;DTASOF&gt;20131217050000.000[-7:MST]&lt;/LEDGERBAL&gt;&lt;CYCLECUT.INDICATOR&gt;false&lt;PURGE.INDICATOR&gt;false&lt;INTL.INDICATOR&gt;false&lt;/CCSTMTRS&gt;&lt;/CCSTMTTRNRS&gt;&lt;/CREDITCARDMSGSRSV1&gt;&lt;/OFX&gt;\n&quot;, 'test.import': &quot;#!/usr/bin/env python3\nfrom beancount.ingest import scripts_utils\n\nCONFIG = [\n    scripts_utils._TestFileImporter(\n        'mybank-checking-ofx', 'Assets:Checking',\n        'application/x-ofx', '&lt;FID&gt;3011'),\n    scripts_utils._TestFileImporter(\n        'mybank-credit-csv', 'Liabilities:CreditCard',\n        'text/csv', '.*DATE,TRANSACTION ID,DESCRIPTION,QUANTITY,SYMBOL'),\n]\n&quot;, 'testimport.py': &quot;#!/usr/bin/env python3\nfrom beancount.ingest import scripts_utils\n\nCONFIG = [\n    scripts_utils._TestFileImporter(\n        'mybank-checking-ofx', 'Assets:Checking',\n        'application/x-ofx', '&lt;FID&gt;3011'),\n    scripts_utils._TestFileImporter(\n        'mybank-credit-csv', 'Liabilities:CreditCard',\n        'text/csv', '.*DATE,TRANSACTION ID,DESCRIPTION,QUANTITY,SYMBOL'),\n]\nscripts_utils.ingest(CONFIG)\n&quot;}</em><a class="headerlink" href="#beancount.ingest.scripts_utils.TestScriptsBase.FILES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.ingest.scripts_utils.TestScriptsBase.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.scripts_utils.TestScriptsBase.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.ingest.scripts_utils.create_legacy_arguments_parser">
+<code class="sig-prename descclassname">beancount.ingest.scripts_utils.</code><code class="sig-name descname">create_legacy_arguments_parser</code><span class="sig-paren">(</span><em class="sig-param">description</em>, <em class="sig-param">run_func</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.scripts_utils.create_legacy_arguments_parser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an arguments parser for all the ingestion bean-tools.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>description</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The program description string.</p></li>
+<li><p><strong>func</strong> – A callable function to run the particular command.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An argparse.Namespace instance with the rest of arguments in ‘rest’.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.ingest.scripts_utils.ingest">
+<code class="sig-prename descclassname">beancount.ingest.scripts_utils.</code><code class="sig-name descname">ingest</code><span class="sig-paren">(</span><em class="sig-param">importers_list</em>, <em class="sig-param">detect_duplicates_func=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.scripts_utils.ingest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Driver function that calls all the ingestion tools.</p>
+<p>Put a call to this function at the end of your importer configuration to
+make your import script; this should be its main function, like this:</p>
+<blockquote>
+<div><p>from beancount.ingest.scripts_utils import ingest
+my_importers = [ … ]
+ingest(my_importers)</p>
+</div></blockquote>
+<p>This more explicit way of invoking the ingestion is now the preferred way to
+invoke the various tools, and replaces calling the bean-identify,
+bean-extract, bean-file tools with a –config argument. When you call the
+import script itself (as as program) it will parse the arguments, expecting
+a subcommand (‘identify’, ‘extract’ or ‘file’) and corresponding
+subcommand-specific arguments.</p>
+<p>Here you can override some importer values, such as installing a custom
+duplicate finding hook, and eventually more. Note that this newer invocation
+method is optional and if it is not present, a call to ingest() is generated
+implicitly, and it functions as it used to. Future configurable
+customization of the ingestion process will be implemented by inserting new
+arguments to this function, this is the motivation behind doing this.</p>
+<p>Note that invocation by the three bean-* ingestion tools is still supported,
+and calling ingest() explicitly from your import configuration file will not
+break these tools either, if you invoke them on it; the values you provide
+to this function will be used by those tools.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>importers_list</strong> – A list of importer instances. This is used as a
+chain-of-responsibility, called on each file.</p></li>
+<li><p><strong>detect_duplicates_func</strong> – An optional function which accepts a list of
+lists of imported entries and a list of entries already existing in
+the user’s ledger. See function find_duplicate_entries(), which is the
+default implementation for this.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.ingest.scripts_utils.run_import_script_and_ingest">
+<code class="sig-prename descclassname">beancount.ingest.scripts_utils.</code><code class="sig-name descname">run_import_script_and_ingest</code><span class="sig-paren">(</span><em class="sig-param">parser</em>, <em class="sig-param">argv=None</em>, <em class="sig-param">importers_attr_name='CONFIG'</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.scripts_utils.run_import_script_and_ingest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the import script and optionally call ingest().</p>
+<p>This path is only called when trampolined by one of the bean-* ingestion
+tools.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parser</strong> – The parser instance, used only to report errors.</p></li>
+<li><p><strong>importers_attr_name</strong> – The name of the special attribute in the module which
+defines the importers list.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An execution return code.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.ingest.scripts_utils.trampoline_to_ingest">
+<code class="sig-prename descclassname">beancount.ingest.scripts_utils.</code><code class="sig-name descname">trampoline_to_ingest</code><span class="sig-paren">(</span><em class="sig-param">module</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.scripts_utils.trampoline_to_ingest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse arguments for bean tool, import config script and ingest.</p>
+<p>This function is called by the three bean-* tools to support the older
+import files, which only required a CONFIG object to be defined in them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>module</strong> – One of the identify, extract or file module objects.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An execution return code.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.ingest.similar">
+<span id="beancount-ingest-similar"></span><h2>beancount.ingest.similar<a class="headerlink" href="#module-beancount.ingest.similar" title="Permalink to this headline">¶</a></h2>
+<p>Identify similar entries.</p>
+<p>This can be used during import in order to identify and flag duplicate entries.</p>
+<dl class="class">
+<dt id="beancount.ingest.similar.SimilarityComparator">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.ingest.similar.</code><code class="sig-name descname">SimilarityComparator</code><span class="sig-paren">(</span><em class="sig-param">max_date_delta=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.similar.SimilarityComparator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Similarity comparator of transactions.</p>
+<p>This comparator needs to be able to handle Transaction instances which are
+incomplete on one side, which have slightly different dates, or potentially
+slightly different numbers.</p>
+<dl class="attribute">
+<dt id="beancount.ingest.similar.SimilarityComparator.EPSILON">
+<code class="sig-name descname">EPSILON</code><em class="property"> = Decimal('0.05')</em><a class="headerlink" href="#beancount.ingest.similar.SimilarityComparator.EPSILON" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.ingest.similar.amounts_map">
+<code class="sig-prename descclassname">beancount.ingest.similar.</code><code class="sig-name descname">amounts_map</code><span class="sig-paren">(</span><em class="sig-param">entry</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.similar.amounts_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute a mapping of (account, currency) -&gt; Decimal balances.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>entry</strong> – A Transaction instance.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A dict of account -&gt; Amount balance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.ingest.similar.find_similar_entries">
+<code class="sig-prename descclassname">beancount.ingest.similar.</code><code class="sig-name descname">find_similar_entries</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">source_entries</em>, <em class="sig-param">comparator=None</em>, <em class="sig-param">window_days=2</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.similar.find_similar_entries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find which entries from a list are potential duplicates of a set.</p>
+<p>Note: If there are multiple entries from ‘source_entries’ matching an entry
+in ‘entries’, only the first match is returned. Note that this function
+could in theory decide to merge some of the imported entries with each
+other.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – The list of entries to classify as duplicate or note.</p></li>
+<li><p><strong>source_entries</strong> – The list of entries against which to match. This is the
+previous, or existing set of entries to compare against. This may be null
+or empty.</p></li>
+<li><p><strong>comparator</strong> – A functor used to establish the similarity of two entries.</p></li>
+<li><p><strong>window_days</strong> – The number of days (inclusive) before or after to scan the
+entries to classify against.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of pairs of entries (entry, source_entry) where entry is from
+‘entries’ and is deemed to be a duplicate of source_entry, from
+‘source_entries’.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo.png" alt="Logo"/>
+    
+    <h1 class="logo logo-name">Fava</h1>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Web interface for <a href="http://furius.ca/beancount/">Beancount</a></p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development.html">Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="fava.html">fava</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.core.html">fava.core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.ext.html">fava.ext</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.ext.portfolio_list.html">fava.ext.portfolio_list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.help.html">fava.help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.util.html">fava.util</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.html">beancount</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.core.html">beancount.core</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">beancount.ingest</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.ingest.cache">beancount.ingest.cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.ingest.extract">beancount.ingest.extract</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.ingest.file">beancount.ingest.file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.ingest.identify">beancount.ingest.identify</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.ingest.importer">beancount.ingest.importer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.ingest.regression">beancount.ingest.regression</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.ingest.regression_pytest">beancount.ingest.regression_pytest</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.ingest.scripts_utils">beancount.ingest.scripts_utils</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.ingest.similar">beancount.ingest.similar</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ingest.importers.html">beancount.ingest.importers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ingest.importers.mixins.html">beancount.ingest.importers.mixins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ops.html">beancount.ops</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.parser.html">beancount.parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.plugins.html">beancount.plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.prices.html">beancount.prices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.prices.sources.html">beancount.prices.sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.query.html">beancount.query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.reports.html">beancount.reports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.scripts.html">beancount.scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.tools.html">beancount.tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.utils.html">beancount.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.web.html">beancount.web</a></li>
+</ul>
+</li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/beancount/fava">fava @ GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://gitter.im/beancount/fava">Chat</a></li>
+    
+    <li class="toctree-l1"><a href="https://github.com/beancount/fava/issues">Issue Tracker</a></li>
+    
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Dominik Aumayr.
+      
+      |
+      <a href="../_sources/api/beancount.ingest.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

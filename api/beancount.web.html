@@ -1,0 +1,1141 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>beancount.web &#8212; Fava  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="beancount.utils" href="beancount.utils.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-beancount.web">
+<span id="beancount-web"></span><h1>beancount.web<a class="headerlink" href="#module-beancount.web" title="Permalink to this headline">¶</a></h1>
+<p>Web server reporting front-end.</p>
+<div class="section" id="module-beancount.web.bottle_utils">
+<span id="beancount-web-bottle-utils"></span><h2>beancount.web.bottle_utils<a class="headerlink" href="#module-beancount.web.bottle_utils" title="Permalink to this headline">¶</a></h2>
+<p>Bottle utilities, mostly helpers to do mounts on top of dynamic routes.</p>
+<dl class="class">
+<dt id="beancount.web.bottle_utils.AttrMapper">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.web.bottle_utils.</code><code class="sig-name descname">AttrMapper</code><span class="sig-paren">(</span><em class="sig-param">mapper_function</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.bottle_utils.AttrMapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>A URL mapper that allows attribute access for view-links.
+This is used in templates.</p>
+<dl class="method">
+<dt id="beancount.web.bottle_utils.AttrMapper.build">
+<code class="sig-name descname">build</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.bottle_utils.AttrMapper.build" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.bottle_utils.internal_redirect">
+<code class="sig-prename descclassname">beancount.web.bottle_utils.</code><code class="sig-name descname">internal_redirect</code><span class="sig-paren">(</span><em class="sig-param">app</em>, <em class="sig-param">path_depth</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.bottle_utils.internal_redirect" title="Permalink to this definition">¶</a></dt>
+<dd><p>A version of bottle’s mountpoint_wrapper() that we call explicitly.</p>
+<p>Bottle supports a mount() method that allows on to install an application on
+a subpath of the main application. However, it does this on a fixed path. We
+want to manually intercept the lazy creation or fetching of a view and call
+for a redirect explicitly (via bottle’s mountpoint_wrapper() function).
+However, this function is hidden within the scope of a the Bottle.mount()
+method; if it were defined globally we would just use it, but it is not. So
+we copy if here. This is directly lifted from Bottle.mount() and edited
+minimally.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>app</strong> – A Bottle instance.</p></li>
+<li><p><strong>path_depth</strong> – The number of request path components to skip for the mount.
+For example, if our subapplication is mount on /view/all, then the path
+depth is 2.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A Bottle HTTPResponse objet.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>Exception</strong> – Any exception, depending on the callback.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.web.scrape">
+<span id="beancount-web-scrape"></span><h2>beancount.web.scrape<a class="headerlink" href="#module-beancount.web.scrape" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="beancount.web.scrape.iterlinks">
+<code class="sig-prename descclassname">beancount.web.scrape.</code><code class="sig-name descname">iterlinks</code><span class="sig-paren">(</span><em class="sig-param">html</em>, <em class="sig-param">html_path</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.scrape.iterlinks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find links targets in HTML text.</p>
+<p>This deals with both absolute and relative links, and it external links to
+external sites.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>html</strong> – An lxml document node.</p></li>
+<li><p><strong>html_path</strong> – The URL of the document node.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p>URL strings, where found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.scrape.scrape_urls">
+<code class="sig-prename descclassname">beancount.web.scrape.</code><code class="sig-name descname">scrape_urls</code><span class="sig-paren">(</span><em class="sig-param">url_format</em>, <em class="sig-param">callback</em>, <em class="sig-param">ignore_regexp=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.scrape.scrape_urls" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recursively scrape pages from a web address.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url_format</strong> – The pattern for building links from relative paths.</p></li>
+<li><p><strong>callback</strong> – A callback function to invoke on each page to validate it.
+The function is called with the response and the url as arguments.
+This function should trigger an error on failure (via an exception).</p></li>
+<li><p><strong>ignore_regexp</strong> – A regular expression string, the urls to ignore.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A set of all the processed URLs and a set of all the skipped URLs.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.scrape.validate_local_links">
+<code class="sig-prename descclassname">beancount.web.scrape.</code><code class="sig-name descname">validate_local_links</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.scrape.validate_local_links" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open and parse the given HTML filename and verify all local targets exist.</p>
+<p>This checks that all the files pointed to by the file we’re processing are
+files that exist on disk. This can be used to validate that a baked output
+does not have links to files that do not exist, that all the links are valid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> – A string, the name of the HTML file to process.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>missing: A set of strings, the names of links to files that do not exist.
+empty: A boolean, true if this file is empty.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>A pair of</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.scrape.validate_local_links_in_dir">
+<code class="sig-prename descclassname">beancount.web.scrape.</code><code class="sig-name descname">validate_local_links_in_dir</code><span class="sig-paren">(</span><em class="sig-param">directory</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.scrape.validate_local_links_in_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find all the files under the given directory and validate all their links.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>directory</strong> – A string, the root directory whose files to process.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>files: A list of all the filenames found and processed.
+missing: A set of strings, the names of links to files that do not exist.
+empty: A boolean, true if this file is empty.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>A tuple of</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.web.views">
+<span id="beancount-web-views"></span><h2>beancount.web.views<a class="headerlink" href="#module-beancount.web.views" title="Permalink to this headline">¶</a></h2>
+<p>Views are filters on the global list of entries, which produces a subset of entries.</p>
+<dl class="class">
+<dt id="beancount.web.views.AllView">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.web.views.</code><code class="sig-name descname">AllView</code><span class="sig-paren">(</span><em class="sig-param">all_entries</em>, <em class="sig-param">options_map</em>, <em class="sig-param">title</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.views.AllView" title="Permalink to this definition">¶</a></dt>
+<dd><p>A view that includes all the entries, unmodified.</p>
+<dl class="method">
+<dt id="beancount.web.views.AllView.apply_filter">
+<code class="sig-name descname">apply_filter</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">options_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.views.AllView.apply_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filter the list of entries.</p>
+<p>This is used to obtain the filtered list of entries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>entries</strong> – A list of directives to filter.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl>
+<dt>A pair of</dt><dd><ol class="arabic simple">
+<li><p>a list of filtered entries, and</p></li>
+<li><p>an integer, the index at which the beginning of the entries for</p></li>
+</ol>
+<blockquote>
+<div><p>the period begin, one directive past the opening
+balances/initialization entries.</p>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li><p>a datetime.date instance, the date at which to evaluate the value</p></li>
+</ol>
+<blockquote>
+<div><p>of assets held at cost.</p>
+</div></blockquote>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.web.views.ComponentView">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.web.views.</code><code class="sig-name descname">ComponentView</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">options_map</em>, <em class="sig-param">title</em>, <em class="sig-param">component</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.views.ComponentView" title="Permalink to this definition">¶</a></dt>
+<dd><p>A view that includes transactions with at least one posting with an account
+that includes a given component.</p>
+<dl class="method">
+<dt id="beancount.web.views.ComponentView.apply_filter">
+<code class="sig-name descname">apply_filter</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">options_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.views.ComponentView.apply_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filter the list of entries.</p>
+<p>This is used to obtain the filtered list of entries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>entries</strong> – A list of directives to filter.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl>
+<dt>A pair of</dt><dd><ol class="arabic simple">
+<li><p>a list of filtered entries, and</p></li>
+<li><p>an integer, the index at which the beginning of the entries for</p></li>
+</ol>
+<blockquote>
+<div><p>the period begin, one directive past the opening
+balances/initialization entries.</p>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li><p>a datetime.date instance, the date at which to evaluate the value</p></li>
+</ol>
+<blockquote>
+<div><p>of assets held at cost.</p>
+</div></blockquote>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.web.views.EmptyView">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.web.views.</code><code class="sig-name descname">EmptyView</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">options_map</em>, <em class="sig-param">title</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.views.EmptyView" title="Permalink to this definition">¶</a></dt>
+<dd><p>An empty view, for testing.</p>
+<dl class="method">
+<dt id="beancount.web.views.EmptyView.apply_filter">
+<code class="sig-name descname">apply_filter</code><span class="sig-paren">(</span><em class="sig-param">_</em>, <em class="sig-param">__</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.views.EmptyView.apply_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the list of entries unmodified.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.web.views.MonthNavigation">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.web.views.</code><code class="sig-name descname">MonthNavigation</code><a class="headerlink" href="#beancount.web.views.MonthNavigation" title="Permalink to this definition">¶</a></dt>
+<dd><p>An enumeration.</p>
+<dl class="attribute">
+<dt id="beancount.web.views.MonthNavigation.COMPACT">
+<code class="sig-name descname">COMPACT</code><em class="property"> = 1</em><a class="headerlink" href="#beancount.web.views.MonthNavigation.COMPACT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.web.views.MonthNavigation.FULL">
+<code class="sig-name descname">FULL</code><em class="property"> = 2</em><a class="headerlink" href="#beancount.web.views.MonthNavigation.FULL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.web.views.MonthNavigation.NONE">
+<code class="sig-name descname">NONE</code><em class="property"> = 0</em><a class="headerlink" href="#beancount.web.views.MonthNavigation.NONE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.web.views.MonthView">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.web.views.</code><code class="sig-name descname">MonthView</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">options_map</em>, <em class="sig-param">title</em>, <em class="sig-param">year</em>, <em class="sig-param">month</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.views.MonthView" title="Permalink to this definition">¶</a></dt>
+<dd><p>A view of the entries for a single month.</p>
+<dl class="method">
+<dt id="beancount.web.views.MonthView.apply_filter">
+<code class="sig-name descname">apply_filter</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">options_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.views.MonthView.apply_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filter the list of entries.</p>
+<p>This is used to obtain the filtered list of entries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>entries</strong> – A list of directives to filter.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl>
+<dt>A pair of</dt><dd><ol class="arabic simple">
+<li><p>a list of filtered entries, and</p></li>
+<li><p>an integer, the index at which the beginning of the entries for</p></li>
+</ol>
+<blockquote>
+<div><p>the period begin, one directive past the opening
+balances/initialization entries.</p>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li><p>a datetime.date instance, the date at which to evaluate the value</p></li>
+</ol>
+<blockquote>
+<div><p>of assets held at cost.</p>
+</div></blockquote>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.web.views.PayeeView">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.web.views.</code><code class="sig-name descname">PayeeView</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">options_map</em>, <em class="sig-param">title</em>, <em class="sig-param">payee</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.views.PayeeView" title="Permalink to this definition">¶</a></dt>
+<dd><p>A view that includes entries with some specific payee.</p>
+<dl class="method">
+<dt id="beancount.web.views.PayeeView.apply_filter">
+<code class="sig-name descname">apply_filter</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">options_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.views.PayeeView.apply_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filter the list of entries.</p>
+<p>This is used to obtain the filtered list of entries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>entries</strong> – A list of directives to filter.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl>
+<dt>A pair of</dt><dd><ol class="arabic simple">
+<li><p>a list of filtered entries, and</p></li>
+<li><p>an integer, the index at which the beginning of the entries for</p></li>
+</ol>
+<blockquote>
+<div><p>the period begin, one directive past the opening
+balances/initialization entries.</p>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li><p>a datetime.date instance, the date at which to evaluate the value</p></li>
+</ol>
+<blockquote>
+<div><p>of assets held at cost.</p>
+</div></blockquote>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.web.views.TagView">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.web.views.</code><code class="sig-name descname">TagView</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">options_map</em>, <em class="sig-param">title</em>, <em class="sig-param">tags</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.views.TagView" title="Permalink to this definition">¶</a></dt>
+<dd><p>A view that includes only entries some specific tags.</p>
+<dl class="method">
+<dt id="beancount.web.views.TagView.apply_filter">
+<code class="sig-name descname">apply_filter</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">options_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.views.TagView.apply_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filter the list of entries.</p>
+<p>This is used to obtain the filtered list of entries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>entries</strong> – A list of directives to filter.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl>
+<dt>A pair of</dt><dd><ol class="arabic simple">
+<li><p>a list of filtered entries, and</p></li>
+<li><p>an integer, the index at which the beginning of the entries for</p></li>
+</ol>
+<blockquote>
+<div><p>the period begin, one directive past the opening
+balances/initialization entries.</p>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li><p>a datetime.date instance, the date at which to evaluate the value</p></li>
+</ol>
+<blockquote>
+<div><p>of assets held at cost.</p>
+</div></blockquote>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.web.views.View">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.web.views.</code><code class="sig-name descname">View</code><span class="sig-paren">(</span><em class="sig-param">all_entries</em>, <em class="sig-param">options_map</em>, <em class="sig-param">title</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.views.View" title="Permalink to this definition">¶</a></dt>
+<dd><p>A container for filtering a subset of entries and realizing that for
+display.</p>
+<dl class="method">
+<dt id="beancount.web.views.View.apply_filter">
+<code class="sig-name descname">apply_filter</code><span class="sig-paren">(</span><em class="sig-param">entries</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.views.View.apply_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filter the list of entries.</p>
+<p>This is used to obtain the filtered list of entries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>entries</strong> – A list of directives to filter.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl>
+<dt>A pair of</dt><dd><ol class="arabic simple">
+<li><p>a list of filtered entries, and</p></li>
+<li><p>an integer, the index at which the beginning of the entries for</p></li>
+</ol>
+<blockquote>
+<div><p>the period begin, one directive past the opening
+balances/initialization entries.</p>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li><p>a datetime.date instance, the date at which to evaluate the value</p></li>
+</ol>
+<blockquote>
+<div><p>of assets held at cost.</p>
+</div></blockquote>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.web.views.YearView">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.web.views.</code><code class="sig-name descname">YearView</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">options_map</em>, <em class="sig-param">title</em>, <em class="sig-param">year</em>, <em class="sig-param">first_month=1</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.views.YearView" title="Permalink to this definition">¶</a></dt>
+<dd><p>A view of the entries for a single year.</p>
+<dl class="method">
+<dt id="beancount.web.views.YearView.apply_filter">
+<code class="sig-name descname">apply_filter</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">options_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.views.YearView.apply_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filter the list of entries.</p>
+<p>This is used to obtain the filtered list of entries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>entries</strong> – A list of directives to filter.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl>
+<dt>A pair of</dt><dd><ol class="arabic simple">
+<li><p>a list of filtered entries, and</p></li>
+<li><p>an integer, the index at which the beginning of the entries for</p></li>
+</ol>
+<blockquote>
+<div><p>the period begin, one directive past the opening
+balances/initialization entries.</p>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li><p>a datetime.date instance, the date at which to evaluate the value</p></li>
+</ol>
+<blockquote>
+<div><p>of assets held at cost.</p>
+</div></blockquote>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.web.web">
+<span id="beancount-web-web"></span><h2>beancount.web.web<a class="headerlink" href="#module-beancount.web.web" title="Permalink to this headline">¶</a></h2>
+<p>Web server for Beancount ledgers.
+This uses the Bottle single-file micro web framework (with no plugins).</p>
+<dl class="class">
+<dt id="beancount.web.web.HTMLFormatter">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">HTMLFormatter</code><span class="sig-paren">(</span><em class="sig-param">dcontext</em>, <em class="sig-param">build_url</em>, <em class="sig-param">leaf_only</em>, <em class="sig-param">account_xform</em>, <em class="sig-param">view_links=True</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.HTMLFormatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>A formatter object that can be used to render accounts links.</p>
+<dl class="attribute">
+<dt id="beancount.web.web.HTMLFormatter.build_url">
+<code class="sig-name descname">build_url</code><a class="headerlink" href="#beancount.web.web.HTMLFormatter.build_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function used to render links to a Bottle application.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.web.web.HTMLFormatter.leafonly">
+<code class="sig-name descname">leafonly</code><a class="headerlink" href="#beancount.web.web.HTMLFormatter.leafonly" title="Permalink to this definition">¶</a></dt>
+<dd><p>a boolean, if true, render only the name of the leaf nodes.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.web.web.HTMLFormatter.EMS_PER_COMPONENT">
+<code class="sig-name descname">EMS_PER_COMPONENT</code><em class="property"> = 1.5</em><a class="headerlink" href="#beancount.web.web.HTMLFormatter.EMS_PER_COMPONENT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.web.web.HTMLFormatter.build_global">
+<code class="sig-name descname">build_global</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwds</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.HTMLFormatter.build_global" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render to global application.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.web.web.HTMLFormatter.render_account">
+<code class="sig-name descname">render_account</code><span class="sig-paren">(</span><em class="sig-param">account_name</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.HTMLFormatter.render_account" title="Permalink to this definition">¶</a></dt>
+<dd><p>See base class.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.web.web.HTMLFormatter.render_commodity">
+<code class="sig-name descname">render_commodity</code><span class="sig-paren">(</span><em class="sig-param">base_quote</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.HTMLFormatter.render_commodity" title="Permalink to this definition">¶</a></dt>
+<dd><p>See base class.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.web.web.HTMLFormatter.render_context">
+<code class="sig-name descname">render_context</code><span class="sig-paren">(</span><em class="sig-param">entry</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.HTMLFormatter.render_context" title="Permalink to this definition">¶</a></dt>
+<dd><p>See base class.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.web.web.HTMLFormatter.render_doc">
+<code class="sig-name descname">render_doc</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.HTMLFormatter.render_doc" title="Permalink to this definition">¶</a></dt>
+<dd><p>See base class.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.web.web.HTMLFormatter.render_event_type">
+<code class="sig-name descname">render_event_type</code><span class="sig-paren">(</span><em class="sig-param">event</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.HTMLFormatter.render_event_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>See base class.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.web.web.HTMLFormatter.render_inventory">
+<code class="sig-name descname">render_inventory</code><span class="sig-paren">(</span><em class="sig-param">inv</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.HTMLFormatter.render_inventory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override this formatter to convert the inventory to units only.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.web.web.HTMLFormatter.render_link">
+<code class="sig-name descname">render_link</code><span class="sig-paren">(</span><em class="sig-param">link</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.HTMLFormatter.render_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>See base class.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.web.web.HTMLFormatter.render_source">
+<code class="sig-name descname">render_source</code><span class="sig-paren">(</span><em class="sig-param">source</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.HTMLFormatter.render_source" title="Permalink to this definition">¶</a></dt>
+<dd><p>See base class.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.activity">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">activity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.activity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render the update activity.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.add_web_arguments">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">add_web_arguments</code><span class="sig-paren">(</span><em class="sig-param">argparser</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.add_web_arguments" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.all">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">all</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.all" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.approot">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">approot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.approot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.auto_reload_input_file">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">auto_reload_input_file</code><span class="sig-paren">(</span><em class="sig-param">callback</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.auto_reload_input_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>A plugin that automatically reloads the input file if it changed since the
+last page was loaded.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.balsheet">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">balsheet</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.balsheet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Balance sheet.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.commodities">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">commodities</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.commodities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render a list commodities with list their prices page.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.component">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">component</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.component" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.context_">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">context_</code><span class="sig-paren">(</span><em class="sig-param">ehash=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.context_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render the before &amp; after context around a transaction entry.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.conversions_">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">conversions_</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.conversions_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render the list of transactions with conversions.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.doc">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">doc</code><span class="sig-paren">(</span><em class="sig-param">filename=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.doc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Serve static filenames for documents directives.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.doc__view">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">doc__view</code><span class="sig-paren">(</span><em class="sig-param">filename=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.doc__view" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.documents">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">documents</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.documents" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render a tree with all the documents found.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.errors">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">errors</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.errors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Report error encountered during parsing, checking and realization.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.event">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">event</code><span class="sig-paren">(</span><em class="sig-param">event=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render all values of a particular event.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.event_index">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">event_index</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.event_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render the latest values of all events and an index.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.favicon">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">favicon</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.favicon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.get_all_view">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">get_all_view</code><span class="sig-paren">(</span><em class="sig-param">app</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.get_all_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a view of all transactions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>An instance of AllView, that covers all transactions.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.handle_view">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">handle_view</code><span class="sig-paren">(</span><em class="sig-param">path_depth</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.handle_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>A decorator for handlers which create views lazily.
+If you decorate a method with this, the wrapper does the redirect
+handling and your method is just a factory for a View instance,
+which is cached.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path_depth</strong> – An integer, the number of components that form the view id.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A decorator function, used to wrap view handlers.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.holdings_">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">holdings_</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.holdings_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render a detailed table of all holdings.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.holdings_byaccount">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">holdings_byaccount</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.holdings_byaccount" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render a table of holdings by account.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.holdings_bycommodity">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">holdings_bycommodity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.holdings_bycommodity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render a table of holdings by commodity.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.holdings_bycurrency">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">holdings_bycurrency</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.holdings_bycurrency" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render a table of holdings by currency.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.holdings_byrootaccount">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">holdings_byrootaccount</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.holdings_byrootaccount" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render a table of holdings by account.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.incognito">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">incognito</code><span class="sig-paren">(</span><em class="sig-param">callback</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.incognito" title="Permalink to this definition">¶</a></dt>
+<dd><p>A plugin that converts all numbers rendered into X’s, in order
+to hide the actual values in the ledger. This is used for doing
+public demos using my real ledger, where I don’t necessarily
+want to share the detail of my financial life with the viewers
+but when I still want an interesting ledger, with enough
+detail that looks realistic.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.income">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">income</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.income" title="Permalink to this definition">¶</a></dt>
+<dd><p>Income statement.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.index">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">index</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Index of all pages, so that navigation need not have all links.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.journal_">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">journal_</code><span class="sig-paren">(</span><em class="sig-param">account_name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.journal_" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of all the entries for this account realization.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.journal_all">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">journal_all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.journal_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of all the entries in this realization.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.link">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">link</code><span class="sig-paren">(</span><em class="sig-param">link=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Serve journals for links.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.main">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main web service runner. This runs the event loop and blocks indefinitely.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.month">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">month</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.month" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.month_request">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">month_request</code><span class="sig-paren">(</span><em class="sig-param">year</em>, <em class="sig-param">month</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.month_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render a URL to a particular month of the context’s request.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.networth">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">networth</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.networth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render a table of the net worth for this filter.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.openbal">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">openbal</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.openbal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Opening balances.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.payee">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">payee</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.payee" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.populate_view">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">populate_view</code><span class="sig-paren">(</span><em class="sig-param">callback</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.populate_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>A plugin that will populate the request with the current view instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>callback</strong> – A continuation function to call to handle the request.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A function to call to install view-specific parameters on the request.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.prices_values">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">prices_values</code><span class="sig-paren">(</span><em class="sig-param">base=None</em>, <em class="sig-param">quote=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.prices_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render all the values for a particular price pair.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.render_global">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">render_global</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.render_global" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render the title and contents in our standard template for a global page.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>*args</strong> – A tuple of values for the HTML template.</p></li>
+<li><p><strong>*kw</strong> – A dict of optional values for the HTML template.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An HTML string of the rendered template.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.render_overlay">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">render_overlay</code><span class="sig-paren">(</span><em class="sig-param">contents</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.render_overlay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render an overlay of the navigation with the current errors.</p>
+<p>This is used to bring up new errors on any page when they occur.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A string of HTML for the contents of the errors overlay.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.render_real_report">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">render_real_report</code><span class="sig-paren">(</span><em class="sig-param">report_class</em>, <em class="sig-param">real_root</em>, <em class="sig-param">price_map</em>, <em class="sig-param">price_date</em>, <em class="sig-param">args=None</em>, <em class="sig-param">leaf_only=False</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.render_real_report" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiate a report and rendering it to a string.</p>
+<p>This is intended to be called in the context of a Bottle view app request
+(it uses ‘request’).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>report_class</strong> – A class, the type of the report to render.</p></li>
+<li><p><strong>real_root</strong> – An instance of RealAccount to render.</p></li>
+<li><p><strong>price_map</strong> – A price map as built by build_price_map().</p></li>
+<li><p><strong>price_date</strong> – The date at which to evaluate the prices.</p></li>
+<li><p><strong>args</strong> – A list of strings, the arguments to initialize the report with.</p></li>
+<li><p><strong>leaf_only</strong> – A boolean, whether to render the leaf names only.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A string, the rendered report.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.render_report">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">render_report</code><span class="sig-paren">(</span><em class="sig-param">report_class</em>, <em class="sig-param">entries</em>, <em class="sig-param">args=None</em>, <em class="sig-param">css_id=None</em>, <em class="sig-param">css_class=None</em>, <em class="sig-param">center=False</em>, <em class="sig-param">leaf_only=True</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.render_report" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiate a report and rendering it to a string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>report_class</strong> – A class, the type of the report to render.</p></li>
+<li><p><strong>real_root</strong> – An instance of RealAccount to render.</p></li>
+<li><p><strong>args</strong> – A list of strings, the arguments to initialize the report with.</p></li>
+<li><p><strong>css_id</strong> – An optional string, the CSS id for the div to render.</p></li>
+<li><p><strong>css_class</strong> – An optional string, the CSS class for the div to render.</p></li>
+<li><p><strong>center</strong> – A boolean flag, if true, wrap the results in a &lt;center&gt; tag.</p></li>
+<li><p><strong>leaf_only</strong> – A boolean, whether to render the leaf names only.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A string, the rendered report.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.render_view">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">render_view</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.render_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render the title and contents in our standard template for a view page.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>*args</strong> – A tuple of values for the HTML template.</p></li>
+<li><p><strong>*kw</strong> – A dict of optional values for the HTML template.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An HTML string of the rendered template.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.root">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">root</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.root" title="Permalink to this definition">¶</a></dt>
+<dd><p>Redirect the root page to the home page.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.run_app">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">run_app</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">quiet=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.run_app" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.scrape_webapp">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">scrape_webapp</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">callback</em>, <em class="sig-param">port</em>, <em class="sig-param">ignore_regexp</em>, <em class="sig-param">quiet=True</em>, <em class="sig-param">no_colons=False</em>, <em class="sig-param">extra_args=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.scrape_webapp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run a web server on a Beancount file and scrape it.</p>
+<p>This is the main entry point of this module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> – A string, the name of the file to parse.</p></li>
+<li><p><strong>callback</strong> – A callback function to invoke on each page to validate it.
+The function is called with the response and the url as arguments.
+This function should trigger an error on failure (via an exception).</p></li>
+<li><p><strong>port</strong> – An integer, a free port to use for serving the pages.</p></li>
+<li><p><strong>ignore_regexp</strong> – A regular expression string, the urls to ignore.</p></li>
+<li><p><strong>quiet</strong> – True if we shouldn’t log the web server pages.</p></li>
+<li><p><strong>no_colons</strong> – True if we should avoid rendering colons in URLs (for Windows).</p></li>
+<li><p><strong>extra_args</strong> – Extra arguments to bean-web that we want to start the
+server with.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A set of all the processed URLs and a set of all the skipped URLs.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.setup_monkey_patch_for_server_shutdown">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">setup_monkey_patch_for_server_shutdown</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.setup_monkey_patch_for_server_shutdown" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setup globals to steal access to the server reference.
+This is required to initiate shutdown, unfortunately.
+(Bottle could easily remedy that.)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.shutdown">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">shutdown</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.shutdown" title="Permalink to this definition">¶</a></dt>
+<dd><p>Request for the server to shutdown.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.source">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">source</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.source" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render the source file, allowing scrolling at a specific line.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.stats_postings">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">stats_postings</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.stats_postings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute and render statistics about the input file.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.stats_types">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">stats_types</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.stats_types" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute and render statistics about the input file.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.style">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">style</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.style" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stylesheet for the entire document.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.tag">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">tag</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.tag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.third_party">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">third_party</code><span class="sig-paren">(</span><em class="sig-param">filename=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.third_party" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.thread_server_shutdown">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">thread_server_shutdown</code><span class="sig-paren">(</span><em class="sig-param">thread</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.thread_server_shutdown" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shutdown the server running in the given thread.</p>
+<p>Unfortauntely, in the meantime this has a side-effect on all servers.
+This returns after waiting that the thread has stopped.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>thread</strong> – A threading.Thread instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.thread_server_start">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">thread_server_start</code><span class="sig-paren">(</span><em class="sig-param">web_args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.thread_server_start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start a server in a new thread.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>argparse_args</strong> – An argparse parsed options object, with all the options
+from add_web_arguments().</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A new Thread instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.toc">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">toc</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.toc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.trial">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">trial</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.trial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trial balance / Chart of Accounts.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.url_restrict_generator">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">url_restrict_generator</code><span class="sig-paren">(</span><em class="sig-param">url_prefix</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.url_restrict_generator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Restrict to only a single prefix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url_prefix</strong> – A string, a URL prefix to restrict to.</p></li>
+<li><p><strong>callback</strong> – The function to wrap.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A handler decorator.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.wait_ready">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">wait_ready</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.wait_ready" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wait until the ‘server’ global has been set.
+This tells us the server is running.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.web.web.year">
+<code class="sig-prename descclassname">beancount.web.web.</code><code class="sig-name descname">year</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.web.web.year" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo.png" alt="Logo"/>
+    
+    <h1 class="logo logo-name">Fava</h1>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Web interface for <a href="http://furius.ca/beancount/">Beancount</a></p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development.html">Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="fava.html">fava</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.core.html">fava.core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.ext.html">fava.ext</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.ext.portfolio_list.html">fava.ext.portfolio_list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.help.html">fava.help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.util.html">fava.util</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.html">beancount</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.core.html">beancount.core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ingest.html">beancount.ingest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ingest.importers.html">beancount.ingest.importers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ingest.importers.mixins.html">beancount.ingest.importers.mixins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ops.html">beancount.ops</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.parser.html">beancount.parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.plugins.html">beancount.plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.prices.html">beancount.prices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.prices.sources.html">beancount.prices.sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.query.html">beancount.query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.reports.html">beancount.reports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.scripts.html">beancount.scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.tools.html">beancount.tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.utils.html">beancount.utils</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">beancount.web</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.web.bottle_utils">beancount.web.bottle_utils</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.web.scrape">beancount.web.scrape</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.web.views">beancount.web.views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.web.web">beancount.web.web</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/beancount/fava">fava @ GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://gitter.im/beancount/fava">Chat</a></li>
+    
+    <li class="toctree-l1"><a href="https://github.com/beancount/fava/issues">Issue Tracker</a></li>
+    
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Dominik Aumayr.
+      
+      |
+      <a href="../_sources/api/beancount.web.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,25 @@
+beancount.web
+=============
+
+.. automodule:: beancount.web
+
+beancount.web.bottle_utils
+--------------------------
+
+.. automodule:: beancount.web.bottle_utils
+
+beancount.web.scrape
+--------------------
+
+.. automodule:: beancount.web.scrape
+
+beancount.web.views
+-------------------
+
+.. automodule:: beancount.web.views
+
+beancount.web.web
+-----------------
+
+.. automodule:: beancount.web.web
+

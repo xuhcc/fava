@@ -1,0 +1,25 @@
+beancount.ingest.importers
+==========================
+
+.. automodule:: beancount.ingest.importers
+
+beancount.ingest.importers.config
+---------------------------------
+
+.. automodule:: beancount.ingest.importers.config
+
+beancount.ingest.importers.csv
+------------------------------
+
+.. automodule:: beancount.ingest.importers.csv
+
+beancount.ingest.importers.fileonly
+-----------------------------------
+
+.. automodule:: beancount.ingest.importers.fileonly
+
+beancount.ingest.importers.ofx
+------------------------------
+
+.. automodule:: beancount.ingest.importers.ofx
+

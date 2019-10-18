@@ -1,0 +1,251 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>beancount.ingest.importers.mixins &#8212; Fava  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="beancount.ops" href="beancount.ops.html" />
+    <link rel="prev" title="beancount.ingest.importers" href="beancount.ingest.importers.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-beancount.ingest.importers.mixins">
+<span id="beancount-ingest-importers-mixins"></span><h1>beancount.ingest.importers.mixins<a class="headerlink" href="#module-beancount.ingest.importers.mixins" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-beancount.ingest.importers.mixins.config">
+<span id="beancount-ingest-importers-mixins-config"></span><h2>beancount.ingest.importers.mixins.config<a class="headerlink" href="#module-beancount.ingest.importers.mixins.config" title="Permalink to this headline">¶</a></h2>
+<p>Base class that implements configuration and a filing account.</p>
+<dl class="class">
+<dt id="beancount.ingest.importers.mixins.config.ConfigMixin">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.ingest.importers.mixins.config.</code><code class="sig-name descname">ConfigMixin</code><span class="sig-paren">(</span><em class="sig-param">**kwds</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.importers.mixins.config.ConfigMixin" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="beancount.ingest.importers.mixins.config.ConfigMixin.REQUIRED_CONFIG">
+<code class="sig-name descname">REQUIRED_CONFIG</code><em class="property"> = None</em><a class="headerlink" href="#beancount.ingest.importers.mixins.config.ConfigMixin.REQUIRED_CONFIG" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.ingest.importers.mixins.config.validate_config">
+<code class="sig-prename descclassname">beancount.ingest.importers.mixins.config.</code><code class="sig-name descname">validate_config</code><span class="sig-paren">(</span><em class="sig-param">config</em>, <em class="sig-param">schema</em>, <em class="sig-param">importer</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.importers.mixins.config.validate_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the configuration account provided by the user against the accounts
+required by the source importer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config</strong> – A config dict of actual values on an importer.</p></li>
+<li><p><strong>schema</strong> – A dict of declarations of required values.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the configuration is invalid.</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A validated configuration dict.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.ingest.importers.mixins.filing">
+<span id="beancount-ingest-importers-mixins-filing"></span><h2>beancount.ingest.importers.mixins.filing<a class="headerlink" href="#module-beancount.ingest.importers.mixins.filing" title="Permalink to this headline">¶</a></h2>
+<p>Base class that implements filing account.</p>
+<p>It also sports an optional prefix to prepend to the renamed filename. Typically
+you can put the name of the institution there, so you get a renamed filename
+like this:</p>
+<blockquote>
+<div><p>YYYY-MM-DD.institution.Original_File_Name.pdf</p>
+</div></blockquote>
+<dl class="class">
+<dt id="beancount.ingest.importers.mixins.filing.FilingMixin">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.ingest.importers.mixins.filing.</code><code class="sig-name descname">FilingMixin</code><span class="sig-paren">(</span><em class="sig-param">**kwds</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.importers.mixins.filing.FilingMixin" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="beancount.ingest.importers.mixins.filing.FilingMixin.file_account">
+<code class="sig-name descname">file_account</code><span class="sig-paren">(</span><em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.importers.mixins.filing.FilingMixin.file_account" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an account associated with the given file.</p>
+<p>Note: If you don’t implement this method you won’t be able to move the
+files into its preservation hierarchy; the bean-file command won’t
+work.</p>
+<p>Also, normally the returned account is not a function of the input
+file–just of the importer–but it is provided anyhow.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file</strong> – A cache.FileMemo instance.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The name of the account that corresponds to this importer.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.ingest.importers.mixins.filing.FilingMixin.file_name">
+<code class="sig-name descname">file_name</code><span class="sig-paren">(</span><em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.importers.mixins.filing.FilingMixin.file_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the optional renamed account filename.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.ingest.importers.mixins.filing.FilingMixin.name">
+<code class="sig-name descname">name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.importers.mixins.filing.FilingMixin.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Include the filing account in the name.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.ingest.importers.mixins.identifier">
+<span id="beancount-ingest-importers-mixins-identifier"></span><h2>beancount.ingest.importers.mixins.identifier<a class="headerlink" href="#module-beancount.ingest.importers.mixins.identifier" title="Permalink to this headline">¶</a></h2>
+<p>Base class that implements identification using regular expressions.</p>
+<dl class="class">
+<dt id="beancount.ingest.importers.mixins.identifier.IdentifyMixin">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.ingest.importers.mixins.identifier.</code><code class="sig-name descname">IdentifyMixin</code><span class="sig-paren">(</span><em class="sig-param">**kwds</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.importers.mixins.identifier.IdentifyMixin" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="beancount.ingest.importers.mixins.identifier.IdentifyMixin.identify">
+<code class="sig-name descname">identify</code><span class="sig-paren">(</span><em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.importers.mixins.identifier.IdentifyMixin.identify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return true if this importer matches the given file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file</strong> – A cache.FileMemo instance.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A boolean, true if this importer can handle this file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.ingest.importers.mixins.identifier.identify">
+<code class="sig-prename descclassname">beancount.ingest.importers.mixins.identifier.</code><code class="sig-name descname">identify</code><span class="sig-paren">(</span><em class="sig-param">remap</em>, <em class="sig-param">converter</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.ingest.importers.mixins.identifier.identify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Identify the contents of a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>remap</strong> – A dict of ‘part’ to list-of-compiled-regexp objects, where each item is
+a specification to match against its part. The ‘part’ can be one of ‘mime’,
+‘filename’ or ‘content’.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A boolean, true if the file is not rejected by the constraints.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo.png" alt="Logo"/>
+    
+    <h1 class="logo logo-name">Fava</h1>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Web interface for <a href="http://furius.ca/beancount/">Beancount</a></p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development.html">Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="fava.html">fava</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.core.html">fava.core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.ext.html">fava.ext</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.ext.portfolio_list.html">fava.ext.portfolio_list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.help.html">fava.help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.util.html">fava.util</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.html">beancount</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.core.html">beancount.core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ingest.html">beancount.ingest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ingest.importers.html">beancount.ingest.importers</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">beancount.ingest.importers.mixins</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.ingest.importers.mixins.config">beancount.ingest.importers.mixins.config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.ingest.importers.mixins.filing">beancount.ingest.importers.mixins.filing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.ingest.importers.mixins.identifier">beancount.ingest.importers.mixins.identifier</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ops.html">beancount.ops</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.parser.html">beancount.parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.plugins.html">beancount.plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.prices.html">beancount.prices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.prices.sources.html">beancount.prices.sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.query.html">beancount.query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.reports.html">beancount.reports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.scripts.html">beancount.scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.tools.html">beancount.tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.utils.html">beancount.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.web.html">beancount.web</a></li>
+</ul>
+</li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/beancount/fava">fava @ GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://gitter.im/beancount/fava">Chat</a></li>
+    
+    <li class="toctree-l1"><a href="https://github.com/beancount/fava/issues">Issue Tracker</a></li>
+    
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Dominik Aumayr.
+      
+      |
+      <a href="../_sources/api/beancount.ingest.importers.mixins.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

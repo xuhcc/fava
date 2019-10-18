@@ -1,0 +1,50 @@
+beancount.scripts
+=================
+
+.. automodule:: beancount.scripts
+
+beancount.scripts.bake
+----------------------
+
+.. automodule:: beancount.scripts.bake
+
+beancount.scripts.check
+-----------------------
+
+.. automodule:: beancount.scripts.check
+
+beancount.scripts.deps
+----------------------
+
+.. automodule:: beancount.scripts.deps
+
+beancount.scripts.directories
+-----------------------------
+
+.. automodule:: beancount.scripts.directories
+
+beancount.scripts.doctor
+------------------------
+
+.. automodule:: beancount.scripts.doctor
+
+beancount.scripts.example
+-------------------------
+
+.. automodule:: beancount.scripts.example
+
+beancount.scripts.format
+------------------------
+
+.. automodule:: beancount.scripts.format
+
+beancount.scripts.sql
+---------------------
+
+.. automodule:: beancount.scripts.sql
+
+beancount.scripts.tutorial
+--------------------------
+
+.. automodule:: beancount.scripts.tutorial
+

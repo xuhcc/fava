@@ -1,0 +1,1717 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>beancount.plugins &#8212; Fava  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="beancount.prices" href="beancount.prices.html" />
+    <link rel="prev" title="beancount.parser" href="beancount.parser.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-beancount.plugins">
+<span id="beancount-plugins"></span><h1>beancount.plugins<a class="headerlink" href="#module-beancount.plugins" title="Permalink to this headline">¶</a></h1>
+<p>Example plugins for filtering transactions.</p>
+<p>These are various examples of how to filter entries in various creative ways.</p>
+<p>IMPORTANT: These are not meant to tbe complete features, rather just experiments
+in problem-solving using Beancount, work-in-progress that can be selectively
+installed via a –plugin option, or one-offs to answer questions on the
+mailing-list.</p>
+<div class="section" id="module-beancount.plugins.auto">
+<span id="beancount-plugins-auto"></span><h2>beancount.plugins.auto<a class="headerlink" href="#module-beancount.plugins.auto" title="Permalink to this headline">¶</a></h2>
+<p>A plugin of plugins which triggers are all the automatic and lax plugins.</p>
+<p>In a sense, this is the inverse of “pedantic.” This is useful when doing some
+types of quick and dirty tests. You can just import the “auto” plugin. Put that
+in a macro.</p>
+<p>Also see: the ‘pedantic’ plugin.</p>
+</div>
+<div class="section" id="module-beancount.plugins.auto_accounts">
+<span id="beancount-plugins-auto-accounts"></span><h2>beancount.plugins.auto_accounts<a class="headerlink" href="#module-beancount.plugins.auto_accounts" title="Permalink to this headline">¶</a></h2>
+<p>This module automatically inserts Open directives for accounts not opened (at
+the date of the first entry) and automatically removes open directives for
+unused accounts. This can be used as a convenience for doing demos, or when
+setting up your initial transactions, as an intermediate step.</p>
+<dl class="function">
+<dt id="beancount.plugins.auto_accounts.auto_insert_open">
+<code class="sig-prename descclassname">beancount.plugins.auto_accounts.</code><code class="sig-name descname">auto_insert_open</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">unused_options_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.auto_accounts.auto_insert_open" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert implicitly defined prices from Transactions.</p>
+<p>Explicit price entries are simply maintained in the output list. Prices from
+postings with costs or with prices from Transaction entries are synthesized
+as new Price entries in the list of entries output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives. We’re interested only in the Transaction instances.</p></li>
+<li><p><strong>unused_options_map</strong> – A parser options dict.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of entries, possibly with more Price entries than before, and a
+list of errors.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.plugins.book_conversions">
+<span id="beancount-plugins-book-conversions"></span><h2>beancount.plugins.book_conversions<a class="headerlink" href="#module-beancount.plugins.book_conversions" title="Permalink to this headline">¶</a></h2>
+<p>A plugin that automatically converts postings at price to postings held at
+cost, applying an automatic booking algorithm in assigning the cost bases and
+matching lots.</p>
+<p>This plugin restricts itself to applying these transformations within a
+particular account, which you provide. For each of those accounts, it also
+requires a corresponding Income account to book the profit/loss of reducing
+lots (i.e., sales):</p>
+<blockquote>
+<div><p>plugin “beancount.plugins.book_conversions” “Assets:Bitcoin,Income:Bitcoin”</p>
+</div></blockquote>
+<p>Then, simply input the transactions with price conversion. We use “Bitcoins” in
+this example, converting Bitcoin purchases that were carried out as currency
+into maintaining these with cost basis, for tax reporting purposes:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>2015-09-04 * “Buy some bitcoins”</dt><dd><p>Assets:Bank          -1000.00 USD
+Assets:Bitcoin       4.333507 BTC &#64; 230.76 USD</p>
+</dd>
+<dt>2015-09-05 * “Buy some more bitcoins at a different price”</dt><dd><p>Assets:Bank          -1000.00 USD
+Assets:Bitcoin       4.345747 BTC &#64; 230.11 USD</p>
+</dd>
+<dt>2015-09-20 * “Use (sell) some bitcoins”</dt><dd><p>Assets:Bitcoin       -6.000000 BTC &#64; 230.50 USD
+Expenses:Something</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>The result is that cost bases are inserted on augmenting lots:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>2015-09-04 * “Buy some bitcoins”</dt><dd><p>Assets:Bitcoin  4.333507 BTC {230.76 USD} &#64; 230.76 USD
+Assets:Bank     -1000.00 USD</p>
+</dd>
+<dt>2015-09-05 * “Buy some more bitcoins at a different price”</dt><dd><p>Assets:Bitcoin  4.345747 BTC {230.11 USD} &#64; 230.11 USD
+Assets:Bank     -1000.00 USD</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>While on reducing lots, matching FIFO lots are automatically found and the
+corresponding cost basis added:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>2015-09-20 * “Use (sell) some bitcoins”</dt><dd><p>Assets:Bitcoin          -4.333507 BTC {230.76 USD} &#64; 230.50 USD
+Assets:Bitcoin          -1.666493 BTC {230.11 USD} &#64; 230.50 USD
+Income:Bitcoin         0.47677955 USD
+Expenses:Something  1383.00000000 USD</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>Note that multiple lots were required to fulfill the sale quantity here. As in
+this example, this may result in multiple lots being created for a single one.</p>
+<p>Finally, Beancount will eventually support booking methods built-in, but this is
+a quick method that shows how to hack your own booking method via
+transformations of the postings that run in in a plugin.</p>
+<p>Implementation notes:</p>
+<ul class="simple">
+<li><p>This code uses the FIFO method only for now. However, it would be very easy to
+customize it to provide other booking methods, e.g. LIFO, or otherwise. This
+will be added eventually, and I’m hoping to reuse the same inventory
+abstractions that will be used to implement the fallback booking methods from
+the booking proposal review (<a class="reference external" href="http://furius.ca/beancount/doc/proposal-booking">http://furius.ca/beancount/doc/proposal-booking</a>).</p></li>
+<li><p>Instead of keeping a list of (Position, Transaction) pairs for the pending
+FIFO lots, we really ought to use a beancount.core.inventory.Inventory
+instance. However, the class does not contain sufficient data to carry out
+FIFO booking at the moment. A newer implementation, living in the “booking”
+branch, does, and will be used in the future.</p></li>
+<li><p>This code assumes that a positive number of units is an augmenting lot and a
+reducing one has a negative number of units, though we never call them that
+way on purpose (to eventually allow this code to handle short positions). This
+is not strictly true; however, we would need an Inventory in order to figrue
+this out. This will be done in the future and is not difficult to do.</p></li>
+</ul>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>This plugin was developed before the booking methods (FIFO, LIFO, and others)
+were fully implemented in Beancount. It was built to answer a question on the
+mailing-list about FIFO booking. You probably don’t need to use them anymore.
+Always prefer to use the native syntax instead of this.</p>
+</div>
+<dl class="class">
+<dt id="beancount.plugins.book_conversions.BookConversionError">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.plugins.book_conversions.</code><code class="sig-name descname">BookConversionError</code><span class="sig-paren">(</span><em class="sig-param">source</em>, <em class="sig-param">message</em>, <em class="sig-param">entry</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.book_conversions.BookConversionError" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="beancount.plugins.book_conversions.ConfigError">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.plugins.book_conversions.</code><code class="sig-name descname">ConfigError</code><span class="sig-paren">(</span><em class="sig-param">source</em>, <em class="sig-param">message</em>, <em class="sig-param">entry</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.book_conversions.ConfigError" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="beancount.plugins.book_conversions.augment_inventory">
+<code class="sig-prename descclassname">beancount.plugins.book_conversions.</code><code class="sig-name descname">augment_inventory</code><span class="sig-paren">(</span><em class="sig-param">pending_lots</em>, <em class="sig-param">posting</em>, <em class="sig-param">entry</em>, <em class="sig-param">eindex</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.book_conversions.augment_inventory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add the lots from the given posting to the running inventory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pending_lots</strong> – A list of pending ([number], Posting, Transaction) to be matched.
+The number is modified in-place, destructively.</p></li>
+<li><p><strong>posting</strong> – The posting whose position is to be added.</p></li>
+<li><p><strong>entry</strong> – The parent transaction.</p></li>
+<li><p><strong>eindex</strong> – The index of the parent transaction housing this posting.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A new posting with cost basis inserted to be added to a transformed transaction.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.plugins.book_conversions.book_price_conversions">
+<code class="sig-prename descclassname">beancount.plugins.book_conversions.</code><code class="sig-name descname">book_price_conversions</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">assets_account</em>, <em class="sig-param">income_account</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.book_conversions.book_price_conversions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rewrite transactions to insert cost basis according to a booking method.</p>
+<p>See module docstring for full details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of entry instances.</p></li>
+<li><p><strong>assets_account</strong> – An account string, the name of the account to process.</p></li>
+<li><p><strong>income_account</strong> – An account string, the name of the account to use for booking
+realized profit/loss.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl>
+<dt>A tuple of</dt><dd><p>entries: A list of new, modified entries.
+errors: A list of errors generated by this plugin.
+matches: A list of (number, augmenting-posting, reducing-postings) for all</p>
+<blockquote>
+<div><p>matched lots.</p>
+</div></blockquote>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.plugins.book_conversions.book_price_conversions_plugin">
+<code class="sig-prename descclassname">beancount.plugins.book_conversions.</code><code class="sig-name descname">book_price_conversions_plugin</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">options_map</em>, <em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.book_conversions.book_price_conversions_plugin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plugin that rewrites transactions to insert cost basis according to a booking method.</p>
+<p>See book_price_conversions() for details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of entry instances.</p></li>
+<li><p><strong>options_map</strong> – A dict of options parsed from the file.</p></li>
+<li><p><strong>config</strong> – A string, in “&lt;ACCOUNT1&gt;,&lt;ACCOUNT2&gt;” format.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>A tuple of</dt><dd><p>entries: A list of new, modified entries.
+errors: A list of errors generated by this plugin.</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.plugins.book_conversions.extract_trades">
+<code class="sig-prename descclassname">beancount.plugins.book_conversions.</code><code class="sig-name descname">extract_trades</code><span class="sig-paren">(</span><em class="sig-param">entries</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.book_conversions.extract_trades" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find all the matching trades from the metadata attached to postings.</p>
+<p>This inspects all the postings and pairs them up using the special metadata
+field that was added by this plugin when booking matching lots, and returns
+pairs of those postings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>entries</strong> – The list of directives to extract from.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of (number, augmenting-posting, reducing-posting).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.plugins.book_conversions.is_matching">
+<code class="sig-prename descclassname">beancount.plugins.book_conversions.</code><code class="sig-name descname">is_matching</code><span class="sig-paren">(</span><em class="sig-param">posting</em>, <em class="sig-param">account</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.book_conversions.is_matching" title="Permalink to this definition">¶</a></dt>
+<dd><p>“Identify if the given posting is one to be booked.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>posting</strong> – An instance of a Posting.</p></li>
+<li><p><strong>account</strong> – The account name configured.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A boolean, true if this posting is one that we should be adding a cost to.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.plugins.book_conversions.link_entries_with_metadata">
+<code class="sig-prename descclassname">beancount.plugins.book_conversions.</code><code class="sig-name descname">link_entries_with_metadata</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">all_matches</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.book_conversions.link_entries_with_metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modify the entries in-place to add matching links to postings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – The list of entries to modify.</p></li>
+<li><p><strong>all_matches</strong> – A list of pairs of (augmenting-posting, reducing-posting).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of pairs of (index, Posting) for the new (augmenting, reducing)
+annotated postings.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.plugins.book_conversions.main">
+<code class="sig-prename descclassname">beancount.plugins.book_conversions.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.book_conversions.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract trades from metadata-annotated postings and report on them.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.plugins.book_conversions.reduce_inventory">
+<code class="sig-prename descclassname">beancount.plugins.book_conversions.</code><code class="sig-name descname">reduce_inventory</code><span class="sig-paren">(</span><em class="sig-param">pending_lots</em>, <em class="sig-param">posting</em>, <em class="sig-param">eindex</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.book_conversions.reduce_inventory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Match a reducing posting against a list of lots (using FIFO order).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pending_lots</strong> – A list of pending ([number], Posting, Transaction) to be matched.
+The number is modified in-place, destructively.</p></li>
+<li><p><strong>posting</strong> – The posting whose position is to be added.</p></li>
+<li><p><strong>eindex</strong> – The index of the parent transaction housing this posting.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl>
+<dt>A tuple of</dt><dd><dl class="simple">
+<dt>postings: A list of new Posting instances corresponding to the given</dt><dd><p>posting, that were booked to the current list of lots.</p>
+</dd>
+</dl>
+<p>matches: A list of pairs of (augmenting-posting, reducing-posting).
+pnl: A Decimal, the P/L incurred in reducing these lots.
+errors: A list of new errors generated in reducing these lots.</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.plugins.check_average_cost">
+<span id="beancount-plugins-check-average-cost"></span><h2>beancount.plugins.check_average_cost<a class="headerlink" href="#module-beancount.plugins.check_average_cost" title="Permalink to this headline">¶</a></h2>
+<p>A plugin that ensures cost basis is preserved in unbooked transactions.</p>
+<p>This is intended to be used in accounts using the “NONE” booking method, to
+manually ensure that the sum total of the cost basis of reducing legs matches
+the average of what’s in the account inventory. This is a partial first step
+toward implementing the “AVERAGE” booking method. In other words, this plugins
+provides assertions that will constrain you to approximate what the “AVERAGE”
+booking method will do, manually, and not to leak too much cost basis through
+unmatching bookings without checks. (Note the contrived context here: Ideally
+the “NONE” booking method would simply not exist.)</p>
+<dl class="class">
+<dt id="beancount.plugins.check_average_cost.MatchBasisError">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.plugins.check_average_cost.</code><code class="sig-name descname">MatchBasisError</code><span class="sig-paren">(</span><em class="sig-param">source</em>, <em class="sig-param">message</em>, <em class="sig-param">entry</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.check_average_cost.MatchBasisError" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="beancount.plugins.check_average_cost.validate_average_cost">
+<code class="sig-prename descclassname">beancount.plugins.check_average_cost.</code><code class="sig-name descname">validate_average_cost</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">options_map</em>, <em class="sig-param">config_str=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.check_average_cost.validate_average_cost" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that reducing legs on unbooked postings are near the average cost basis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives.</p></li>
+<li><p><strong>unused_options_map</strong> – An options map.</p></li>
+<li><p><strong>config_str</strong> – The configuration as a string version of a float.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of new errors, if any were found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.plugins.check_closing">
+<span id="beancount-plugins-check-closing"></span><h2>beancount.plugins.check_closing<a class="headerlink" href="#module-beancount.plugins.check_closing" title="Permalink to this headline">¶</a></h2>
+<p>A plugin that automatically inserts a balance check on a tagged closing posting.</p>
+<p>Some postings are known to the user to be “closing trades”, which means that the
+resulting position of the instrument just after the trade should be zero. For
+instance, this is the case for most ordinary options trading, only one lot of a
+particular instrument is held, and eventually expires or gets sold off in its
+entirely. One would like to confirm that, and the way to do this in Beancount is
+to insert a balance check.</p>
+<p>This plugin allows you to do that more simply, by inserting metadata. For
+example, this transaction:</p>
+<blockquote>
+<div><dl>
+<dt>2018-02-16 * “SOLD -14 QQQ 100 16 FEB 18 160 CALL &#64;5.31”</dt><dd><dl class="simple">
+<dt>Assets:US:Brokerage:Main:Options     -1400 QQQ180216C160 {2.70 USD} &#64; 5.31 USD</dt><dd><p>closing: TRUE</p>
+</dd>
+</dl>
+<p>Expenses:Financial:Commissions       17.45 USD
+Expenses:Financial:Fees               0.42 USD
+Assets:US:Brokerage:Main:Cash      7416.13 USD
+Income:US:Brokerage:Main:PnL</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>Would expand into the following two directives:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>2018-02-16 * “SOLD -14 QQQ 100 16 FEB 18 160 CALL &#64;5.31”</dt><dd><p>Assets:US:Brokerage:Main:Options     -1400 QQQ180216C160 {2.70 USD} &#64; 5.31 USD
+Expenses:Financial:Commissions       17.45 USD
+Expenses:Financial:Fees               0.42 USD
+Assets:US:Brokerage:Main:Cash      7416.13 USD
+Income:US:Brokerage:Main:PnL</p>
+</dd>
+</dl>
+<p>2018-02-17 balance Assets:US:Brokerage:Main:Options  0 QQQ180216C160</p>
+</div></blockquote>
+<p>Insert the closing line when you know you’re closing the position.</p>
+<dl class="function">
+<dt id="beancount.plugins.check_closing.check_closing">
+<code class="sig-prename descclassname">beancount.plugins.check_closing.</code><code class="sig-name descname">check_closing</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">options_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.check_closing.check_closing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Expand ‘closing’ metadata to a zero balance check.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives.</p></li>
+<li><p><strong>unused_options_map</strong> – An options map.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of new errors, if any were found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.plugins.check_commodity">
+<span id="beancount-plugins-check-commodity"></span><h2>beancount.plugins.check_commodity<a class="headerlink" href="#module-beancount.plugins.check_commodity" title="Permalink to this headline">¶</a></h2>
+<p>A plugin that verifies that all seen commodities have a Commodity directive.</p>
+<p>This is useful if you’re a bit pedantic and like to make sure that you’re
+declared attributes for each of the commodities you use. It’s useful if you use
+the portfolio export, for example.</p>
+<dl class="class">
+<dt id="beancount.plugins.check_commodity.CheckCommodityError">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.plugins.check_commodity.</code><code class="sig-name descname">CheckCommodityError</code><span class="sig-paren">(</span><em class="sig-param">source</em>, <em class="sig-param">message</em>, <em class="sig-param">entry</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.check_commodity.CheckCommodityError" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="beancount.plugins.check_commodity.validate_commodity_directives">
+<code class="sig-prename descclassname">beancount.plugins.check_commodity.</code><code class="sig-name descname">validate_commodity_directives</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">options_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.check_commodity.validate_commodity_directives" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find all commodities used and ensure they have a corresponding Commodity directive.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives.</p></li>
+<li><p><strong>unused_options_map</strong> – An options map.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of new errors, if any were found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.plugins.coherent_cost">
+<span id="beancount-plugins-coherent-cost"></span><h2>beancount.plugins.coherent_cost<a class="headerlink" href="#module-beancount.plugins.coherent_cost" title="Permalink to this headline">¶</a></h2>
+<p>This plugin validates that currencies held at cost aren’t ever converted at
+price and vice-versa. This is usually the case, and using it will prevent users
+from making the mistake of selling a lot without specifying it via its cost
+basis.</p>
+<dl class="class">
+<dt id="beancount.plugins.coherent_cost.CoherentCostError">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.plugins.coherent_cost.</code><code class="sig-name descname">CoherentCostError</code><span class="sig-paren">(</span><em class="sig-param">source</em>, <em class="sig-param">message</em>, <em class="sig-param">entry</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.coherent_cost.CoherentCostError" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="beancount.plugins.coherent_cost.validate_coherent_cost">
+<code class="sig-prename descclassname">beancount.plugins.coherent_cost.</code><code class="sig-name descname">validate_coherent_cost</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">unused_options_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.coherent_cost.validate_coherent_cost" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that all currencies are either used at cost or not at all, but never both.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives.</p></li>
+<li><p><strong>unused_options_map</strong> – An options map.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of new errors, if any were found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.plugins.commodity_attr">
+<span id="beancount-plugins-commodity-attr"></span><h2>beancount.plugins.commodity_attr<a class="headerlink" href="#module-beancount.plugins.commodity_attr" title="Permalink to this headline">¶</a></h2>
+<p>A plugin that asserts that all Commodity directives have a particular
+attribute and that it is part of a set of enum values.</p>
+<p>The configuration must be a mapping of attribute name to list of valid values,
+like this:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>plugin “beancount.plugins.commodity_attr” “{</dt><dd><p>‘sector’: [‘Technology’, ‘Financials’, ‘Energy’],
+‘name’: None,</p>
+</dd>
+</dl>
+<p>}”</p>
+</div></blockquote>
+<p>The plugin issues an error if a Commodity directive is missing the attribute, or
+if the attribute value is not in the valid set. If you’d like to just ensure the
+attribute is set, set the list of valid values to None, as in the ‘name’
+attribute in the example above.</p>
+<dl class="class">
+<dt id="beancount.plugins.commodity_attr.CommodityError">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.plugins.commodity_attr.</code><code class="sig-name descname">CommodityError</code><span class="sig-paren">(</span><em class="sig-param">source</em>, <em class="sig-param">message</em>, <em class="sig-param">entry</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.commodity_attr.CommodityError" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="beancount.plugins.commodity_attr.ConfigError">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.plugins.commodity_attr.</code><code class="sig-name descname">ConfigError</code><span class="sig-paren">(</span><em class="sig-param">source</em>, <em class="sig-param">message</em>, <em class="sig-param">entry</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.commodity_attr.ConfigError" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="beancount.plugins.commodity_attr.validate_commodity_attr">
+<code class="sig-prename descclassname">beancount.plugins.commodity_attr.</code><code class="sig-name descname">validate_commodity_attr</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">unused_options_map</em>, <em class="sig-param">config_str</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.commodity_attr.validate_commodity_attr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that all Commodity directives have a valid attribute.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives.</p></li>
+<li><p><strong>unused_options_map</strong> – An options map.</p></li>
+<li><p><strong>config_str</strong> – A configuration string.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of new errors, if any were found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.plugins.currency_accounts">
+<span id="beancount-plugins-currency-accounts"></span><h2>beancount.plugins.currency_accounts<a class="headerlink" href="#module-beancount.plugins.currency_accounts" title="Permalink to this headline">¶</a></h2>
+<p>An implementation of currency accounts.</p>
+<p>This is an automatic implementation of the method described here:
+<a class="reference external" href="https://www.mathstat.dal.ca/~selinger/accounting/tutorial.html">https://www.mathstat.dal.ca/~selinger/accounting/tutorial.html</a></p>
+<p>You enable it just like this:</p>
+<blockquote>
+<div><p>plugin “beancount.plugins.currency_accounts” “Equity:CurrencyAcccounts”</p>
+</div></blockquote>
+<p>Accounts will be automatically created under the given base account, with the
+currency name appended to it, e.g.,</p>
+<blockquote>
+<div><p>Equity:CurrencyAcccounts:CAD
+Equity:CurrencyAcccounts:USD</p>
+</div></blockquote>
+<p>etc., where used. You can have a look at the account balances with a query like
+this:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>bean-query $L “select account, sum(position), convert(sum(position), ‘USD’)</dt><dd><p>where date &gt;= 2018-01-01 and  account ~ ‘CurrencyAccounts’ “</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>The sum total of the converted amounts should be a number not too large:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>bean-query $L “select convert(sum(position), ‘USD’)</dt><dd><p>where date &gt;= 2018-01-01 and  account ~ ‘CurrencyAccounts’”</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>WARNING: This is a prototype. Note the FIXMEs in the code below, which indicate
+some potential problems.</p>
+<dl class="function">
+<dt id="beancount.plugins.currency_accounts.get_neutralizing_postings">
+<code class="sig-prename descclassname">beancount.plugins.currency_accounts.</code><code class="sig-name descname">get_neutralizing_postings</code><span class="sig-paren">(</span><em class="sig-param">curmap</em>, <em class="sig-param">base_account</em>, <em class="sig-param">new_accounts</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.currency_accounts.get_neutralizing_postings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process an entry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>curmap</strong> – A dict of currency to a list of Postings of this transaction.</p></li>
+<li><p><strong>base_account</strong> – A string, the root account name to insert.</p></li>
+<li><p><strong>new_accounts</strong> – A set, a mutable accumulator of new account names.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A modified entry, with new postings inserted to rebalance currency trading
+accounts.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.plugins.currency_accounts.group_postings_by_weight_currency">
+<code class="sig-prename descclassname">beancount.plugins.currency_accounts.</code><code class="sig-name descname">group_postings_by_weight_currency</code><span class="sig-paren">(</span><em class="sig-param">entry</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.currency_accounts.group_postings_by_weight_currency" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return where this entry might require adjustment.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.plugins.currency_accounts.insert_currency_trading_postings">
+<code class="sig-prename descclassname">beancount.plugins.currency_accounts.</code><code class="sig-name descname">insert_currency_trading_postings</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">options_map</em>, <em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.currency_accounts.insert_currency_trading_postings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert currency trading postings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives.</p></li>
+<li><p><strong>unused_options_map</strong> – An options map.</p></li>
+<li><p><strong>config</strong> – The base account name for currency trading accounts.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of new errors, if any were found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.plugins.divert_expenses">
+<span id="beancount-plugins-divert-expenses"></span><h2>beancount.plugins.divert_expenses<a class="headerlink" href="#module-beancount.plugins.divert_expenses" title="Permalink to this headline">¶</a></h2>
+<p>For tagged transactions, convert expenses to a single account.</p>
+<p>This plugin allows you to select a tag and it automatically converts all the
+Expenses postings to use a single account. For example, with this input:</p>
+<blockquote>
+<div><p>plugin “divert_expenses” “[‘kid’, ‘Expenses:Child’]”</p>
+<dl class="simple">
+<dt>2018-01-28 * “CVS” “Formula” #kid</dt><dd><p>Liabilities:CreditCard      -10.27 USD
+Expenses:Food:Grocery        10.27 USD</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>It will output:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>2018-01-28 * “CVS” “Formula” #kid</dt><dd><p>Liabilities:CreditCard      -10.27 USD
+Expenses:Child               10.27 USD</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>You can limit the diversion to one posting only, like this:</p>
+<blockquote>
+<div><dl>
+<dt>2018-05-05 * “CVS/PHARMACY” “” #kai</dt><dd><p>Liabilities:CreditCard        -66.38 USD
+Expenses:Pharmacy              21.00 USD  ;; Vitamins for Kai
+Expenses:Pharmacy              45.38 USD</p>
+<blockquote>
+<div><p>divert: FALSE</p>
+</div></blockquote>
+</dd>
+</dl>
+</div></blockquote>
+<p>See unit test for details.</p>
+<p>See this thread for context:
+<a class="reference external" href="https://docs.google.com/drawings/d/18fTrrGlmz0jFbfcGGHTffbdRwbmST8r9_3O26Dd1Xww/edit?usp=sharing">https://docs.google.com/drawings/d/18fTrrGlmz0jFbfcGGHTffbdRwbmST8r9_3O26Dd1Xww/edit?usp=sharing</a></p>
+<dl class="function">
+<dt id="beancount.plugins.divert_expenses.divert_expenses">
+<code class="sig-prename descclassname">beancount.plugins.divert_expenses.</code><code class="sig-name descname">divert_expenses</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">options_map</em>, <em class="sig-param">config_str</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.divert_expenses.divert_expenses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Divert expenses.</p>
+<p>Explicit price entries are simply maintained in the output list. Prices from
+postings with costs or with prices from Transaction entries are synthesized
+as new Price entries in the list of entries output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives. We’re interested only in the Transaction instances.</p></li>
+<li><p><strong>options_map</strong> – A parser options dict.</p></li>
+<li><p><strong>config_str</strong> – A configuration string, which is intended to be a list of two strings,
+a tag, and an account to replace expenses with.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A modified list of entries.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.plugins.divert_expenses.replace_expenses_accounts">
+<code class="sig-prename descclassname">beancount.plugins.divert_expenses.</code><code class="sig-name descname">replace_expenses_accounts</code><span class="sig-paren">(</span><em class="sig-param">entry</em>, <em class="sig-param">replacement_account</em>, <em class="sig-param">acctypes</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.divert_expenses.replace_expenses_accounts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace the Expenses accounts from the entry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entry</strong> – A Transaction directive.</p></li>
+<li><p><strong>replacement_account</strong> – A string, the account to use for replacement.</p></li>
+<li><p><strong>acctypes</strong> – An AccountTypes instance.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A possibly entry directive.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.plugins.exclude_tag">
+<span id="beancount-plugins-exclude-tag"></span><h2>beancount.plugins.exclude_tag<a class="headerlink" href="#module-beancount.plugins.exclude_tag" title="Permalink to this headline">¶</a></h2>
+<p>Exclude #virtual tags.</p>
+<p>This is used to demonstrate excluding a set of transactions from a particular
+tag. In this example module, the tag name is fixed, but if we integrated this we
+could provide a way to choose which tags to exclude. This is simply just another
+mechanism for selecting a subset of transactions.</p>
+<p>See discussion here for details:
+<a class="reference external" href="https://groups.google.com/d/msg/ledger-cli/N8Slh2t45K0/aAz0i3Be4LYJ">https://groups.google.com/d/msg/ledger-cli/N8Slh2t45K0/aAz0i3Be4LYJ</a></p>
+<dl class="function">
+<dt id="beancount.plugins.exclude_tag.exclude_tag">
+<code class="sig-prename descclassname">beancount.plugins.exclude_tag.</code><code class="sig-name descname">exclude_tag</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">options_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.exclude_tag.exclude_tag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select all transactions that do not have a #virtual tag.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of entry instances.</p></li>
+<li><p><strong>options_map</strong> – A dict of options parsed from the file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tuple of entries and errors.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.plugins.fill_account">
+<span id="beancount-plugins-fill-account"></span><h2>beancount.plugins.fill_account<a class="headerlink" href="#module-beancount.plugins.fill_account" title="Permalink to this headline">¶</a></h2>
+<p>Insert an posting with a default account when there is only a single posting.</p>
+<p>This is convenient to use in files which have mostly expenses, such as during a trip.
+Set the name of the default account to fill in as an option.</p>
+<dl class="class">
+<dt id="beancount.plugins.fill_account.FillAccountError">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.plugins.fill_account.</code><code class="sig-name descname">FillAccountError</code><span class="sig-paren">(</span><em class="sig-param">source</em>, <em class="sig-param">message</em>, <em class="sig-param">entry</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.fill_account.FillAccountError" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="beancount.plugins.fill_account.fill_account">
+<code class="sig-prename descclassname">beancount.plugins.fill_account.</code><code class="sig-name descname">fill_account</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">unused_options_map</em>, <em class="sig-param">insert_account</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.fill_account.fill_account" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert an posting with a default account when there is only a single posting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives.</p></li>
+<li><p><strong>unused_options_map</strong> – A parser options dict.</p></li>
+<li><p><strong>insert_account</strong> – A string, the name of the account.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of entries, possibly with more Price entries than before, and a
+list of errors.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.plugins.fix_payees">
+<span id="beancount-plugins-fix-payees"></span><h2>beancount.plugins.fix_payees<a class="headerlink" href="#module-beancount.plugins.fix_payees" title="Permalink to this headline">¶</a></h2>
+<p>Rename payees based on a set of rules.</p>
+<p>This can be used to clean up dirty imported payee names.</p>
+<p>This plugin accepts a list of rules in this format:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>plugin “beancount.plugins.fix_payees” “[</dt><dd><p>(PAYEE, MATCH1, MATCH2, …),</p>
+</dd>
+</dl>
+<p>]”</p>
+</div></blockquote>
+<p>Each of the “MATCH” clauses is a string, in the format:</p>
+<blockquote>
+<div><p>“A:&lt;regexp&gt;” : Match the account name.
+“D:&lt;regexp&gt;” : Match the payee or the narration.</p>
+</div></blockquote>
+<p>The plugin matches the Transactions in the file and if there is a
+case-insensitive match against the regular expression (we use re.search()),
+replaces the payee name by “PAYEE”. If multiple rules match, only the first rule
+is used.</p>
+<p>For example:</p>
+<blockquote>
+<div><p>plugin “beancount.plugins.fix_payees” “[</p>
+<blockquote>
+<div><dl class="simple">
+<dt>(“T-Mobile USA”,</dt><dd><p>“A:Expenses:Communications:Phone”,
+“D:t-mobile”),</p>
+</dd>
+<dt>(“Con Edison”,</dt><dd><p>“A:Expenses:Home:Electricity”,
+“D:con ?ed”),</p>
+</dd>
+<dt>(“Birreria &#64; Eataly”,</dt><dd><p>“D:EATALY BIRRERIA”),</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>]”</p>
+</div></blockquote>
+<dl class="class">
+<dt id="beancount.plugins.fix_payees.FixPayeesError">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.plugins.fix_payees.</code><code class="sig-name descname">FixPayeesError</code><span class="sig-paren">(</span><em class="sig-param">source</em>, <em class="sig-param">message</em>, <em class="sig-param">entry</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.fix_payees.FixPayeesError" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="beancount.plugins.fix_payees.fix_payees">
+<code class="sig-prename descclassname">beancount.plugins.fix_payees.</code><code class="sig-name descname">fix_payees</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">options_map</em>, <em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.fix_payees.fix_payees" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rename payees based on a set of rules. See module docstring for details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – a list of entry instances</p></li>
+<li><p><strong>options_map</strong> – a dict of options parsed from the file</p></li>
+<li><p><strong>config</strong> – A configuration string, which is intended to be a list of
+(PAYEE, MATCH, …) rules. See module docstring for details.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tuple of entries and errors.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.plugins.forecast">
+<span id="beancount-plugins-forecast"></span><h2>beancount.plugins.forecast<a class="headerlink" href="#module-beancount.plugins.forecast" title="Permalink to this headline">¶</a></h2>
+<p>An example of adding a forecasting feature to Beancount via a plugin.</p>
+<p>This entry filter plugin uses existing syntax to define and automatically
+inserted transactions in the future based on a convention. It serves mostly as
+an example of how you can experiment by creating and installing a local filter,
+and not so much as a serious forecasting feature (though the experiment is a
+good way to get something more general kickstarted eventually, I think the
+concept would generalize nicely and should eventually be added as a common
+feature of Beancount).</p>
+<p>A user can create a transaction like this:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>2014-03-08 # “Electricity bill [MONTHLY]”</dt><dd><p>Expenses:Electricity                        50.10 USD
+Assets:Checking                            -50.10 USD</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>and new transactions will be created monthly for the following year.
+Note the use of the ‘#’ flag and the word ‘MONTHLY’ which defines the
+periodicity.</p>
+<p>The number of recurrences can optionally be specified either by providing an
+end date or by specifying the number of times that the transaction will be
+repeated. For example:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>2014-03-08 # “Electricity bill [MONTHLY UNTIL 2019-12-31]”</dt><dd><p>Expenses:Electricity                        50.10 USD
+Assets:Checking                            -50.10 USD</p>
+</dd>
+<dt>2014-03-08 # “Electricity bill [MONTHLY REPEAT 10 TIMES]”</dt><dd><p>Expenses:Electricity                        50.10 USD
+Assets:Checking                            -50.10 USD</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>Transactions can also be repeated at yearly intervals, e.g.:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>2014-03-08 # “Electricity bill [YEARLY REPEAT 10 TIMES]”</dt><dd><p>Expenses:Electricity                        50.10 USD
+Assets:Checking                            -50.10 USD</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>Other examples:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>2014-03-08 # “Electricity bill [WEEKLY SKIP 1 TIME REPEAT 10 TIMES]”</dt><dd><p>Expenses:Electricity                        50.10 USD
+Assets:Checking                            -50.10 USD</p>
+</dd>
+<dt>2014-03-08 # “Electricity bill [DAILY SKIP 3 TIMES REPEAT 1 TIME]”</dt><dd><p>Expenses:Electricity                        50.10 USD
+Assets:Checking                            -50.10 USD</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="function">
+<dt id="beancount.plugins.forecast.forecast_plugin">
+<code class="sig-prename descclassname">beancount.plugins.forecast.</code><code class="sig-name descname">forecast_plugin</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">options_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.forecast.forecast_plugin" title="Permalink to this definition">¶</a></dt>
+<dd><p>An example filter that piggybacks on top of the Beancount input syntax to
+insert forecast entries automatically. This functions accepts the return
+value of beancount.loader.load_file() and must return the same type of output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – a list of entry instances</p></li>
+<li><p><strong>options_map</strong> – a dict of options parsed from the file</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tuple of entries and errors.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.plugins.implicit_prices">
+<span id="beancount-plugins-implicit-prices"></span><h2>beancount.plugins.implicit_prices<a class="headerlink" href="#module-beancount.plugins.implicit_prices" title="Permalink to this headline">¶</a></h2>
+<p>This plugin synthesizes Price directives for all Postings with a price or
+directive or if it is an augmenting posting, has a cost directive.</p>
+<dl class="class">
+<dt id="beancount.plugins.implicit_prices.ImplicitPriceError">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.plugins.implicit_prices.</code><code class="sig-name descname">ImplicitPriceError</code><span class="sig-paren">(</span><em class="sig-param">source</em>, <em class="sig-param">message</em>, <em class="sig-param">entry</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.implicit_prices.ImplicitPriceError" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="beancount.plugins.implicit_prices.add_implicit_prices">
+<code class="sig-prename descclassname">beancount.plugins.implicit_prices.</code><code class="sig-name descname">add_implicit_prices</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">unused_options_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.implicit_prices.add_implicit_prices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert implicitly defined prices from Transactions.</p>
+<p>Explicit price entries are simply maintained in the output list. Prices from
+postings with costs or with prices from Transaction entries are synthesized
+as new Price entries in the list of entries output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives. We’re interested only in the Transaction instances.</p></li>
+<li><p><strong>unused_options_map</strong> – A parser options dict.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of entries, possibly with more Price entries than before, and a
+list of errors.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.plugins.ira_contribs">
+<span id="beancount-plugins-ira-contribs"></span><h2>beancount.plugins.ira_contribs<a class="headerlink" href="#module-beancount.plugins.ira_contribs" title="Permalink to this headline">¶</a></h2>
+<p>Automatically adding IRA contributions postings.</p>
+<p>This plugin looks for increasing postings on specified accounts (‘+’ sign for
+Assets and Expenses accounts, ‘-‘ sign for the others), or postings with a
+particular flag on them and when it finds some, inserts a pair of postings on
+that transaction of the corresponding amounts in a different currency. The
+currency is intended to be an imaginary currency used to track the number of
+dollars contributed to a retirement account over time.</p>
+<p>For example, a possible configuration could be:</p>
+<blockquote>
+<div><dl>
+<dt>plugin “beancount.plugins.ira_contribs” “{</dt><dd><p>‘currency’: ‘IRAUSD’,
+‘flag’: ‘M’,
+‘accounts’: {</p>
+<blockquote>
+<div><blockquote>
+<div><dl class="simple">
+<dt>‘Income:US:Acme:Match401k’: (</dt><dd><p>‘Assets:US:Federal:Match401k’,
+‘Expenses:Taxes:TY{year}:US:Federal:Match401k’),</p>
+</dd>
+<dt>(‘C’, ‘Assets:US:Fidelity:PreTax401k:Cash’): (</dt><dd><p>‘Assets:US:Federal:PreTax401k’,
+‘Expenses:Taxes:TY{year}:US:Federal:PreTax401k’),</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+</dd>
+</dl>
+<p>}”</p>
+</div></blockquote>
+<p>Note: In this example, the configuration that triggers on the
+“Income:US:Acme:Match401k” account does not require a flag for those accounts;
+the configuration for the “Assets:US:Fidelity:PreTax401k:Cash” account requires
+postings to have a “C” flag to trigger an insertion.</p>
+<p>Given a transaction like the following, which would be typical for a salary
+entry where the employer is automatically diverting some of the pre-tax money to
+a retirement account (in this example, at Fidelity):</p>
+<blockquote>
+<div><dl class="simple">
+<dt>2013-02-15 * “ACME INC       PAYROLL”</dt><dd><p>Income:US:Acme:Salary                   …
+…
+Assets:US:BofA:Checking                 …
+Assets:US:Fidelity:PreTax401k:Cash      620.50 USD
+…</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>A posting with account ‘Assets:US:Fidelity:PreTax401k:Cash’, which is configured
+to match, would be found. The configuration above instructs the plugin to
+automatically insert new postings like this:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>2013-02-15 * “ACME INC       PAYROLL”</dt><dd><p>…
+Assets:US:Fidelity:PreTax401k:Cash              620.50 USD
+M Assets:US:Federal:PreTax401k                 -620.50 IRAUSD
+M Expenses:Taxes:TY2013:US:Federal:PreTax401k   620.50 IRAUSD
+…</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>Notice that the “{year}” string in the configuration’s account names is
+automatically replaced by the current year in the account name. This is useful
+if you maintain separate tax accounts per yera.</p>
+<p>Furthermore, as in the configuration example above, you may have multiple
+matching entries to trigger multiple insertions. For example, the employer may
+also match the employee’s retirement contribution by depositing some money in
+the retirement account:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>2013-02-15 * “BUYMF - MATCH” “Employer match, invested in SaveEasy 2030 fund”</dt><dd><p>Assets:US:Fidelity:Match401k:SE2030   34.793 SE2030 {17.834 USD}
+Income:US:Acme:Match401k             -620.50 USD</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>In this example the funds get reported as invested immediately (an intermediate
+deposit into a cash account does not take place). The plugin configuration would
+match against the ‘Income:US:Acme:Match401k’ account and since it increases its
+value (the normal balance of an Income account is negative), postings would be
+inserted like this:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>2013-02-15 * “BUYMF - MATCH” “Employer match, invested in SaveEasy 2030 fund”</dt><dd><p>Assets:US:Fidelity:Match401k:SE2030              34.793 SE2030 {17.834 USD}
+Income:US:Acme:Match401k                        -620.50 USD
+M Assets:US:Federal:Match401k                   -620.50 IRAUSD
+M Expenses:Taxes:TY2013:US:Federal:Match401k     620.50 IRAUSD</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>Note that the special dict keys ‘currency’ and ‘flag’ are used to
+specify which currency to use for the inserted postings, and if set, which flag
+to mark these postings with.</p>
+<dl class="function">
+<dt id="beancount.plugins.ira_contribs.add_ira_contribs">
+<code class="sig-prename descclassname">beancount.plugins.ira_contribs.</code><code class="sig-name descname">add_ira_contribs</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">options_map</em>, <em class="sig-param">config_str</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.ira_contribs.add_ira_contribs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add legs for 401k employer match contributions.</p>
+<p>See module docstring for an example configuration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – a list of entry instances</p></li>
+<li><p><strong>options_map</strong> – a dict of options parsed from the file</p></li>
+<li><p><strong>config_str</strong> – A configuration string, which is intended to be a Python dict
+mapping match-accounts to a pair of (negative-account, position-account)
+account names.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tuple of entries and errors.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.plugins.ira_contribs.add_postings">
+<code class="sig-prename descclassname">beancount.plugins.ira_contribs.</code><code class="sig-name descname">add_postings</code><span class="sig-paren">(</span><em class="sig-param">entry</em>, <em class="sig-param">amount_</em>, <em class="sig-param">neg_account</em>, <em class="sig-param">pos_account</em>, <em class="sig-param">flag</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.ira_contribs.add_postings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert positive and negative postings of a position in an entry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entry</strong> – A Transaction instance.</p></li>
+<li><p><strong>amount_</strong> – An Amount instance to create the position, with positive number.</p></li>
+<li><p><strong>neg_account</strong> – An account for the posting with the negative amount.</p></li>
+<li><p><strong>pos_account</strong> – An account for the posting with the positive amount.</p></li>
+<li><p><strong>flag</strong> – A string, that is to be set as flag for the new postings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A new, modified entry.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.plugins.leafonly">
+<span id="beancount-plugins-leafonly"></span><h2>beancount.plugins.leafonly<a class="headerlink" href="#module-beancount.plugins.leafonly" title="Permalink to this headline">¶</a></h2>
+<p>A plugin that issues errors when amounts are posted to non-leaf accounts,
+that is, accounts with child accounts.</p>
+<p>This is an extra constraint that you may want to apply optionally. If you
+install this plugin, it will issue errors for all accounts that have
+postings to non-leaf accounts. Some users may want to disallow this and
+enforce that only leaf accounts may have postings on them.</p>
+<dl class="class">
+<dt id="beancount.plugins.leafonly.LeafOnlyError">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.plugins.leafonly.</code><code class="sig-name descname">LeafOnlyError</code><span class="sig-paren">(</span><em class="sig-param">source</em>, <em class="sig-param">message</em>, <em class="sig-param">entry</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.leafonly.LeafOnlyError" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="beancount.plugins.leafonly.validate_leaf_only">
+<code class="sig-prename descclassname">beancount.plugins.leafonly.</code><code class="sig-name descname">validate_leaf_only</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">unused_options_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.leafonly.validate_leaf_only" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check for non-leaf accounts that have postings on them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives.</p></li>
+<li><p><strong>unused_options_map</strong> – An options map.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of new errors, if any were found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.plugins.mark_unverified">
+<span id="beancount-plugins-mark-unverified"></span><h2>beancount.plugins.mark_unverified<a class="headerlink" href="#module-beancount.plugins.mark_unverified" title="Permalink to this headline">¶</a></h2>
+<p>Add metadata to Postings which occur after their last Balance directives.</p>
+<p>Some people use Balance directives as a way to indicate that all postings before
+them are verified. They want to compute balances in each account as of the date
+of that last Balance directives. One way to do that is to use this plugin to
+mark the postings which occur after and to then filter them out using a WHERE
+clause on that metadata:</p>
+<blockquote>
+<div><p>SELECT account, sum(position) WHERE NOT meta(“unverified”)</p>
+</div></blockquote>
+<p>Note that doing such a filtering may result in a list of balances which may not
+add to zero.</p>
+<p>Also, postings for accounts without a single Balance directive on them will not
+be marked as unverified as all (otherwise all the postings would be marked, this
+would make no sense).</p>
+<dl class="function">
+<dt id="beancount.plugins.mark_unverified.mark_unverified">
+<code class="sig-prename descclassname">beancount.plugins.mark_unverified.</code><code class="sig-name descname">mark_unverified</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">options_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.mark_unverified.mark_unverified" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add metadata to postings after the last Balance entry. See module doc.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of data directives.</p></li>
+<li><p><strong>options_map</strong> – A dict of options, that confirms to beancount.parser.options.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of entries, which includes the new unrealized capital gains entries
+at the end, and a list of errors. The new list of entries is still sorted.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.plugins.merge_meta">
+<span id="beancount-plugins-merge-meta"></span><h2>beancount.plugins.merge_meta<a class="headerlink" href="#module-beancount.plugins.merge_meta" title="Permalink to this headline">¶</a></h2>
+<p>Merge the metadata from a second file into the current set of entries.</p>
+<p>This is useful if you like to keep more sensitive private data, such as account
+numbers or passwords, in a second, possibly encrypted file. This can be used to
+generate a will, for instance, for your loved ones to be able to figure where
+all your assets are in case you pass away. You can store all the super secret
+stuff in a more closely guarded, hidden away separate file.</p>
+<p>The metadata from</p>
+<ul class="simple">
+<li><p>Open directives: Account name must match.</p></li>
+<li><p>Close directives: Account name must match.</p></li>
+<li><p>Commodity directives: Currency must match.</p></li>
+</ul>
+<p>are copied over. Metadata from the external file conflicting with that present
+in the main file overwrites it (external data wins).</p>
+<blockquote>
+<div><p>WARNING! If you include an encrypted file and the main file is not encrypted,
+the contents extraction from the encrypted file may appear in the cache.</p>
+</div></blockquote>
+<dl class="function">
+<dt id="beancount.plugins.merge_meta.merge_meta">
+<code class="sig-prename descclassname">beancount.plugins.merge_meta.</code><code class="sig-name descname">merge_meta</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">options_map</em>, <em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.merge_meta.merge_meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a secondary file and merge its metadata in our given set of entries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives. We’re interested only in the Transaction instances.</p></li>
+<li><p><strong>unused_options_map</strong> – A parser options dict.</p></li>
+<li><p><strong>config</strong> – The plugin configuration string.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of entries, with more metadata attached to them.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.plugins.noduplicates">
+<span id="beancount-plugins-noduplicates"></span><h2>beancount.plugins.noduplicates<a class="headerlink" href="#module-beancount.plugins.noduplicates" title="Permalink to this headline">¶</a></h2>
+<p>This plugin validates that there are no duplicate transactions.</p>
+<dl class="function">
+<dt id="beancount.plugins.noduplicates.validate_no_duplicates">
+<code class="sig-prename descclassname">beancount.plugins.noduplicates.</code><code class="sig-name descname">validate_no_duplicates</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">unused_options_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.noduplicates.validate_no_duplicates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that the entries are unique, by computing hashes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives.</p></li>
+<li><p><strong>unused_options_map</strong> – An options map.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of new errors, if any were found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.plugins.nounused">
+<span id="beancount-plugins-nounused"></span><h2>beancount.plugins.nounused<a class="headerlink" href="#module-beancount.plugins.nounused" title="Permalink to this headline">¶</a></h2>
+<p>This plugin validates that there are no unused accounts.</p>
+<dl class="class">
+<dt id="beancount.plugins.nounused.UnusedAccountError">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.plugins.nounused.</code><code class="sig-name descname">UnusedAccountError</code><span class="sig-paren">(</span><em class="sig-param">source</em>, <em class="sig-param">message</em>, <em class="sig-param">entry</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.nounused.UnusedAccountError" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="beancount.plugins.nounused.validate_unused_accounts">
+<code class="sig-prename descclassname">beancount.plugins.nounused.</code><code class="sig-name descname">validate_unused_accounts</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">unused_options_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.nounused.validate_unused_accounts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that all accounts declared open are actually used.</p>
+<p>We check that all of the accounts that are open are at least referred to by
+another directive. These are probably unused, so issue a warning (we like to
+be pedantic). Note that an account that is open and then closed is
+considered used–this is a valid use case that may occur in reality. If you
+have a use case for an account to be open but never used, you can quiet that
+warning by initializing the account with a balance asserts or a pad
+directive, or even use a note will be sufficient.</p>
+<p>(This is probably a good candidate for optional inclusion as a “pedantic”
+plugin.)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives.</p></li>
+<li><p><strong>unused_options_map</strong> – An options map.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of new errors, if any were found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.plugins.onecommodity">
+<span id="beancount-plugins-onecommodity"></span><h2>beancount.plugins.onecommodity<a class="headerlink" href="#module-beancount.plugins.onecommodity" title="Permalink to this headline">¶</a></h2>
+<p>A plugin that issues errors when more than one commodity is used in an account.</p>
+<dl class="class">
+<dt id="beancount.plugins.onecommodity.OneCommodityError">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.plugins.onecommodity.</code><code class="sig-name descname">OneCommodityError</code><span class="sig-paren">(</span><em class="sig-param">source</em>, <em class="sig-param">message</em>, <em class="sig-param">entry</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.onecommodity.OneCommodityError" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="beancount.plugins.onecommodity.validate_one_commodity">
+<code class="sig-prename descclassname">beancount.plugins.onecommodity.</code><code class="sig-name descname">validate_one_commodity</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">unused_options_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.onecommodity.validate_one_commodity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that each account has units in only a single commodity.</p>
+<p>This is an extra constraint that you may want to apply optionally, despite
+Beancount’s ability to support inventories and aggregations with more than
+one commodity. I believe this also matches GnuCash’s model, where each
+account has a single commodity attached to it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives.</p></li>
+<li><p><strong>unused_options_map</strong> – An options map.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of new errors, if any were found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.plugins.pedantic">
+<span id="beancount-plugins-pedantic"></span><h2>beancount.plugins.pedantic<a class="headerlink" href="#module-beancount.plugins.pedantic" title="Permalink to this headline">¶</a></h2>
+<p>A plugin of plugins which triggers are all the pedantic plugins.</p>
+<p>In a sense, this is the inverse of “pedantic.” This is useful when doing some
+types of quick and dirty tests.</p>
+</div>
+<div class="section" id="module-beancount.plugins.sellgains">
+<span id="beancount-plugins-sellgains"></span><h2>beancount.plugins.sellgains<a class="headerlink" href="#module-beancount.plugins.sellgains" title="Permalink to this headline">¶</a></h2>
+<p>A plugin that cross-checks declared gains against prices on lot sales.</p>
+<p>When you sell stock, the gains can be automatically implied by the corresponding
+cash amounts. For example, in the following transaction the 2nd and 3rd postings
+should match the value of the stock sold:</p>
+<dl class="simple">
+<dt>1999-07-31 * “Sell”</dt><dd><p>Assets:US:BRS:Company:ESPP          -81 ADSK {26.3125 USD}
+Assets:US:BRS:Company:Cash      2141.36 USD
+Expenses:Financial:Fees            0.08 USD
+Income:US:Company:ESPP:PnL      -10.125 USD</p>
+</dd>
+</dl>
+<p>The cost basis is checked against: 2141.36 + 008 + -10.125. That is, the balance
+checks computes</p>
+<blockquote>
+<div><dl>
+<dt>-81 x 26.3125  = -2131.3125  +</dt><dd><dl>
+<dt>2141.36    +</dt><dd><blockquote>
+<div><p>0.08    +</p>
+</div></blockquote>
+<p>-10.125</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</div></blockquote>
+<p>and checks that the residual is below a small tolernace.</p>
+<p>But… usually the income leg isn’t given to you in statements. Beancount can
+automatically infer it using the balance, which is convenient, like this:</p>
+<dl class="simple">
+<dt>1999-07-31 * “Sell”</dt><dd><p>Assets:US:BRS:Company:ESPP          -81 ADSK {26.3125 USD}
+Assets:US:BRS:Company:Cash      2141.36 USD
+Expenses:Financial:Fees            0.08 USD
+Income:US:Company:ESPP:PnL</p>
+</dd>
+</dl>
+<p>Additionally, most often you have the sales prices given to you on your
+transaction confirmation statement, so you can enter this:</p>
+<dl class="simple">
+<dt>1999-07-31 * “Sell”</dt><dd><p>Assets:US:BRS:Company:ESPP          -81 ADSK {26.3125 USD} &#64; 26.4375 USD
+Assets:US:BRS:Company:Cash      2141.36 USD
+Expenses:Financial:Fees            0.08 USD
+Income:US:Company:ESPP:PnL</p>
+</dd>
+</dl>
+<p>So in theory, if the price is given (26.4375 USD), we could verify that the
+proceeds from the sale at the given price match non-Income postings. That is,
+verify that</p>
+<blockquote>
+<div><dl class="simple">
+<dt>-81 x 26.4375  = -2141.4375  +</dt><dd><dl class="simple">
+<dt>2141.36    +</dt><dd><p>0.08    +</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</div></blockquote>
+<p>is below a small tolerance value. So this plugin does this.</p>
+<p>In general terms, it does the following: For transactions with postings that
+have a cost and a price, it verifies that the sum of the positions on all
+postings to non-income accounts is below tolerance.</p>
+<p>This provides yet another level of verification and allows you to elide the
+income amounts, knowing that the price is there to provide an extra level of
+error-checking in case you enter a typo.</p>
+<dl class="class">
+<dt id="beancount.plugins.sellgains.SellGainsError">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.plugins.sellgains.</code><code class="sig-name descname">SellGainsError</code><span class="sig-paren">(</span><em class="sig-param">source</em>, <em class="sig-param">message</em>, <em class="sig-param">entry</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.sellgains.SellGainsError" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="beancount.plugins.sellgains.validate_sell_gains">
+<code class="sig-prename descclassname">beancount.plugins.sellgains.</code><code class="sig-name descname">validate_sell_gains</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">options_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.sellgains.validate_sell_gains" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the sum of asset account totals for lots sold with a price on them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives.</p></li>
+<li><p><strong>unused_options_map</strong> – An options map.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of new errors, if any were found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.plugins.split_expenses">
+<span id="beancount-plugins-split-expenses"></span><h2>beancount.plugins.split_expenses<a class="headerlink" href="#module-beancount.plugins.split_expenses" title="Permalink to this headline">¶</a></h2>
+<p>Split expenses of a Beancount ledger between multiple people.</p>
+<p>This plugin is given a list of names. It assumes that any Expenses account whose
+components do not include any of the given names are to be split between the
+members. It goes through all the transactions and converts all such postings
+into multiple postings, one for each member.</p>
+<p>For example, given the names ‘Martin’ and ‘Caroline’, the following transaction:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>2015-02-01 * “Aqua Viva Tulum - two nights”</dt><dd><p>Income:Caroline:CreditCard      -269.00 USD
+Expenses:Accommodation</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>Will be converted to this:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>2015-02-01 * “Aqua Viva Tulum - two nights”</dt><dd><p>Income:Caroline:CreditCard       -269.00 USD
+Expenses:Accommodation:Martin     134.50 USD
+Expenses:Accommodation:Caroline   134.50 USD</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>After these transformations, all account names should include the name of a
+member. You can generate reports for a particular person by filtering postings
+to accounts with a component by their name.</p>
+<dl class="function">
+<dt id="beancount.plugins.split_expenses.get_participants">
+<code class="sig-prename descclassname">beancount.plugins.split_expenses.</code><code class="sig-name descname">get_participants</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">options_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.split_expenses.get_participants" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the list of participants from the plugin configuration in the input file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>options_map</strong> – The options map, as produced by the parser.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of strings, the names of participants as they should appear in the
+account names.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>KeyError</strong> – If the configuration does not contain configuration for the list</p></li>
+<li><p><strong>of participants.</strong> – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.plugins.split_expenses.main">
+<code class="sig-prename descclassname">beancount.plugins.split_expenses.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.split_expenses.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate final reports for a shared expenses on a trip or project.</p>
+<p>For each of many participants, generate a detailed list of expenses,
+contributions, a categorized summary of expenses, and a final balance. Also
+produce a global list of final balances so that participants can reconcile
+between each other.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.plugins.split_expenses.save_query">
+<code class="sig-prename descclassname">beancount.plugins.split_expenses.</code><code class="sig-name descname">save_query</code><span class="sig-paren">(</span><em class="sig-param">title</em>, <em class="sig-param">participant</em>, <em class="sig-param">entries</em>, <em class="sig-param">options_map</em>, <em class="sig-param">sql_query</em>, <em class="sig-param">*format_args</em>, <em class="sig-param">boxed=True</em>, <em class="sig-param">spaced=False</em>, <em class="sig-param">args=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.split_expenses.save_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the multiple files for this query.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>title</strong> – A string, the title of this particular report to render.</p></li>
+<li><p><strong>participant</strong> – A string, the name of the participant under consideration.</p></li>
+<li><p><strong>entries</strong> – A list of directives (as per the loader).</p></li>
+<li><p><strong>options_map</strong> – A dict of options (as per the loader).</p></li>
+<li><p><strong>sql_query</strong> – A string with the SQL query, possibly with some placeholders left for
+<a href="#id1"><span class="problematic" id="id2">*</span></a>format_args to replace.</p></li>
+<li><p><strong>*format_args</strong> – A tuple of arguments to be formatted into the SQL query string.
+This is provided as a convenience.</p></li>
+<li><p><strong>boxed</strong> – A boolean, true if we should render the results in a fancy-looking ASCII box.</p></li>
+<li><p><strong>spaced</strong> – If true, leave an empty line between each of the rows. This is useful if the
+results have a lot of rows that render over multiple lines.</p></li>
+<li><p><strong>args</strong> – <p>A dummy object with the following attributes:
+output_text: An optional directory name, to produce a text rendering of</p>
+<blockquote>
+<div><p>the report.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>output_csv: An optional directory name, to produce a CSV rendering of</dt><dd><p>the report.</p>
+</dd>
+</dl>
+<p>output_stdout: A boolean, if true, also render the output to stdout.
+currency: An optional currency (a string). If you use this, you should</p>
+<blockquote>
+<div><p>wrap query targets to be converted with the pseudo-function
+“CONV[…]” and it will get replaced to CONVERT(…, CURRENCY)
+automatically.</p>
+</div></blockquote>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.plugins.split_expenses.split_expenses">
+<code class="sig-prename descclassname">beancount.plugins.split_expenses.</code><code class="sig-name descname">split_expenses</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">options_map</em>, <em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.split_expenses.split_expenses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Split postings according to expenses (see module docstring for details).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives. We’re interested only in the Transaction instances.</p></li>
+<li><p><strong>unused_options_map</strong> – A parser options dict.</p></li>
+<li><p><strong>config</strong> – The plugin configuration string.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of entries, with potentially more accounts and potentially more
+postings with smaller amounts.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.plugins.tag_pending">
+<span id="beancount-plugins-tag-pending"></span><h2>beancount.plugins.tag_pending<a class="headerlink" href="#module-beancount.plugins.tag_pending" title="Permalink to this headline">¶</a></h2>
+<p>An example of tracking unpaid payables or receivables.</p>
+<p>A user with lots of invoices to track may want to produce a report of pending or
+incomplete payables or receivables. Beancount does not by default offer such a
+dedicated feature, but it is easy to build one by using existing link attributes
+on transactions. This is an example on how to implement that with a plugin.</p>
+<p>For example, assuming the user enters linked transactions like this:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>2013-03-28 * “Bill for datacenter electricity”  ^invoice-27a30ab61191</dt><dd><p>Expenses:Electricity                          450.82 USD
+Liabilities:AccountsPayable</p>
+</dd>
+<dt>2013-04-15 * “Paying electricity company” ^invoice-27a30ab61191</dt><dd><p>Assets:Checking                             -450.82 USD
+Liabilities:AccountsPayable</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>Transactions are grouped by link (“invoice-27a30ab61191”) and then the
+intersection of their common accounts is automatically calculated
+(“Liabilities:AccountsPayable”). We then add up the balance of all the postings
+for this account in this link group and check if the sum is zero. If there is a
+residual amount in this balance, we mark the associated entries as incomplete by
+inserting a #PENDING tag on them. The user can then use that tag to navigate to
+the corresponding view in the web interface, or just find the entries and
+produce a listing of them.</p>
+<dl class="function">
+<dt id="beancount.plugins.tag_pending.tag_pending_plugin">
+<code class="sig-prename descclassname">beancount.plugins.tag_pending.</code><code class="sig-name descname">tag_pending_plugin</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">options_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.tag_pending.tag_pending_plugin" title="Permalink to this definition">¶</a></dt>
+<dd><p>A plugin that finds and tags pending transactions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of entry instances.</p></li>
+<li><p><strong>options_map</strong> – A dict of options parsed from the file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tuple of entries and errors.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.plugins.tag_pending.tag_pending_transactions">
+<code class="sig-prename descclassname">beancount.plugins.tag_pending.</code><code class="sig-name descname">tag_pending_transactions</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">tag_name='PENDING'</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.tag_pending.tag_pending_transactions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filter out incomplete linked transactions to a transfer account.</p>
+<p>Given a list of entries, group the entries by their link and compute the
+balance of the intersection of their common accounts. If the balance does
+not sum to zero, insert a ‘tag_name’ tag in the entries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives/transactions to process.</p></li>
+<li><p><strong>tag_name</strong> – A string, the name of the tag to be inserted if a linked group
+of entries is found not to match</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A modified set of entries, possibly tagged as pending.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.plugins.unique_prices">
+<span id="beancount-plugins-unique-prices"></span><h2>beancount.plugins.unique_prices<a class="headerlink" href="#module-beancount.plugins.unique_prices" title="Permalink to this headline">¶</a></h2>
+<p>This module adds validation that there is a single price defined per
+date and base/quote currencies. If multiple conflicting price values are
+declared, an error is generated. Note that multiple price entries with the
+same number do not generate an error.</p>
+<p>This is meant to be turned on if you want to use a very strict mode for
+entering prices, and may not be realistic usage. For example, if you have
+(1) a transaction with an implicitly generated price during the day (from
+its cost) and (2) a separate explicit price directive that declares a
+different price for the day’s closing price, this would generate an error.
+I’m not certain this will be useful in the long run, so placing it in a
+plugin.</p>
+<dl class="class">
+<dt id="beancount.plugins.unique_prices.UniquePricesError">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.plugins.unique_prices.</code><code class="sig-name descname">UniquePricesError</code><span class="sig-paren">(</span><em class="sig-param">source</em>, <em class="sig-param">message</em>, <em class="sig-param">entry</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.unique_prices.UniquePricesError" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="beancount.plugins.unique_prices.validate_unique_prices">
+<code class="sig-prename descclassname">beancount.plugins.unique_prices.</code><code class="sig-name descname">validate_unique_prices</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">unused_options_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.unique_prices.validate_unique_prices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that there is only a single price per day for a particular base/quote.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives. We’re interested only in the Transaction instances.</p></li>
+<li><p><strong>unused_options_map</strong> – A parser options dict.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The list of input entries, and a list of new UniquePricesError instances generated.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.plugins.unrealized">
+<span id="beancount-plugins-unrealized"></span><h2>beancount.plugins.unrealized<a class="headerlink" href="#module-beancount.plugins.unrealized" title="Permalink to this headline">¶</a></h2>
+<p>Compute unrealized gains.</p>
+<p>The configuration for this plugin is a single string, the name of the subaccount
+to add to post the unrealized gains to, like this:</p>
+<blockquote>
+<div><p>plugin “beancount.plugins.unrealized” “Unrealized”</p>
+</div></blockquote>
+<p>If you don’t specify a name for the subaccount (the configuration value is
+optional), by default it inserts the unrealized gains in the same account that
+is being adjusted.</p>
+<dl class="class">
+<dt id="beancount.plugins.unrealized.UnrealizedError">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.plugins.unrealized.</code><code class="sig-name descname">UnrealizedError</code><span class="sig-paren">(</span><em class="sig-param">source</em>, <em class="sig-param">message</em>, <em class="sig-param">entry</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.unrealized.UnrealizedError" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="beancount.plugins.unrealized.add_unrealized_gains">
+<code class="sig-prename descclassname">beancount.plugins.unrealized.</code><code class="sig-name descname">add_unrealized_gains</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">options_map</em>, <em class="sig-param">subaccount=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.unrealized.add_unrealized_gains" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert entries for unrealized capital gains.</p>
+<p>This function inserts entries that represent unrealized gains, at the end of
+the available history. It returns a new list of entries, with the new gains
+inserted. It replaces the account type with an entry in an income account.
+Optionally, it can book the gain in a subaccount of the original and income
+accounts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of data directives.</p></li>
+<li><p><strong>options_map</strong> – A dict of options, that confirms to beancount.parser.options.</p></li>
+<li><p><strong>subaccount</strong> – A string, and optional the name of a subaccount to create
+under an account to book the unrealized gain. If this is left to its
+default value, the gain is booked directly in the same account.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of entries, which includes the new unrealized capital gains entries
+at the end, and a list of errors. The new list of entries is still sorted.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.plugins.unrealized.get_unrealized_entries">
+<code class="sig-prename descclassname">beancount.plugins.unrealized.</code><code class="sig-name descname">get_unrealized_entries</code><span class="sig-paren">(</span><em class="sig-param">entries</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.plugins.unrealized.get_unrealized_entries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return entries automatically created for unrealized gains.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>entries</strong> – A list of directives.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of directives, all of which are in the original list.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo.png" alt="Logo"/>
+    
+    <h1 class="logo logo-name">Fava</h1>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Web interface for <a href="http://furius.ca/beancount/">Beancount</a></p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development.html">Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="fava.html">fava</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.core.html">fava.core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.ext.html">fava.ext</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.ext.portfolio_list.html">fava.ext.portfolio_list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.help.html">fava.help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.util.html">fava.util</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.html">beancount</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.core.html">beancount.core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ingest.html">beancount.ingest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ingest.importers.html">beancount.ingest.importers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ingest.importers.mixins.html">beancount.ingest.importers.mixins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ops.html">beancount.ops</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.parser.html">beancount.parser</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">beancount.plugins</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.plugins.auto">beancount.plugins.auto</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.plugins.auto_accounts">beancount.plugins.auto_accounts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.plugins.book_conversions">beancount.plugins.book_conversions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.plugins.check_average_cost">beancount.plugins.check_average_cost</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.plugins.check_closing">beancount.plugins.check_closing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.plugins.check_commodity">beancount.plugins.check_commodity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.plugins.coherent_cost">beancount.plugins.coherent_cost</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.plugins.commodity_attr">beancount.plugins.commodity_attr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.plugins.currency_accounts">beancount.plugins.currency_accounts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.plugins.divert_expenses">beancount.plugins.divert_expenses</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.plugins.exclude_tag">beancount.plugins.exclude_tag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.plugins.fill_account">beancount.plugins.fill_account</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.plugins.fix_payees">beancount.plugins.fix_payees</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.plugins.forecast">beancount.plugins.forecast</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.plugins.implicit_prices">beancount.plugins.implicit_prices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.plugins.ira_contribs">beancount.plugins.ira_contribs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.plugins.leafonly">beancount.plugins.leafonly</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.plugins.mark_unverified">beancount.plugins.mark_unverified</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.plugins.merge_meta">beancount.plugins.merge_meta</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.plugins.noduplicates">beancount.plugins.noduplicates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.plugins.nounused">beancount.plugins.nounused</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.plugins.onecommodity">beancount.plugins.onecommodity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.plugins.pedantic">beancount.plugins.pedantic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.plugins.sellgains">beancount.plugins.sellgains</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.plugins.split_expenses">beancount.plugins.split_expenses</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.plugins.tag_pending">beancount.plugins.tag_pending</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.plugins.unique_prices">beancount.plugins.unique_prices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.plugins.unrealized">beancount.plugins.unrealized</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.prices.html">beancount.prices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.prices.sources.html">beancount.prices.sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.query.html">beancount.query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.reports.html">beancount.reports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.scripts.html">beancount.scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.tools.html">beancount.tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.utils.html">beancount.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.web.html">beancount.web</a></li>
+</ul>
+</li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/beancount/fava">fava @ GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://gitter.im/beancount/fava">Chat</a></li>
+    
+    <li class="toctree-l1"><a href="https://github.com/beancount/fava/issues">Issue Tracker</a></li>
+    
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Dominik Aumayr.
+      
+      |
+      <a href="../_sources/api/beancount.plugins.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

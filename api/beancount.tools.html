@@ -1,0 +1,264 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>beancount.tools &#8212; Fava  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="beancount.utils" href="beancount.utils.html" />
+    <link rel="prev" title="beancount.scripts" href="beancount.scripts.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-beancount.tools">
+<span id="beancount-tools"></span><h1>beancount.tools<a class="headerlink" href="#module-beancount.tools" title="Permalink to this headline">¶</a></h1>
+<p>Standalone tools that aren’t linked to Beancount but that are useful with it.</p>
+<p>The beancount.scripts package contains the implementation of scripts which
+invoke the Beancount library code. This beancount.tools pacakge implements other
+tools which aren’t directly invoking Beancount library code and which could be
+theoretically copied and used independently. However, these are to be
+distributed with Beancount and in order to maintain all the source code together
+they are put in this package and invokes from stubs under beancount/bin/, just
+like the other scripts.</p>
+<div class="section" id="beancount-tools-sheets-upload">
+<h2>beancount.tools.sheets_upload<a class="headerlink" href="#beancount-tools-sheets-upload" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-beancount.tools.treeify">
+<span id="beancount-tools-treeify"></span><h2>beancount.tools.treeify<a class="headerlink" href="#module-beancount.tools.treeify" title="Permalink to this headline">¶</a></h2>
+<p>Identify a column of text that contains hierarchical id and treeify that column.</p>
+<p>This script will inspect a text file and attempt to find a vertically
+left-aligned column of text that contains identifiers with multiple components,
+such as “Assets:US:Bank:Checking”, and replace those by a tree-like structure rendered
+in ASCII, inserting new empty lines where necessary to create the tree.</p>
+<p>Note: If your paths have spaces in them, this will not work. Space is used as a
+delimiter to detect the end of a column. You can customize the delimiter with an
+option.</p>
+<dl class="class">
+<dt id="beancount.tools.treeify.Node">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.tools.treeify.</code><code class="sig-name descname">Node</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.tools.treeify.Node" title="Permalink to this definition">¶</a></dt>
+<dd><p>A node with a name attribute, a list of line numbers and a list of children
+(from its parent class).</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.tools.treeify.create_tree">
+<code class="sig-prename descclassname">beancount.tools.treeify.</code><code class="sig-name descname">create_tree</code><span class="sig-paren">(</span><em class="sig-param">column_matches</em>, <em class="sig-param">regexp_split</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.tools.treeify.create_tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build up a tree from a list of matches.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>column_matches</strong> – A list of (line-number, name) pairs.</p></li>
+<li><p><strong>regexp_split</strong> – A regular expression string, to use for splitting the names
+of components.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An instance of Node, the root node of the created tree.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.tools.treeify.dump_tree">
+<code class="sig-prename descclassname">beancount.tools.treeify.</code><code class="sig-name descname">dump_tree</code><span class="sig-paren">(</span><em class="sig-param">node</em>, <em class="sig-param">file=&lt;_io.TextIOWrapper name='&lt;stdout&gt;' mode='w' encoding='UTF-8'&gt;</em>, <em class="sig-param">prefix=''</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.tools.treeify.dump_tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render a tree as a tree.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node</strong> – An instance of Node.</p></li>
+<li><p><strong>file</strong> – A file object to write to.</p></li>
+<li><p><strong>prefix</strong> – A prefix string for each of the lines of the children.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.tools.treeify.enum_tree_by_input_line_num">
+<code class="sig-prename descclassname">beancount.tools.treeify.</code><code class="sig-name descname">enum_tree_by_input_line_num</code><span class="sig-paren">(</span><em class="sig-param">tree_lines</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.tools.treeify.enum_tree_by_input_line_num" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accumulate the lines of a tree until a line number is found.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tree_lines</strong> – A list of lines as returned by render_tree.</p>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p>Pairs of (line number, list of (line, node)).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.tools.treeify.find_column">
+<code class="sig-prename descclassname">beancount.tools.treeify.</code><code class="sig-name descname">find_column</code><span class="sig-paren">(</span><em class="sig-param">lines</em>, <em class="sig-param">pattern</em>, <em class="sig-param">delimiter</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.tools.treeify.find_column" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find a valid column with hierarchical data in the text lines.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lines</strong> – A list of strings, the contents of the input.</p></li>
+<li><p><strong>pattern</strong> – A regular expression for the hierarchical entries.</p></li>
+<li><p><strong>delimiter</strong> – A regular expression that dictates how we detect the
+end of a column. Normally this is a single space. If the patterns
+contain spaces, you will need to increase this.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl>
+<dt>A tuple of</dt><dd><dl class="simple">
+<dt>matches: A list of (line-number, name) tuples where ‘name’ is the</dt><dd><p>hierarchical string to treeify and line-number is an integer, the
+line number where this applies.</p>
+</dd>
+</dl>
+<p>left: An integer, the leftmost column.
+right: An integer, the rightmost column.</p>
+</dd>
+</dl>
+<p>Note that not all line numbers may be present, so you may need to
+skip some. However, they are in guaranteed in sorted order.</p>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.tools.treeify.main">
+<code class="sig-prename descclassname">beancount.tools.treeify.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.tools.treeify.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="beancount.tools.treeify.render_tree">
+<code class="sig-prename descclassname">beancount.tools.treeify.</code><code class="sig-name descname">render_tree</code><span class="sig-paren">(</span><em class="sig-param">root</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.tools.treeify.render_tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render a tree of nodes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><dl>
+<dt>A list of tuples of (first_line, continuation_line, node) where</dt><dd><dl class="simple">
+<dt>first_line: A string, the first line to render, which includes the</dt><dd><p>account name.</p>
+</dd>
+</dl>
+<p>continuation_line: A string, further line to render if necessary.
+node: The Node instance which corresponds to this line.</p>
+</dd>
+</dl>
+<p>and an integer, the width of the new columns.</p>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo.png" alt="Logo"/>
+    
+    <h1 class="logo logo-name">Fava</h1>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Web interface for <a href="http://furius.ca/beancount/">Beancount</a></p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development.html">Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="fava.html">fava</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.core.html">fava.core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.ext.html">fava.ext</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.ext.portfolio_list.html">fava.ext.portfolio_list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.help.html">fava.help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.util.html">fava.util</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.html">beancount</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.core.html">beancount.core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ingest.html">beancount.ingest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ingest.importers.html">beancount.ingest.importers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ingest.importers.mixins.html">beancount.ingest.importers.mixins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ops.html">beancount.ops</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.parser.html">beancount.parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.plugins.html">beancount.plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.prices.html">beancount.prices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.prices.sources.html">beancount.prices.sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.query.html">beancount.query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.reports.html">beancount.reports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.scripts.html">beancount.scripts</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">beancount.tools</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#beancount-tools-sheets-upload">beancount.tools.sheets_upload</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.tools.treeify">beancount.tools.treeify</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.utils.html">beancount.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.web.html">beancount.web</a></li>
+</ul>
+</li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/beancount/fava">fava @ GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://gitter.im/beancount/fava">Chat</a></li>
+    
+    <li class="toctree-l1"><a href="https://github.com/beancount/fava/issues">Issue Tracker</a></li>
+    
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Dominik Aumayr.
+      
+      |
+      <a href="../_sources/api/beancount.tools.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

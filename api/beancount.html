@@ -1,0 +1,348 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>beancount &#8212; Fava  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="beancount.core" href="beancount.core.html" />
+    <link rel="prev" title="fava.util" href="fava.util.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-beancount">
+<span id="beancount"></span><h1>beancount<a class="headerlink" href="#module-beancount" title="Permalink to this headline">¶</a></h1>
+<p>Beancount, a double-entry bookkeeping software.</p>
+<p>This is v2, a complete rewrite of Beancount v1, simplified and improved
+drastically.</p>
+<div class="section" id="module-beancount.loader">
+<span id="beancount-loader"></span><h2>beancount.loader<a class="headerlink" href="#module-beancount.loader" title="Permalink to this headline">¶</a></h2>
+<p>Loader code. This is the main entry point to load up a file.</p>
+<dl class="class">
+<dt id="beancount.loader.LoadError">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.loader.</code><code class="sig-name descname">LoadError</code><span class="sig-paren">(</span><em class="sig-param">source</em>, <em class="sig-param">message</em>, <em class="sig-param">entry</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.loader.LoadError" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="beancount.loader.aggregate_options_map">
+<code class="sig-prename descclassname">beancount.loader.</code><code class="sig-name descname">aggregate_options_map</code><span class="sig-paren">(</span><em class="sig-param">options_map</em>, <em class="sig-param">src_options_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.loader.aggregate_options_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Aggregate some of the attributes of options map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>options_map</strong> – The target map in which we want to aggregate attributes.
+Note: This value is mutated in-place.</p></li>
+<li><p><strong>src_options_map</strong> – A source map whose values we’d like to see aggregated.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.loader.combine_plugins">
+<code class="sig-prename descclassname">beancount.loader.</code><code class="sig-name descname">combine_plugins</code><span class="sig-paren">(</span><em class="sig-param">*plugin_modules</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.loader.combine_plugins" title="Permalink to this definition">¶</a></dt>
+<dd><p>Combine the plugins from the given plugin modules.</p>
+<p>This is used to create plugins of plugins.
+:param *plugins_modules: A sequence of module objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A list that can be assigned to the new module’s __plugins__ attribute.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.loader.compute_input_hash">
+<code class="sig-prename descclassname">beancount.loader.</code><code class="sig-name descname">compute_input_hash</code><span class="sig-paren">(</span><em class="sig-param">filenames</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.loader.compute_input_hash" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute a hash of the input data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filenames</strong> – A list of input files. Order is not relevant.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.loader.initialize">
+<code class="sig-prename descclassname">beancount.loader.</code><code class="sig-name descname">initialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.loader.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the loader.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.loader.load_doc">
+<code class="sig-prename descclassname">beancount.loader.</code><code class="sig-name descname">load_doc</code><span class="sig-paren">(</span><em class="sig-param">expect_errors=False</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.loader.load_doc" title="Permalink to this definition">¶</a></dt>
+<dd><p>A factory of decorators that loads the docstring and calls the function with entries.</p>
+<p>This is an incredibly convenient tool to write lots of tests. Write a
+unittest using the standard TestCase class and put the input entries in the
+function’s docstring.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expect_errors</strong> – A boolean or None, with the following semantics,
+True: Expect errors and fail if there are none.
+False: Expect no errors and fail if there are some.
+None: Do nothing, no check.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A wrapped method that accepts a single ‘self’ argument.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.loader.load_encrypted_file">
+<code class="sig-prename descclassname">beancount.loader.</code><code class="sig-name descname">load_encrypted_file</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">log_timings=None</em>, <em class="sig-param">log_errors=None</em>, <em class="sig-param">extra_validations=None</em>, <em class="sig-param">dedent=False</em>, <em class="sig-param">encoding=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.loader.load_encrypted_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load an encrypted Beancount input file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> – The name of an encrypted file to be parsed.</p></li>
+<li><p><strong>log_timings</strong> – See load_string().</p></li>
+<li><p><strong>log_errors</strong> – See load_string().</p></li>
+<li><p><strong>extra_validations</strong> – See load_string().</p></li>
+<li><p><strong>dedent</strong> – See load_string().</p></li>
+<li><p><strong>encoding</strong> – See load_string().</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A triple of (entries, errors, option_map) where “entries” is a date-sorted
+list of entries from the file, “errors” a list of error objects generated
+while parsing and validating the file, and “options_map”, a dict of the
+options parsed from the file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.loader.load_file">
+<code class="sig-prename descclassname">beancount.loader.</code><code class="sig-name descname">load_file</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">log_timings=None</em>, <em class="sig-param">log_errors=None</em>, <em class="sig-param">extra_validations=None</em>, <em class="sig-param">encoding=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.loader.load_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open a Beancount input file, parse it, run transformations and validate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> – The name of the file to be parsed.</p></li>
+<li><p><strong>log_timings</strong> – A file object or function to write timings to,
+or None, if it should remain quiet.</p></li>
+<li><p><strong>log_errors</strong> – A file object or function to write errors to,
+or None, if it should remain quiet.</p></li>
+<li><p><strong>extra_validations</strong> – A list of extra validation functions to run after loading
+this list of entries.</p></li>
+<li><p><strong>encoding</strong> – A string or None, the encoding to decode the input filename with.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A triple of (entries, errors, option_map) where “entries” is a date-sorted
+list of entries from the file, “errors” a list of error objects generated
+while parsing and validating the file, and “options_map”, a dict of the
+options parsed from the file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.loader.load_string">
+<code class="sig-prename descclassname">beancount.loader.</code><code class="sig-name descname">load_string</code><span class="sig-paren">(</span><em class="sig-param">string</em>, <em class="sig-param">log_timings=None</em>, <em class="sig-param">log_errors=None</em>, <em class="sig-param">extra_validations=None</em>, <em class="sig-param">dedent=False</em>, <em class="sig-param">encoding=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.loader.load_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open a Beancount input string, parse it, run transformations and validate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>string</strong> – A Beancount input string.</p></li>
+<li><p><strong>log_timings</strong> – A file object or function to write timings to,
+or None, if it should remain quiet.</p></li>
+<li><p><strong>log_errors</strong> – A file object or function to write errors to,
+or None, if it should remain quiet.</p></li>
+<li><p><strong>extra_validations</strong> – A list of extra validation functions to run after loading
+this list of entries.</p></li>
+<li><p><strong>dedent</strong> – A boolean, if set, remove the whitespace in front of the lines.</p></li>
+<li><p><strong>encoding</strong> – A string or None, the encoding to decode the input string with.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A triple of (entries, errors, option_map) where “entries” is a date-sorted
+list of entries from the string, “errors” a list of error objects
+generated while parsing and validating the string, and “options_map”, a
+dict of the options parsed from the string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.loader.needs_refresh">
+<code class="sig-prename descclassname">beancount.loader.</code><code class="sig-name descname">needs_refresh</code><span class="sig-paren">(</span><em class="sig-param">options_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.loader.needs_refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Predicate that returns true if at least one of the input files may have changed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>options_map</strong> – An options dict as per the parser.</p></li>
+<li><p><strong>mtime</strong> – A modified time, to check if it covers the include files in the options_map.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A boolean, true if the input is obsoleted by changes in the input files.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.loader.pickle_cache_function">
+<code class="sig-prename descclassname">beancount.loader.</code><code class="sig-name descname">pickle_cache_function</code><span class="sig-paren">(</span><em class="sig-param">pattern</em>, <em class="sig-param">time_threshold</em>, <em class="sig-param">function</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.loader.pickle_cache_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorate a loader function to make it loads its result from a pickle cache.</p>
+<p>This considers the first argument as a top-level filename and assumes the
+function to be cached returns an (entries, errors, options_map) triple. We
+use the ‘include’ option value in order to check whether any of the included
+files has changed. It’s essentially a special case for an on-disk memoizer.
+If any of the included files are more recent than the cache, the function is
+recomputed and the cache refreshed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pattern</strong> – A string, the filename pattern for the pickled cache file.
+A {filename} in it gets replaced by the basename of the input filename.</p></li>
+<li><p><strong>time_threshold</strong> – A float, the number of seconds below which we don’t bother
+caching.</p></li>
+<li><p><strong>function</strong> – A function object to decorate for caching.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A decorated function which will pull its result from a cache file if
+it is available.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.loader.run_transformations">
+<code class="sig-prename descclassname">beancount.loader.</code><code class="sig-name descname">run_transformations</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">parse_errors</em>, <em class="sig-param">options_map</em>, <em class="sig-param">log_timings</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.loader.run_transformations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the various transformations on the entries.</p>
+<p>This is where entries are being synthesized, checked, plugins are run, etc.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives as read from the parser.</p></li>
+<li><p><strong>parse_errors</strong> – A list of errors so far.</p></li>
+<li><p><strong>options_map</strong> – An options dict as read from the parser.</p></li>
+<li><p><strong>log_timings</strong> – A function to write timing log entries to, or None, if it
+should be quiet.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of modified entries, and a list of errors, also possibly modified.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo.png" alt="Logo"/>
+    
+    <h1 class="logo logo-name">Fava</h1>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Web interface for <a href="http://furius.ca/beancount/">Beancount</a></p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development.html">Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="fava.html">fava</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.core.html">fava.core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.ext.html">fava.ext</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.ext.portfolio_list.html">fava.ext.portfolio_list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.help.html">fava.help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.util.html">fava.util</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">beancount</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.loader">beancount.loader</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.core.html">beancount.core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ingest.html">beancount.ingest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ingest.importers.html">beancount.ingest.importers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ingest.importers.mixins.html">beancount.ingest.importers.mixins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ops.html">beancount.ops</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.parser.html">beancount.parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.plugins.html">beancount.plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.prices.html">beancount.prices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.prices.sources.html">beancount.prices.sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.query.html">beancount.query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.reports.html">beancount.reports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.scripts.html">beancount.scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.tools.html">beancount.tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.utils.html">beancount.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.web.html">beancount.web</a></li>
+</ul>
+</li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/beancount/fava">fava @ GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://gitter.im/beancount/fava">Chat</a></li>
+    
+    <li class="toctree-l1"><a href="https://github.com/beancount/fava/issues">Issue Tracker</a></li>
+    
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Dominik Aumayr.
+      
+      |
+      <a href="../_sources/api/beancount.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

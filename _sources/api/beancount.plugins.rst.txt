@@ -1,0 +1,145 @@
+beancount.plugins
+=================
+
+.. automodule:: beancount.plugins
+
+beancount.plugins.auto
+----------------------
+
+.. automodule:: beancount.plugins.auto
+
+beancount.plugins.auto_accounts
+-------------------------------
+
+.. automodule:: beancount.plugins.auto_accounts
+
+beancount.plugins.book_conversions
+----------------------------------
+
+.. automodule:: beancount.plugins.book_conversions
+
+beancount.plugins.check_average_cost
+------------------------------------
+
+.. automodule:: beancount.plugins.check_average_cost
+
+beancount.plugins.check_closing
+-------------------------------
+
+.. automodule:: beancount.plugins.check_closing
+
+beancount.plugins.check_commodity
+---------------------------------
+
+.. automodule:: beancount.plugins.check_commodity
+
+beancount.plugins.coherent_cost
+-------------------------------
+
+.. automodule:: beancount.plugins.coherent_cost
+
+beancount.plugins.commodity_attr
+--------------------------------
+
+.. automodule:: beancount.plugins.commodity_attr
+
+beancount.plugins.currency_accounts
+-----------------------------------
+
+.. automodule:: beancount.plugins.currency_accounts
+
+beancount.plugins.divert_expenses
+---------------------------------
+
+.. automodule:: beancount.plugins.divert_expenses
+
+beancount.plugins.exclude_tag
+-----------------------------
+
+.. automodule:: beancount.plugins.exclude_tag
+
+beancount.plugins.fill_account
+------------------------------
+
+.. automodule:: beancount.plugins.fill_account
+
+beancount.plugins.fix_payees
+----------------------------
+
+.. automodule:: beancount.plugins.fix_payees
+
+beancount.plugins.forecast
+--------------------------
+
+.. automodule:: beancount.plugins.forecast
+
+beancount.plugins.implicit_prices
+---------------------------------
+
+.. automodule:: beancount.plugins.implicit_prices
+
+beancount.plugins.ira_contribs
+------------------------------
+
+.. automodule:: beancount.plugins.ira_contribs
+
+beancount.plugins.leafonly
+--------------------------
+
+.. automodule:: beancount.plugins.leafonly
+
+beancount.plugins.mark_unverified
+---------------------------------
+
+.. automodule:: beancount.plugins.mark_unverified
+
+beancount.plugins.merge_meta
+----------------------------
+
+.. automodule:: beancount.plugins.merge_meta
+
+beancount.plugins.noduplicates
+------------------------------
+
+.. automodule:: beancount.plugins.noduplicates
+
+beancount.plugins.nounused
+--------------------------
+
+.. automodule:: beancount.plugins.nounused
+
+beancount.plugins.onecommodity
+------------------------------
+
+.. automodule:: beancount.plugins.onecommodity
+
+beancount.plugins.pedantic
+--------------------------
+
+.. automodule:: beancount.plugins.pedantic
+
+beancount.plugins.sellgains
+---------------------------
+
+.. automodule:: beancount.plugins.sellgains
+
+beancount.plugins.split_expenses
+--------------------------------
+
+.. automodule:: beancount.plugins.split_expenses
+
+beancount.plugins.tag_pending
+-----------------------------
+
+.. automodule:: beancount.plugins.tag_pending
+
+beancount.plugins.unique_prices
+-------------------------------
+
+.. automodule:: beancount.plugins.unique_prices
+
+beancount.plugins.unrealized
+----------------------------
+
+.. automodule:: beancount.plugins.unrealized
+

@@ -1,0 +1,1747 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>beancount.utils &#8212; Fava  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="beancount.web" href="beancount.web.html" />
+    <link rel="prev" title="beancount.tools" href="beancount.tools.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-beancount.utils">
+<span id="beancount-utils"></span><h1>beancount.utils<a class="headerlink" href="#module-beancount.utils" title="Permalink to this headline">¶</a></h1>
+<p>Generic utility packages and functions.</p>
+<div class="section" id="module-beancount.utils.bisect_key">
+<span id="beancount-utils-bisect-key"></span><h2>beancount.utils.bisect_key<a class="headerlink" href="#module-beancount.utils.bisect_key" title="Permalink to this headline">¶</a></h2>
+<p>A version of bisect that accepts a custom key function, like the sorting ones do.</p>
+<dl class="function">
+<dt id="beancount.utils.bisect_key.bisect_left_with_key">
+<code class="sig-prename descclassname">beancount.utils.bisect_key.</code><code class="sig-name descname">bisect_left_with_key</code><span class="sig-paren">(</span><em class="sig-param">sequence</em>, <em class="sig-param">value</em>, <em class="sig-param">key=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.bisect_key.bisect_left_with_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the last element before the given value in a sorted list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sequence</strong> – A sorted sequence of elements.</p></li>
+<li><p><strong>value</strong> – The value to search for.</p></li>
+<li><p><strong>key</strong> – An optional function used to extract the value from the elements of
+sequence.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Return the index. May return None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.bisect_key.bisect_right_with_key">
+<code class="sig-prename descclassname">beancount.utils.bisect_key.</code><code class="sig-name descname">bisect_right_with_key</code><span class="sig-paren">(</span><em class="sig-param">a</em>, <em class="sig-param">x</em>, <em class="sig-param">key</em>, <em class="sig-param">lo=0</em>, <em class="sig-param">hi=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.bisect_key.bisect_right_with_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Like bisect.bisect_right, but with a key lookup parameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> – The list to search in.</p></li>
+<li><p><strong>x</strong> – The element to search for.</p></li>
+<li><p><strong>key</strong> – A function, to extract the value from the list.</p></li>
+<li><p><strong>lo</strong> – The smallest index to search.</p></li>
+<li><p><strong>hi</strong> – The largest index to search.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>As in bisect.bisect_right, an element from list ‘a’.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.utils.csv_utils">
+<span id="beancount-utils-csv-utils"></span><h2>beancount.utils.csv_utils<a class="headerlink" href="#module-beancount.utils.csv_utils" title="Permalink to this headline">¶</a></h2>
+<p>Utilities for reading and writing CSV files.</p>
+<dl class="function">
+<dt id="beancount.utils.csv_utils.as_rows">
+<code class="sig-prename descclassname">beancount.utils.csv_utils.</code><code class="sig-name descname">as_rows</code><span class="sig-paren">(</span><em class="sig-param">string</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.csv_utils.as_rows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Split a string as rows of a CSV file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>string</strong> – A string to be split, the contents of a CSV file.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Lists of lists of strings.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.csv_utils.csv_clean_header">
+<code class="sig-prename descclassname">beancount.utils.csv_utils.</code><code class="sig-name descname">csv_clean_header</code><span class="sig-paren">(</span><em class="sig-param">header_row</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.csv_utils.csv_clean_header" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new class for the following rows from the header line.
+This both normalizes the header line and assign</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>header_row</strong> – A list of strings, the row with header titles.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of strings, with possibly modified (cleaned) row titles, of the
+same lengths.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.csv_utils.csv_dict_reader">
+<code class="sig-prename descclassname">beancount.utils.csv_utils.</code><code class="sig-name descname">csv_dict_reader</code><span class="sig-paren">(</span><em class="sig-param">fileobj</em>, <em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.csv_utils.csv_dict_reader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read a CSV file yielding normalized dictionary fields.</p>
+<p>This is basically an alternative constructor for csv.DictReader that
+normalized the field names.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fileobj</strong> – A file object to be read.</p></li>
+<li><p><strong>**kw</strong> – Optional arguments forwarded to csv.DictReader.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A csv.DictReader object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.csv_utils.csv_split_sections">
+<code class="sig-prename descclassname">beancount.utils.csv_utils.</code><code class="sig-name descname">csv_split_sections</code><span class="sig-paren">(</span><em class="sig-param">rows</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.csv_utils.csv_split_sections" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given rows, split them in at empty lines.
+This is useful for structured CSV files with multiple sections.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>rows</strong> – A list of rows, which are themselves lists of strings.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of sections, which are lists of rows, which are lists of strings.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.csv_utils.csv_split_sections_with_titles">
+<code class="sig-prename descclassname">beancount.utils.csv_utils.</code><code class="sig-name descname">csv_split_sections_with_titles</code><span class="sig-paren">(</span><em class="sig-param">rows</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.csv_utils.csv_split_sections_with_titles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a list of rows, split their sections. If the sections have single
+column titles, consume those lines as their names and return a mapping of
+section names.</p>
+<p>This is useful for CSV files with multiple sections, where the separator is
+a title. We use this to separate the multiple tables within the CSV files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>rows</strong> – A list of rows (list-of-strings).</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of lists of rows (list-of-strings).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.csv_utils.csv_tuple_reader">
+<code class="sig-prename descclassname">beancount.utils.csv_utils.</code><code class="sig-name descname">csv_tuple_reader</code><span class="sig-paren">(</span><em class="sig-param">fileobj</em>, <em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.csv_utils.csv_tuple_reader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read a CSV file yielding namedtuple instances. The CSV file must have a
+header line.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fileobj</strong> – A file object to be read.</p></li>
+<li><p><strong>**kw</strong> – Optional arguments forwarded to csv.DictReader.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p>Nametuple instances, one for each row.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.csv_utils.iter_sections">
+<code class="sig-prename descclassname">beancount.utils.csv_utils.</code><code class="sig-name descname">iter_sections</code><span class="sig-paren">(</span><em class="sig-param">fileobj</em>, <em class="sig-param">separating_predicate=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.csv_utils.iter_sections" title="Permalink to this definition">¶</a></dt>
+<dd><p>For a given file object, yield file-like objects for each of the sections
+contained therein. A section is defined as a list of lines that don’t match
+the predicate. For example, if you want to split by empty lines, provide a
+predicate that will be true given an empty line, which will cause a new
+section to be begun.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fileobj</strong> – A file object to read from.</p></li>
+<li><p><strong>separating_predicate</strong> – A boolean predicate that is true on separating lines.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p>A list of lines that you can use to iterate.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.csv_utils.iter_until_empty">
+<code class="sig-prename descclassname">beancount.utils.csv_utils.</code><code class="sig-name descname">iter_until_empty</code><span class="sig-paren">(</span><em class="sig-param">iterator</em>, <em class="sig-param">separating_predicate=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.csv_utils.iter_until_empty" title="Permalink to this definition">¶</a></dt>
+<dd><p>An iterator of lines that will stop at the first empty line.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>iterator</strong> – An iterator of lines.</p></li>
+<li><p><strong>separating_predicate</strong> – A boolean predicate that is true on separating lines.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p>Non-empty lines. EOF when we hit an empty line.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.utils.date_utils">
+<span id="beancount-utils-date-utils"></span><h2>beancount.utils.date_utils<a class="headerlink" href="#module-beancount.utils.date_utils" title="Permalink to this headline">¶</a></h2>
+<p>Parse the date from various formats.</p>
+<dl class="function">
+<dt id="beancount.utils.date_utils.intimezone">
+<code class="sig-prename descclassname">beancount.utils.date_utils.</code><code class="sig-name descname">intimezone</code><span class="sig-paren">(</span><em class="sig-param">tz_value</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.date_utils.intimezone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Temporarily reset the value of TZ.</p>
+<p>This is used for testing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tz_value</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The value of TZ to set for the duration of this context.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A contextmanager in the given timezone locale.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.date_utils.iter_dates">
+<code class="sig-prename descclassname">beancount.utils.date_utils.</code><code class="sig-name descname">iter_dates</code><span class="sig-paren">(</span><em class="sig-param">start_date</em>, <em class="sig-param">end_date</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.date_utils.iter_dates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yield all the dates between ‘start_date’ and ‘end_date’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start_date</strong> – An instance of datetime.date.</p></li>
+<li><p><strong>end_date</strong> – An instance of datetime.date.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p>Instances of datetime.date.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.date_utils.next_month">
+<code class="sig-prename descclassname">beancount.utils.date_utils.</code><code class="sig-name descname">next_month</code><span class="sig-paren">(</span><em class="sig-param">date</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.date_utils.next_month" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the date at the beginning of the following month from the given date.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>date</strong> – A datetime.date instance.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A datetime.date instance, the first day of the month following ‘date’.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.date_utils.parse_date_liberally">
+<code class="sig-prename descclassname">beancount.utils.date_utils.</code><code class="sig-name descname">parse_date_liberally</code><span class="sig-paren">(</span><em class="sig-param">string</em>, <em class="sig-param">parse_kwargs_dict=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.date_utils.parse_date_liberally" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse arbitrary strings to dates.</p>
+<p>This function is intended to support liberal inputs, so that we can use it
+in accepting user-specified dates on command-line scripts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>string</strong> – A string to parse.</p></li>
+<li><p><strong>parse_kwargs_dict</strong> – Dict of kwargs to pass to dateutil parser.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A datetime.date object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.date_utils.render_ofx_date">
+<code class="sig-prename descclassname">beancount.utils.date_utils.</code><code class="sig-name descname">render_ofx_date</code><span class="sig-paren">(</span><em class="sig-param">dtime</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.date_utils.render_ofx_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render a datetime to the OFX format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dtime</strong> – A datetime.datetime instance.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A string, rendered to milliseconds.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.utils.defdict">
+<span id="beancount-utils-defdict"></span><h2>beancount.utils.defdict<a class="headerlink" href="#module-beancount.utils.defdict" title="Permalink to this headline">¶</a></h2>
+<p>An instance of collections.defaultdict whose factory accepts a key.</p>
+<p>Note: This really ought to be an enhancement to Python itself. I should bother
+adding this in eventually.</p>
+<dl class="class">
+<dt id="beancount.utils.defdict.DefaultDictWithKey">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.utils.defdict.</code><code class="sig-name descname">DefaultDictWithKey</code><a class="headerlink" href="#beancount.utils.defdict.DefaultDictWithKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>A version of defaultdict whose factory accepts the key as an argument.
+Note: collections.defaultdict would be improved by supporting this directly,
+this is a common occurence.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.utils.defdict.ImmutableDictWithDefault">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.utils.defdict.</code><code class="sig-name descname">ImmutableDictWithDefault</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">default=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.defdict.ImmutableDictWithDefault" title="Permalink to this definition">¶</a></dt>
+<dd><p>An immutable dict which returns a default value for missing keys.</p>
+<p>This differs from a defualtdict in that it does not insert a missing default
+value when one is materialized (from a missing fetch), and furtheremore, the
+set method is make unavailable to prevent mutation beyond construction.</p>
+<dl class="method">
+<dt id="beancount.utils.defdict.ImmutableDictWithDefault.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">key</em>, <em class="sig-param">_=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.defdict.ImmutableDictWithDefault.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the value for key if key is in the dictionary, else default.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.utils.encryption">
+<span id="beancount-utils-encryption"></span><h2>beancount.utils.encryption<a class="headerlink" href="#module-beancount.utils.encryption" title="Permalink to this headline">¶</a></h2>
+<p>Support for encrypted tests.</p>
+<dl class="function">
+<dt id="beancount.utils.encryption.is_encrypted_file">
+<code class="sig-prename descclassname">beancount.utils.encryption.</code><code class="sig-name descname">is_encrypted_file</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.encryption.is_encrypted_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return true if the given filename contains an encrypted file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> – A path string.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A boolean, true if the file contains an encrypted file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.encryption.is_gpg_installed">
+<code class="sig-prename descclassname">beancount.utils.encryption.</code><code class="sig-name descname">is_gpg_installed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.encryption.is_gpg_installed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return true if GPG 1.4.x or 2.x are installed, which is what we use and support.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.encryption.read_encrypted_file">
+<code class="sig-prename descclassname">beancount.utils.encryption.</code><code class="sig-name descname">read_encrypted_file</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.encryption.read_encrypted_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decrypt and read an encrypted file without temporary storage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> – A string, the path to the encrypted file.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A string, the contents of the file.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>OSError</strong> – If we could not properly decrypt the file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.utils.file_type">
+<span id="beancount-utils-file-type"></span><h2>beancount.utils.file_type<a class="headerlink" href="#module-beancount.utils.file_type" title="Permalink to this headline">¶</a></h2>
+<p>Code that can guess a MIME type for a filename.</p>
+<p>This attempts to identify the mim-type of a file suing</p>
+<ol class="arabic simple">
+<li><p>The built-in mimetypes library, then</p></li>
+<li><p>python-magic (if available), and finally</p></li>
+<li><p>some custom mappers for datatypes used in financial downloads, such as
+Quicken files.</p></li>
+</ol>
+<dl class="function">
+<dt id="beancount.utils.file_type.guess_file_type">
+<code class="sig-prename descclassname">beancount.utils.file_type.</code><code class="sig-name descname">guess_file_type</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.file_type.guess_file_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempt to guess the type of the input file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> – A string, the name of the file to ugess the type for.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A suitable mimetype string, or None if we could not guess.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.utils.file_utils">
+<span id="beancount-utils-file-utils"></span><h2>beancount.utils.file_utils<a class="headerlink" href="#module-beancount.utils.file_utils" title="Permalink to this headline">¶</a></h2>
+<p>File utilities.</p>
+<dl class="function">
+<dt id="beancount.utils.file_utils.chdir">
+<code class="sig-prename descclassname">beancount.utils.file_utils.</code><code class="sig-name descname">chdir</code><span class="sig-paren">(</span><em class="sig-param">directory</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.file_utils.chdir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Temporarily chdir to the given directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>directory</strong> – The directory to switch do.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A context manager which restores the cwd after running.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.file_utils.find_files">
+<code class="sig-prename descclassname">beancount.utils.file_utils.</code><code class="sig-name descname">find_files</code><span class="sig-paren">(</span><em class="sig-param">fords</em>, <em class="sig-param">ignore_dirs=('.hg'</em>, <em class="sig-param">'.svn'</em>, <em class="sig-param">'.git')</em>, <em class="sig-param">ignore_files=('.DS_Store'</em>, <em class="sig-param">)</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.file_utils.find_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enumerate the files under the given directories, stably.</p>
+<p>Invalid file or directory names will be logged to the error log.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fords</strong> – A list of strings, file or directory names.</p></li>
+<li><p><strong>ignore_dirs</strong> – A list of strings, filenames or directories to be ignored.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p>Strings, full filenames from the given roots.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.file_utils.guess_file_format">
+<code class="sig-prename descclassname">beancount.utils.file_utils.</code><code class="sig-name descname">guess_file_format</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">default=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.file_utils.guess_file_format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Guess the file format from the filename.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> – A string, the name of the file. This can be None.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A string, the extension of the format, without a leading period.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.file_utils.path_greedy_split">
+<code class="sig-prename descclassname">beancount.utils.file_utils.</code><code class="sig-name descname">path_greedy_split</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.file_utils.path_greedy_split" title="Permalink to this definition">¶</a></dt>
+<dd><p>Split a path, returning the longest possible extension.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> – A string, the filename to split.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A pair of basename, extension (which includes the leading period).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.file_utils.touch_file">
+<code class="sig-prename descclassname">beancount.utils.file_utils.</code><code class="sig-name descname">touch_file</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">*otherfiles</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.file_utils.touch_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Touch a file and wait until its timestamp has been changed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> – A string path, the name of the file to touch.</p></li>
+<li><p><strong>otherfiles</strong> – A list of other files to ensure the timestamp is beyond of.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.utils.import_utils">
+<span id="beancount-utils-import-utils"></span><h2>beancount.utils.import_utils<a class="headerlink" href="#module-beancount.utils.import_utils" title="Permalink to this headline">¶</a></h2>
+<p>Utilities for importing symbols programmatically.</p>
+<dl class="function">
+<dt id="beancount.utils.import_utils.import_symbol">
+<code class="sig-prename descclassname">beancount.utils.import_utils.</code><code class="sig-name descname">import_symbol</code><span class="sig-paren">(</span><em class="sig-param">dotted_name</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.import_utils.import_symbol" title="Permalink to this definition">¶</a></dt>
+<dd><p>Import a symbol in an arbitrary module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dotted_name</strong> – A dotted path to a symbol.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The object referenced by the given name.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ImportError</strong> – If the module not not be imported.</p></li>
+<li><p><strong>AttributeError</strong> – If the symbol could not be found in the module.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.utils.invariants">
+<span id="beancount-utils-invariants"></span><h2>beancount.utils.invariants<a class="headerlink" href="#module-beancount.utils.invariants" title="Permalink to this headline">¶</a></h2>
+<p>Functions to register auxiliary functions on a class’ methods to check for invariants.</p>
+<p>This is intended to be used in a test, whereby your test will setup a class to
+automatically run invariant verification functions before and after each
+function call, to ensure some extra sanity checks that wouldn’t be used in
+non-tests.</p>
+<p>Example: Instrument the Inventory class with the check_inventory_invariants()
+function.</p>
+<blockquote>
+<div><dl class="simple">
+<dt>def setUp(module):</dt><dd><dl class="simple">
+<dt>instrument_invariants(Inventory,</dt><dd><p>check_inventory_invariants,
+check_inventory_invariants)</p>
+</dd>
+</dl>
+</dd>
+<dt>def tearDown(module):</dt><dd><p>uninstrument_invariants(Inventory)</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="function">
+<dt id="beancount.utils.invariants.instrument_invariants">
+<code class="sig-prename descclassname">beancount.utils.invariants.</code><code class="sig-name descname">instrument_invariants</code><span class="sig-paren">(</span><em class="sig-param">klass</em>, <em class="sig-param">prefun</em>, <em class="sig-param">postfun</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.invariants.instrument_invariants" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instrument the class ‘klass’ with pre/post invariant
+checker functions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>klass</strong> – A class object, whose methods to be instrumented.</p></li>
+<li><p><strong>prefun</strong> – A function that checks invariants pre-call.</p></li>
+<li><p><strong>postfun</strong> – A function that checks invariants pre-call.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.invariants.invariant_check">
+<code class="sig-prename descclassname">beancount.utils.invariants.</code><code class="sig-name descname">invariant_check</code><span class="sig-paren">(</span><em class="sig-param">method</em>, <em class="sig-param">prefun</em>, <em class="sig-param">postfun</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.invariants.invariant_check" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorate a method with the pre/post invariant checkers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>method</strong> – An unbound method to instrument.</p></li>
+<li><p><strong>prefun</strong> – A function that checks invariants pre-call.</p></li>
+<li><p><strong>postfun</strong> – A function that checks invariants post-call.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An unbound method, decorated.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.invariants.uninstrument_invariants">
+<code class="sig-prename descclassname">beancount.utils.invariants.</code><code class="sig-name descname">uninstrument_invariants</code><span class="sig-paren">(</span><em class="sig-param">klass</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.invariants.uninstrument_invariants" title="Permalink to this definition">¶</a></dt>
+<dd><p>Undo the instrumentation for invariants.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>klass</strong> – A class object, whose methods to be uninstrumented.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.utils.memo">
+<span id="beancount-utils-memo"></span><h2>beancount.utils.memo<a class="headerlink" href="#module-beancount.utils.memo" title="Permalink to this headline">¶</a></h2>
+<p>Memoization utilities.</p>
+<dl class="function">
+<dt id="beancount.utils.memo.memoize_recent_fileobj">
+<code class="sig-prename descclassname">beancount.utils.memo.</code><code class="sig-name descname">memoize_recent_fileobj</code><span class="sig-paren">(</span><em class="sig-param">function</em>, <em class="sig-param">cache_filename</em>, <em class="sig-param">expiration=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.memo.memoize_recent_fileobj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Memoize recent calls to the given function which returns a file object.</p>
+<p>The results of the cache expire after some time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>function</strong> – A callable object.</p></li>
+<li><p><strong>cache_filename</strong> – A string, the path to the database file to cache to.</p></li>
+<li><p><strong>expiration</strong> – The time during which the results will be kept valid. Use
+‘None’ to never expire the cache (this is the default).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A memoized version of the function.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.memo.now">
+<code class="sig-prename descclassname">beancount.utils.memo.</code><code class="sig-name descname">now</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.memo.now" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indirection on datetime.datetime.now() for testing.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.utils.misc_utils">
+<span id="beancount-utils-misc-utils"></span><h2>beancount.utils.misc_utils<a class="headerlink" href="#module-beancount.utils.misc_utils" title="Permalink to this headline">¶</a></h2>
+<p>Generic utility packages and functions.</p>
+<dl class="class">
+<dt id="beancount.utils.misc_utils.LineFileProxy">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.utils.misc_utils.</code><code class="sig-name descname">LineFileProxy</code><span class="sig-paren">(</span><em class="sig-param">line_writer</em>, <em class="sig-param">prefix=None</em>, <em class="sig-param">write_newlines=False</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.misc_utils.LineFileProxy" title="Permalink to this definition">¶</a></dt>
+<dd><p>A file object that will delegate writing full lines to another logging function.
+This may be used for writing data to a logging level without having to worry about
+lines.</p>
+<dl class="method">
+<dt id="beancount.utils.misc_utils.LineFileProxy.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.misc_utils.LineFileProxy.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close the line delegator.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.utils.misc_utils.LineFileProxy.flush">
+<code class="sig-name descname">flush</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.misc_utils.LineFileProxy.flush" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flush the data to the line writer.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.utils.misc_utils.LineFileProxy.write">
+<code class="sig-name descname">write</code><span class="sig-paren">(</span><em class="sig-param">data</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.misc_utils.LineFileProxy.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write some string data to the output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> – A string, with or without newlines.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.utils.misc_utils.TypeComparable">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.utils.misc_utils.</code><code class="sig-name descname">TypeComparable</code><a class="headerlink" href="#beancount.utils.misc_utils.TypeComparable" title="Permalink to this definition">¶</a></dt>
+<dd><p>A base class whose equality comparison includes comparing the
+type of the instance itself.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.misc_utils.box">
+<code class="sig-prename descclassname">beancount.utils.misc_utils.</code><code class="sig-name descname">box</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">file=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.misc_utils.box" title="Permalink to this definition">¶</a></dt>
+<dd><p>A context manager that prints out a box around a block.
+This is useful for printing out stuff from tests in a way that is readable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – A string, the name of the box to use.</p></li>
+<li><p><strong>file</strong> – The file object to print to.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.misc_utils.cmptuple">
+<code class="sig-prename descclassname">beancount.utils.misc_utils.</code><code class="sig-name descname">cmptuple</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">attributes</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.misc_utils.cmptuple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Manufacture a comparable namedtuple class, similar to collections.namedtuple.</p>
+<p>A comparable named tuple is a tuple which compares to False if contents are
+equal but the data types are different. We define this to supplement
+collections.namedtuple because by default a namedtuple disregards the type
+and we want to make precise comparisons for tests.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – The given name of the class.</p></li>
+<li><p><strong>attributes</strong> – A string or tuple of strings, with the names of the
+attributes.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A new namedtuple-derived type that compares False with other
+tuples with same contents.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.misc_utils.compute_unique_clean_ids">
+<code class="sig-prename descclassname">beancount.utils.misc_utils.</code><code class="sig-name descname">compute_unique_clean_ids</code><span class="sig-paren">(</span><em class="sig-param">strings</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.misc_utils.compute_unique_clean_ids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a sequence of strings, reduce them to corresponding ids without any
+funny characters and insure that the list of ids is unique. Yields pairs
+of (id, string) for the result.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>strings</strong> – A list of strings.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of (id, string) pairs.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.misc_utils.deprecated">
+<code class="sig-prename descclassname">beancount.utils.misc_utils.</code><code class="sig-name descname">deprecated</code><span class="sig-paren">(</span><em class="sig-param">message</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.misc_utils.deprecated" title="Permalink to this definition">¶</a></dt>
+<dd><p>A decorator generator to mark functions as deprecated and log a warning.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.misc_utils.dictmap">
+<code class="sig-prename descclassname">beancount.utils.misc_utils.</code><code class="sig-name descname">dictmap</code><span class="sig-paren">(</span><em class="sig-param">mdict</em>, <em class="sig-param">keyfun=None</em>, <em class="sig-param">valfun=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.misc_utils.dictmap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Map a dictionary’s value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mdict</strong> – A dict.</p></li>
+<li><p><strong>key</strong> – A callable to apply to the keys.</p></li>
+<li><p><strong>value</strong> – A callable to apply to the values.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.misc_utils.escape_string">
+<code class="sig-prename descclassname">beancount.utils.misc_utils.</code><code class="sig-name descname">escape_string</code><span class="sig-paren">(</span><em class="sig-param">string</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.misc_utils.escape_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Escape quotes and backslashes in payee and narration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>string</strong> – Any string.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Returns.</dt><dd><p>The input string, with offending characters replaced.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.misc_utils.filter_type">
+<code class="sig-prename descclassname">beancount.utils.misc_utils.</code><code class="sig-name descname">filter_type</code><span class="sig-paren">(</span><em class="sig-param">elist</em>, <em class="sig-param">types</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.misc_utils.filter_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filter the given list to yield only instances of the given types.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>elist</strong> – A sequence of elements.</p></li>
+<li><p><strong>types</strong> – A sequence of types to include in the output list.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p>Each element, if it is an instance of ‘types’.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.misc_utils.first_paragraph">
+<code class="sig-prename descclassname">beancount.utils.misc_utils.</code><code class="sig-name descname">first_paragraph</code><span class="sig-paren">(</span><em class="sig-param">docstring</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.misc_utils.first_paragraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the first sentence of a docstring.
+The sentence has to be delimited by an empty line.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>docstring</strong> – A doc string.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A string with just the first sentence on a single line.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.misc_utils.get_screen_height">
+<code class="sig-prename descclassname">beancount.utils.misc_utils.</code><code class="sig-name descname">get_screen_height</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.misc_utils.get_screen_height" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the height of the terminal that runs this program.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>An integer, the number of characters the screen is high.
+Return 0 if the terminal cannot be initialized.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.misc_utils.get_screen_width">
+<code class="sig-prename descclassname">beancount.utils.misc_utils.</code><code class="sig-name descname">get_screen_width</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.misc_utils.get_screen_width" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the width of the terminal that runs this program.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>An integer, the number of characters the screen is wide.
+Return 0 if the terminal cannot be initialized.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.misc_utils.get_tuple_values">
+<code class="sig-prename descclassname">beancount.utils.misc_utils.</code><code class="sig-name descname">get_tuple_values</code><span class="sig-paren">(</span><em class="sig-param">ntuple</em>, <em class="sig-param">predicate</em>, <em class="sig-param">memo=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.misc_utils.get_tuple_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all members referred to by this namedtuple instance that satisfy the
+given predicate. This function also works recursively on its members which
+are lists or typles, and so it can be used for Transaction instances.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ntuple</strong> – A tuple or namedtuple.</p></li>
+<li><p><strong>predicate</strong> – A predicate function that returns true if an attribute is to be
+output.</p></li>
+<li><p><strong>memo</strong> – An optional memoizing dictionary. If a tuple has already been seen, the
+recursion will be avoided.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p>Attributes of the tuple and its sub-elements if the predicate is true.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.misc_utils.groupby">
+<code class="sig-prename descclassname">beancount.utils.misc_utils.</code><code class="sig-name descname">groupby</code><span class="sig-paren">(</span><em class="sig-param">keyfun</em>, <em class="sig-param">elements</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.misc_utils.groupby" title="Permalink to this definition">¶</a></dt>
+<dd><p>Group the elements as a dict of lists, where the key is computed using the
+function ‘keyfun’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>keyfun</strong> – A callable, used to obtain the group key from each element.</p></li>
+<li><p><strong>elements</strong> – An iterable of the elements to group.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A dict of key to list of sequences.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.misc_utils.idify">
+<code class="sig-prename descclassname">beancount.utils.misc_utils.</code><code class="sig-name descname">idify</code><span class="sig-paren">(</span><em class="sig-param">string</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.misc_utils.idify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace characters objectionable for a filename with underscores.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>string</strong> – Any string.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The input string, with offending characters replaced.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.misc_utils.import_curses">
+<code class="sig-prename descclassname">beancount.utils.misc_utils.</code><code class="sig-name descname">import_curses</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.misc_utils.import_curses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Try to import the ‘curses’ module.
+(This is used here in order to override for tests.)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The curses module, if it was possible to import it.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ImportError</strong> – If the module could not be imported.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.misc_utils.is_sorted">
+<code class="sig-prename descclassname">beancount.utils.misc_utils.</code><code class="sig-name descname">is_sorted</code><span class="sig-paren">(</span><em class="sig-param">iterable</em>, <em class="sig-param">key=&lt;function &lt;lambda&gt;&gt;</em>, <em class="sig-param">cmp=&lt;function &lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.misc_utils.is_sorted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return true if the sequence is sorted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>iterable</strong> – An iterable sequence.</p></li>
+<li><p><strong>key</strong> – A function to extract the quantity by which to sort.</p></li>
+<li><p><strong>cmp</strong> – A function that compares two elements of a sequence.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A boolean, true if the sequence is sorted.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.misc_utils.log_time">
+<code class="sig-prename descclassname">beancount.utils.misc_utils.</code><code class="sig-name descname">log_time</code><span class="sig-paren">(</span><em class="sig-param">operation_name</em>, <em class="sig-param">log_timings</em>, <em class="sig-param">indent=0</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.misc_utils.log_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>A context manager that times the block and logs it to info level.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>operation_name</strong> – A string, a label for the name of the operation.</p></li>
+<li><p><strong>log_timings</strong> – A function to write log messages to. If left to None,
+no timings are written (this becomes a no-op).</p></li>
+<li><p><strong>indent</strong> – An integer, the indentation level for the format of the timing
+line. This is useful if you’re logging timing to a hierarchy of
+operations.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p>The start time of the operation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.misc_utils.longest">
+<code class="sig-prename descclassname">beancount.utils.misc_utils.</code><code class="sig-name descname">longest</code><span class="sig-paren">(</span><em class="sig-param">seq</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.misc_utils.longest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the longest of the given subsequences.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>seq</strong> – An iterable sequence of lists.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The longest list from the sequence.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.misc_utils.map_namedtuple_attributes">
+<code class="sig-prename descclassname">beancount.utils.misc_utils.</code><code class="sig-name descname">map_namedtuple_attributes</code><span class="sig-paren">(</span><em class="sig-param">attributes</em>, <em class="sig-param">mapper</em>, <em class="sig-param">object_</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.misc_utils.map_namedtuple_attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Map the value of the named attributes of object by mapper.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>attributes</strong> – A sequence of string, the attribute names to map.</p></li>
+<li><p><strong>mapper</strong> – A callable that accepts the value of a field and returns
+the new value.</p></li>
+<li><p><strong>object_</strong> – Some namedtuple object with attributes on it.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A new instance of the same namedtuple with the named fields mapped by
+mapper.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.misc_utils.replace_namedtuple_values">
+<code class="sig-prename descclassname">beancount.utils.misc_utils.</code><code class="sig-name descname">replace_namedtuple_values</code><span class="sig-paren">(</span><em class="sig-param">ntuple</em>, <em class="sig-param">predicate</em>, <em class="sig-param">mapper</em>, <em class="sig-param">memo=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.misc_utils.replace_namedtuple_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recurse through all the members of namedtuples and lists, and for
+members that match the given predicate, run them through the given mapper.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ntuple</strong> – A namedtuple instance.</p></li>
+<li><p><strong>predicate</strong> – A predicate function that returns true if an attribute is to be
+output.</p></li>
+<li><p><strong>mapper</strong> – A callable, that will accept a single argument and return its
+replacement value.</p></li>
+<li><p><strong>memo</strong> – An optional memoizing dictionary. If a tuple has already been seen, the
+recursion will be avoided.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p>Attributes of the tuple and its sub-elements if the predicate is true.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.misc_utils.skipiter">
+<code class="sig-prename descclassname">beancount.utils.misc_utils.</code><code class="sig-name descname">skipiter</code><span class="sig-paren">(</span><em class="sig-param">iterable</em>, <em class="sig-param">num_skip</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.misc_utils.skipiter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Skip some elements from an iterator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>iterable</strong> – An iterator.</p></li>
+<li><p><strong>num_skip</strong> – The number of elements in the period.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p>Elemnets from the iterable, with num_skip elements skipped.
+For example, skipiter(range(10), 3) yields [0, 3, 6, 9].</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.misc_utils.sorted_uniquify">
+<code class="sig-prename descclassname">beancount.utils.misc_utils.</code><code class="sig-name descname">sorted_uniquify</code><span class="sig-paren">(</span><em class="sig-param">iterable</em>, <em class="sig-param">keyfunc=None</em>, <em class="sig-param">last=False</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.misc_utils.sorted_uniquify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a sequence of elements, sort and remove duplicates of the given key.
+Keep either the first or the last (by key) element of a sequence of
+key-identical elements. This does _not_ maintain the ordering of the
+original elements, they are returned sorted (by key) instead.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>iterable</strong> – An iterable sequence.</p></li>
+<li><p><strong>keyfunc</strong> – A function that extracts from the elements the sort key
+to use and uniquify on. If left unspecified, the identify function
+is used and the uniquification occurs on the elements themselves.</p></li>
+<li><p><strong>last</strong> – A boolean, True if we should keep the last item of the same keys.
+Otherwise keep the first.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p>Elements from the iterable.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.misc_utils.staticvar">
+<code class="sig-prename descclassname">beancount.utils.misc_utils.</code><code class="sig-name descname">staticvar</code><span class="sig-paren">(</span><em class="sig-param">varname</em>, <em class="sig-param">initial_value</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.misc_utils.staticvar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a decorator that defines a Python function attribute.</p>
+<p>This is used to simulate a static function variable in Python.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>varname</strong> – A string, the name of the variable to define.</p></li>
+<li><p><strong>initial_value</strong> – The value to initialize the variable to.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A function decorator.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.misc_utils.swallow">
+<code class="sig-prename descclassname">beancount.utils.misc_utils.</code><code class="sig-name descname">swallow</code><span class="sig-paren">(</span><em class="sig-param">*exception_types</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.misc_utils.swallow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Catch and ignore certain exceptions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>exception_types</strong> – A tuple of exception classes to ignore.</p>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.misc_utils.uniquify">
+<code class="sig-prename descclassname">beancount.utils.misc_utils.</code><code class="sig-name descname">uniquify</code><span class="sig-paren">(</span><em class="sig-param">iterable</em>, <em class="sig-param">keyfunc=None</em>, <em class="sig-param">last=False</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.misc_utils.uniquify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a sequence of elements, remove duplicates of the given key. Keep either
+the first or the last element of a sequence of key-identical elements. Order
+is maintained as much as possible. This does maintain the ordering of the
+original elements, they are returned in the same order as the original
+elements.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>iterable</strong> – An iterable sequence.</p></li>
+<li><p><strong>keyfunc</strong> – A function that extracts from the elements the sort key
+to use and uniquify on. If left unspecified, the identify function
+is used and the uniquification occurs on the elements themselves.</p></li>
+<li><p><strong>last</strong> – A boolean, True if we should keep the last item of the same keys.
+Otherwise keep the first.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p>Elements from the iterable.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.utils.net_utils">
+<span id="beancount-utils-net-utils"></span><h2>beancount.utils.net_utils<a class="headerlink" href="#module-beancount.utils.net_utils" title="Permalink to this headline">¶</a></h2>
+<p>Network utilities.</p>
+<dl class="function">
+<dt id="beancount.utils.net_utils.retrying_urlopen">
+<code class="sig-prename descclassname">beancount.utils.net_utils.</code><code class="sig-name descname">retrying_urlopen</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">timeout=5</em>, <em class="sig-param">max_retry=5</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.net_utils.retrying_urlopen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open and download the given URL, retrying if it times out.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> – A string, the URL to fetch.</p></li>
+<li><p><strong>timeout</strong> – A timeout after which to stop waiting for a response and return an
+error.</p></li>
+<li><p><strong>max_retry</strong> – The maximum number of times to retry.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The contents of the fetched URL.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.utils.pager">
+<span id="beancount-utils-pager"></span><h2>beancount.utils.pager<a class="headerlink" href="#module-beancount.utils.pager" title="Permalink to this headline">¶</a></h2>
+<p>Code to write output to a pager.</p>
+<p>This module contains an object accumulates lines up to a minimum and then
+decides whether to flush them to the original output directly if under the
+threshold (no pager) or creates a pager and flushes the lines to it if above the
+threshold and then forwards all future lines to it. The purpose of this object
+is to pipe output to a pager only if the number of lines to be printed exceeds a
+minimum number of lines.</p>
+<p>The contextmanager is intended to be used to pipe output to a pager and wait on
+the pager to complete before continuing. Simply write to the file object and
+upon exit we close the file object. This also silences broken pipe errors
+triggered by the user exiting the sub-process, and recovers from a failing pager
+command by just using stdout.</p>
+<dl class="class">
+<dt id="beancount.utils.pager.ConditionalPager">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.utils.pager.</code><code class="sig-name descname">ConditionalPager</code><span class="sig-paren">(</span><em class="sig-param">command</em>, <em class="sig-param">minlines=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.pager.ConditionalPager" title="Permalink to this definition">¶</a></dt>
+<dd><p>A proxy file for a pager that only creates a pager after a minimum number of
+lines has been printed to it.</p>
+<dl class="method">
+<dt id="beancount.utils.pager.ConditionalPager.flush_accumulated">
+<code class="sig-name descname">flush_accumulated</code><span class="sig-paren">(</span><em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.pager.ConditionalPager.flush_accumulated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flush the existing lines to the newly created pager.
+This also disabled the accumulator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file</strong> – A file object to flush the accumulated data to.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.utils.pager.ConditionalPager.write">
+<code class="sig-name descname">write</code><span class="sig-paren">(</span><em class="sig-param">data</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.pager.ConditionalPager.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write the data out. Overridden from the file object interface.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> – A string, data to write to the output.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.pager.create_pager">
+<code class="sig-prename descclassname">beancount.utils.pager.</code><code class="sig-name descname">create_pager</code><span class="sig-paren">(</span><em class="sig-param">command</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.pager.create_pager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Try to create and return a pager subprocess.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>command</strong> – A string, the shell command to run as a pager.</p></li>
+<li><p><strong>file</strong> – The file object for the pager write to. This is also used as a
+default if we failed to create the pager subprocess.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A pair of (file, pipe), a file object and an optional subprocess.Popen instance
+to wait on. The pipe instance may be set to None if we failed to create a subprocess.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.pager.flush_only">
+<code class="sig-prename descclassname">beancount.utils.pager.</code><code class="sig-name descname">flush_only</code><span class="sig-paren">(</span><em class="sig-param">fileobj</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.pager.flush_only" title="Permalink to this definition">¶</a></dt>
+<dd><p>A contextmanager around a file object that does not close the file.</p>
+<p>This is used to return a context manager on a file object but not close it.
+We flush it instead. This is useful in order to provide an alternative to a
+pager class as above.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fileobj</strong> – A file object, to remain open after running the context manager.</p>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p>A context manager that yields this object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.utils.regexp_utils">
+<span id="beancount-utils-regexp-utils"></span><h2>beancount.utils.regexp_utils<a class="headerlink" href="#module-beancount.utils.regexp_utils" title="Permalink to this headline">¶</a></h2>
+<p>Regular expression helpers.</p>
+<dl class="function">
+<dt id="beancount.utils.regexp_utils.re_replace_unicode">
+<code class="sig-prename descclassname">beancount.utils.regexp_utils.</code><code class="sig-name descname">re_replace_unicode</code><span class="sig-paren">(</span><em class="sig-param">regexp</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.regexp_utils.re_replace_unicode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Substitute Unicode Properties in regular expressions with their
+corresponding expanded ranges.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>regexp</strong> – A regular expression string.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Return the regular expression with Unicode Properties substituted.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.utils.snoop">
+<span id="beancount-utils-snoop"></span><h2>beancount.utils.snoop<a class="headerlink" href="#module-beancount.utils.snoop" title="Permalink to this headline">¶</a></h2>
+<p>Text manipulation utilities.</p>
+<dl class="class">
+<dt id="beancount.utils.snoop.Snoop">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.utils.snoop.</code><code class="sig-name descname">Snoop</code><span class="sig-paren">(</span><em class="sig-param">maxlen=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.snoop.Snoop" title="Permalink to this definition">¶</a></dt>
+<dd><p>A snooper callable that just saves the returned values of a
+function. This is particularly useful for re.match and re.search in
+conditionals, e.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">snoop</span> <span class="o">=</span> <span class="n">Snoop</span><span class="p">()</span>
+<span class="o">...</span>
+<span class="k">if</span> <span class="n">snoop</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(\d+)-(\d+)-(\d+)&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)):</span>
+  <span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">date</span> <span class="o">=</span> <span class="n">snoop</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="beancount.utils.snoop.Snoop.value">
+<code class="sig-name descname">value</code><a class="headerlink" href="#beancount.utils.snoop.Snoop.value" title="Permalink to this definition">¶</a></dt>
+<dd><p>The last value snooped from a function call.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.utils.snoop.Snoop.history">
+<code class="sig-name descname">history</code><a class="headerlink" href="#beancount.utils.snoop.Snoop.history" title="Permalink to this definition">¶</a></dt>
+<dd><p>If ‘maxlen’ was specified, the last few values
+that were snooped.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.snoop.snoopify">
+<code class="sig-prename descclassname">beancount.utils.snoop.</code><code class="sig-name descname">snoopify</code><span class="sig-paren">(</span><em class="sig-param">function</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.snoop.snoopify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorate a function as snoopable.</p>
+<p>This is meant to reassign existing functions to a snoopable version of them.
+For example, if you wanted ‘re.match’ to be automatically snoopable, just
+decorate it like this:</p>
+<blockquote>
+<div><p>re.match = snoopify(re.match)</p>
+</div></blockquote>
+<p>and then you can just call ‘re.match’ in a conditional and then access
+‘re.match.value’ to get to the last returned value.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.utils.test_utils">
+<span id="beancount-utils-test-utils"></span><h2>beancount.utils.test_utils<a class="headerlink" href="#module-beancount.utils.test_utils" title="Permalink to this headline">¶</a></h2>
+<p>Support utillities for testing scripts.</p>
+<dl class="class">
+<dt id="beancount.utils.test_utils.RCall">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.utils.test_utils.</code><code class="sig-name descname">RCall</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">kwargs</em>, <em class="sig-param">return_value</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.test_utils.RCall" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="beancount.utils.test_utils.TestCase">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.utils.test_utils.</code><code class="sig-name descname">TestCase</code><span class="sig-paren">(</span><em class="sig-param">methodName='runTest'</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.test_utils.TestCase" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="beancount.utils.test_utils.TestCase.assertLines">
+<code class="sig-name descname">assertLines</code><span class="sig-paren">(</span><em class="sig-param">text1</em>, <em class="sig-param">text2</em>, <em class="sig-param">message=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.test_utils.TestCase.assertLines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare the lines of text1 and text2, ignoring whitespace.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text1</strong> – A string, the expected text.</p></li>
+<li><p><strong>text2</strong> – A string, the actual text.</p></li>
+<li><p><strong>message</strong> – An optional string message in case the assertion fails.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>AssertionError</strong> – If the exception fails.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.utils.test_utils.TestCase.assertOutput">
+<code class="sig-name descname">assertOutput</code><span class="sig-paren">(</span><em class="sig-param">expected_text</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.test_utils.TestCase.assertOutput" title="Permalink to this definition">¶</a></dt>
+<dd><p>Expect text printed to stdout.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>expected_text</strong> – A string, the text that should have been printed to stdout.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>AssertionError</strong> – If the text differs.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.utils.test_utils.TestTempdirMixin">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.utils.test_utils.</code><code class="sig-name descname">TestTempdirMixin</code><a class="headerlink" href="#beancount.utils.test_utils.TestTempdirMixin" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="beancount.utils.test_utils.TestTempdirMixin.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.test_utils.TestTempdirMixin.setUp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.utils.test_utils.TestTempdirMixin.tearDown">
+<code class="sig-name descname">tearDown</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.test_utils.TestTempdirMixin.tearDown" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.test_utils.call_command">
+<code class="sig-prename descclassname">beancount.utils.test_utils.</code><code class="sig-name descname">call_command</code><span class="sig-paren">(</span><em class="sig-param">command</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.test_utils.call_command" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the script with a subprocess.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>script_args</strong> – A list of strings, the arguments to the subprocess,
+including the script name.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A triplet of (return code integer, stdout ext, stderr text).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.test_utils.capture">
+<code class="sig-prename descclassname">beancount.utils.test_utils.</code><code class="sig-name descname">capture</code><span class="sig-paren">(</span><em class="sig-param">*attributes</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.test_utils.capture" title="Permalink to this definition">¶</a></dt>
+<dd><p>A context manager that captures what’s printed to stdout.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>*attributes</strong> – A tuple of strings, the name of the sys attributes to override
+with StringIO instances.</p>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p>A StringIO string accumulator.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.test_utils.create_temporary_files">
+<code class="sig-prename descclassname">beancount.utils.test_utils.</code><code class="sig-name descname">create_temporary_files</code><span class="sig-paren">(</span><em class="sig-param">root</em>, <em class="sig-param">contents_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.test_utils.create_temporary_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a number of temporary files under ‘root’.</p>
+<p>This routine is used to initialize the contents of multiple files under a
+temporary directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>root</strong> – A string, the name of the directory under which to create the files.</p></li>
+<li><p><strong>contents_map</strong> – A dict of relative filenames to their contents. The content
+strings will be automatically dedented for convenience. In addition, the
+string ‘ROOT’ in the contents will be automatically replaced by the root
+directory name.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.test_utils.docfile">
+<code class="sig-prename descclassname">beancount.utils.test_utils.</code><code class="sig-name descname">docfile</code><span class="sig-paren">(</span><em class="sig-param">function</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.test_utils.docfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>A decorator that write the function’s docstring to a temporary file
+and calls the decorated function with the temporary filename.  This is
+useful for writing tests.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>function</strong> – A function to decorate.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The decorated function.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.test_utils.docfile_extra">
+<code class="sig-prename descclassname">beancount.utils.test_utils.</code><code class="sig-name descname">docfile_extra</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.test_utils.docfile_extra" title="Permalink to this definition">¶</a></dt>
+<dd><p>A decorator identical to &#64;docfile,
+but it also takes kwargs for the temporaryfile,
+Kwargs:</p>
+<blockquote>
+<div><p>e.g. buffering, encoding, newline, dir, prefix, and suffix.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>docfile</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.test_utils.environ">
+<code class="sig-prename descclassname">beancount.utils.test_utils.</code><code class="sig-name descname">environ</code><span class="sig-paren">(</span><em class="sig-param">varname</em>, <em class="sig-param">newvalue</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.test_utils.environ" title="Permalink to this definition">¶</a></dt>
+<dd><p>A context manager which pushes varname’s value and restores it later.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>varname</strong> – A string, the environ variable name.</p></li>
+<li><p><strong>newvalue</strong> – A string, the desired value.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.test_utils.find_python_lib">
+<code class="sig-prename descclassname">beancount.utils.test_utils.</code><code class="sig-name descname">find_python_lib</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.test_utils.find_python_lib" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the path to the root of the Python libraries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A string, the root directory.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.test_utils.find_repository_root">
+<code class="sig-prename descclassname">beancount.utils.test_utils.</code><code class="sig-name descname">find_repository_root</code><span class="sig-paren">(</span><em class="sig-param">filename=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.test_utils.find_repository_root" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the path to the repository root.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> – A string, the name of a file within the repository.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A string, the root directory.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.test_utils.make_failing_importer">
+<code class="sig-prename descclassname">beancount.utils.test_utils.</code><code class="sig-name descname">make_failing_importer</code><span class="sig-paren">(</span><em class="sig-param">*removed_module_names</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.test_utils.make_failing_importer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make an importer that raise an ImportError for some modules.</p>
+<p>Use it like this:</p>
+<blockquote>
+<div><p>&#64;mock.patch(‘builtins.__import__’, make_failing_importer(‘setuptools’))
+def <a href="#id1"><span class="problematic" id="id2">test_</span></a>…</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>removed_module_name</strong> – The name of the module import that should raise an exception.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A decorated test decorator.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.test_utils.nottest">
+<code class="sig-prename descclassname">beancount.utils.test_utils.</code><code class="sig-name descname">nottest</code><span class="sig-paren">(</span><em class="sig-param">func</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.test_utils.nottest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make the given function not testable.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.test_utils.patch">
+<code class="sig-prename descclassname">beancount.utils.test_utils.</code><code class="sig-name descname">patch</code><span class="sig-paren">(</span><em class="sig-param">obj</em>, <em class="sig-param">attributes</em>, <em class="sig-param">replacement_type</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.test_utils.patch" title="Permalink to this definition">¶</a></dt>
+<dd><p>A context manager that temporarily patches an object’s attributes.</p>
+<p>All attributes in ‘attributes’ are saved and replaced by new instances
+of type ‘replacement_type’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj</strong> – The object to patch up.</p></li>
+<li><p><strong>attributes</strong> – A string or a sequence of strings, the names of attributes to replace.</p></li>
+<li><p><strong>replacement_type</strong> – A callable to build replacment objects.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p>An instance of a list of sequencs of ‘replacement_type’.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.test_utils.record">
+<code class="sig-prename descclassname">beancount.utils.test_utils.</code><code class="sig-name descname">record</code><span class="sig-paren">(</span><em class="sig-param">fun</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.test_utils.record" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorates the function to intercept and record all calls and return values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fun</strong> – A callable to be decorated.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A wrapper function with a .calls attribute, a list of RCall instances.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.test_utils.run_with_args">
+<code class="sig-prename descclassname">beancount.utils.test_utils.</code><code class="sig-name descname">run_with_args</code><span class="sig-paren">(</span><em class="sig-param">function</em>, <em class="sig-param">args</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.test_utils.run_with_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the given function with sys.argv set to argv. The first argument is
+automatically inferred to be where the function object was defined. sys.argv
+is restored after the function is called.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>function</strong> – A function object to call with no arguments.</p></li>
+<li><p><strong>argv</strong> – A list of arguments, excluding the script name, to be temporarily
+set on sys.argv.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The return value of the function run.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.test_utils.search_words">
+<code class="sig-prename descclassname">beancount.utils.test_utils.</code><code class="sig-name descname">search_words</code><span class="sig-paren">(</span><em class="sig-param">words</em>, <em class="sig-param">line</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.test_utils.search_words" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search for a sequence of words in a line.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>words</strong> – A list of strings, the words to look for, or a space-separated string.</p></li>
+<li><p><strong>line</strong> – A string, the line to search into.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A MatchObject, or None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.test_utils.skipIfRaises">
+<code class="sig-prename descclassname">beancount.utils.test_utils.</code><code class="sig-name descname">skipIfRaises</code><span class="sig-paren">(</span><em class="sig-param">*exc_types</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.test_utils.skipIfRaises" title="Permalink to this definition">¶</a></dt>
+<dd><p>A context manager (or decorator) that skips a test if an exception is raised.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>exc_type</strong> – </p>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p>Nothing, for you to execute the function code.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>SkipTest</strong> – if the test raised the expected exception.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.test_utils.subprocess_env">
+<code class="sig-prename descclassname">beancount.utils.test_utils.</code><code class="sig-name descname">subprocess_env</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.test_utils.subprocess_env" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dict to use as environment for running subprocesses.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A string, the root directory.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.test_utils.tempdir">
+<code class="sig-prename descclassname">beancount.utils.test_utils.</code><code class="sig-name descname">tempdir</code><span class="sig-paren">(</span><em class="sig-param">delete=True</em>, <em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.test_utils.tempdir" title="Permalink to this definition">¶</a></dt>
+<dd><p>A context manager that creates a temporary directory and deletes its
+contents unconditionally once done.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>delete</strong> – A boolean, true if we want to delete the directory after running.</p></li>
+<li><p><strong>**kw</strong> – Keyword arguments for mkdtemp.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p>A string, the name of the temporary directory created.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.utils.text_utils">
+<span id="beancount-utils-text-utils"></span><h2>beancount.utils.text_utils<a class="headerlink" href="#module-beancount.utils.text_utils" title="Permalink to this headline">¶</a></h2>
+<p>Text manipulation utilities.</p>
+<dl class="function">
+<dt id="beancount.utils.text_utils.entitize_ampersand">
+<code class="sig-prename descclassname">beancount.utils.text_utils.</code><code class="sig-name descname">entitize_ampersand</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.text_utils.entitize_ampersand" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert unescaped ampersand characters (&amp;) to XML entities.</p>
+<p>This is used to fix code that has been programmed by bad developers who
+didn’t think about escaping the entities in their strings.
+file does not contain
+:param filename: A string, the name of the file to convert.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A self-destructing NamedTemporaryFile object that has been flushed and
+which you may read to obtain the fixed contents.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.text_utils.replace_number">
+<code class="sig-prename descclassname">beancount.utils.text_utils.</code><code class="sig-name descname">replace_number</code><span class="sig-paren">(</span><em class="sig-param">match</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.text_utils.replace_number" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace a single number matched from text into X’es.
+‘match’ is a MatchObject from a regular expressions match.
+(Use this with re.sub()).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>match</strong> – A MatchObject.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A replacement string, consisting only of X’es.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.text_utils.replace_numbers">
+<code class="sig-prename descclassname">beancount.utils.text_utils.</code><code class="sig-name descname">replace_numbers</code><span class="sig-paren">(</span><em class="sig-param">text</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.text_utils.replace_numbers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace all numbers found within text.</p>
+<p>Note that this is a heuristic used to filter out private numbers from web
+pages in incognito mode and thus may not be perfect. It should let through
+numbers which are part of URLs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>text</strong> – An input string object.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A string, with relevant numbers hopefully replaced with X’es.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.utils.version">
+<span id="beancount-utils-version"></span><h2>beancount.utils.version<a class="headerlink" href="#module-beancount.utils.version" title="Permalink to this headline">¶</a></h2>
+<p>Implement common options across all programs.</p>
+<dl class="function">
+<dt id="beancount.utils.version.ArgumentParser">
+<code class="sig-prename descclassname">beancount.utils.version.</code><code class="sig-name descname">ArgumentParser</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.version.ArgumentParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a standard –version option to an ArgumentParser.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>*args</strong> – Arguments for the parser.</p></li>
+<li><p><strong>*kwargs</strong> – Keyword arguments for the parser.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An instance of ArgumentParser, with our default options set.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.utils.version.compute_version_string">
+<code class="sig-prename descclassname">beancount.utils.version.</code><code class="sig-name descname">compute_version_string</code><span class="sig-paren">(</span><em class="sig-param">version</em>, <em class="sig-param">changeset</em>, <em class="sig-param">timestamp</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.utils.version.compute_version_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute a version string from the changeset and timestamp baked in the parser.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>version</strong> – A string, the version number.</p></li>
+<li><p><strong>changeset</strong> – A string, a version control string identifying the commit of the version.</p></li>
+<li><p><strong>timestamp</strong> – An integer, the UNIX epoch timestamp of the changeset.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A human-readable string for the version.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo.png" alt="Logo"/>
+    
+    <h1 class="logo logo-name">Fava</h1>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Web interface for <a href="http://furius.ca/beancount/">Beancount</a></p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development.html">Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="fava.html">fava</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.core.html">fava.core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.ext.html">fava.ext</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.ext.portfolio_list.html">fava.ext.portfolio_list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.help.html">fava.help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.util.html">fava.util</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.html">beancount</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.core.html">beancount.core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ingest.html">beancount.ingest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ingest.importers.html">beancount.ingest.importers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ingest.importers.mixins.html">beancount.ingest.importers.mixins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ops.html">beancount.ops</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.parser.html">beancount.parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.plugins.html">beancount.plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.prices.html">beancount.prices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.prices.sources.html">beancount.prices.sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.query.html">beancount.query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.reports.html">beancount.reports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.scripts.html">beancount.scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.tools.html">beancount.tools</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">beancount.utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.utils.bisect_key">beancount.utils.bisect_key</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.utils.csv_utils">beancount.utils.csv_utils</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.utils.date_utils">beancount.utils.date_utils</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.utils.defdict">beancount.utils.defdict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.utils.encryption">beancount.utils.encryption</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.utils.file_type">beancount.utils.file_type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.utils.file_utils">beancount.utils.file_utils</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.utils.import_utils">beancount.utils.import_utils</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.utils.invariants">beancount.utils.invariants</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.utils.memo">beancount.utils.memo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.utils.misc_utils">beancount.utils.misc_utils</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.utils.net_utils">beancount.utils.net_utils</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.utils.pager">beancount.utils.pager</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.utils.regexp_utils">beancount.utils.regexp_utils</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.utils.snoop">beancount.utils.snoop</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.utils.test_utils">beancount.utils.test_utils</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.utils.text_utils">beancount.utils.text_utils</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.utils.version">beancount.utils.version</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.web.html">beancount.web</a></li>
+</ul>
+</li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/beancount/fava">fava @ GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://gitter.im/beancount/fava">Chat</a></li>
+    
+    <li class="toctree-l1"><a href="https://github.com/beancount/fava/issues">Issue Tracker</a></li>
+    
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Dominik Aumayr.
+      
+      |
+      <a href="../_sources/api/beancount.utils.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

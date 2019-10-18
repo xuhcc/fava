@@ -1,0 +1,700 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>beancount.prices &#8212; Fava  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="beancount.prices.sources" href="beancount.prices.sources.html" />
+    <link rel="prev" title="beancount.plugins" href="beancount.plugins.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-beancount.prices">
+<span id="beancount-prices"></span><h1>beancount.prices<a class="headerlink" href="#module-beancount.prices" title="Permalink to this headline">¶</a></h1>
+<p>Fetch prices from the internet and output them as Beancount price directives.</p>
+<p>This script accepts a list of Beancount input filenames, and fetches prices
+required to compute market values for current positions:</p>
+<blockquote>
+<div><p>bean-price /home/joe/finances/joe.beancount</p>
+</div></blockquote>
+<p>The list of fetching jobs to carry out is derived automatically from the input
+file (see section below for full details). It is also possible to provide a list
+of specific price fetching jobs to run, e.g.,</p>
+<blockquote>
+<div><p>bean-price -e google/TSE:XUS yahoo/AAPL mysources.morningstar/RBF1005</p>
+</div></blockquote>
+<p>The general format of each of these “source strings” is</p>
+<blockquote>
+<div><p>&lt;module&gt;/[^]&lt;ticker&gt;</p>
+</div></blockquote>
+<p>The “module” is the name of a Python module that contains a Source class which
+can be instantiated and connect to a data source to extract price data. These
+modules are automatically imported by name and instantiated in order to pull the
+price from a particular data source. This allows you to write your own
+supplementary fetcher codes without having to modify this script.</p>
+<p>Default implementations are provided to provide access to prices from Yahoo!
+Finance or Google Finance, which cover a large universe of common public
+investment types (e.g. stock tickers). As a convenience, the module name is
+always first searched under the “beancount.prices.sources” package, where those
+default source implementations live. This is how, for example, in order to use
+the provided Google Finance data fetcher you don’t have to write
+“beancount.prices.sources.yahoo/AAPL” but simply “yahoo/AAPL”.</p>
+<div class="section" id="date">
+<h2>Date<a class="headerlink" href="#date" title="Permalink to this headline">¶</a></h2>
+<p>By default, this script will fetch prices at the latest available date &amp; time.
+You can use an option to fetch historical prices for a desired date instead:</p>
+<blockquote>
+<div><p>bean-price –date=2015-02-03</p>
+</div></blockquote>
+</div>
+<div class="section" id="inverse">
+<h2>Inverse<a class="headerlink" href="#inverse" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes, prices are available for the inverse of an instrument. This is often
+the case for currencies. For example, the price of “CAD” in USD” is provided by
+the USD/CAD market, which gives the price of a US dollar in Canadian dollars. In
+order specify this, you can prepend “^” to the instrument to instruct the driver
+to compute the inverse of the given price:</p>
+<blockquote>
+<div><p>bean-price -e USD:google/^CURRENCY:USDCAD</p>
+</div></blockquote>
+<p>If a source price is to be inverted, like this, the precision could be different
+than what is fetched. For instance, if the price of USD/CAD is 1.32759, it would
+output be this from the above directive:</p>
+<blockquote>
+<div><p>2015-10-28 price CAD  0.753244601119 USD</p>
+</div></blockquote>
+<p>By default, inverted rates will be rounded similarly to how other Price
+directives were rounding those numbers.</p>
+</div>
+<div class="section" id="swap-inverted">
+<h2>Swap Inverted<a class="headerlink" href="#swap-inverted" title="Permalink to this headline">¶</a></h2>
+<p>If you prefer to have the output Price entries with swapped currencies instead
+of inverting the rate itself, you can use the –swap-inverted option. In the
+previous example for the price of CAD, it would output this:</p>
+<blockquote>
+<div><p>2015-10-28 price USD   1.32759 CAD</p>
+</div></blockquote>
+<p>This works since the Beancount price database computes and interpolates the
+reciprocals automatically for all pairs of commodities in its database.</p>
+</div>
+<div class="section" id="prices-needed-for-a-beancount-file">
+<h2>Prices Needed for a Beancount File<a class="headerlink" href="#prices-needed-for-a-beancount-file" title="Permalink to this headline">¶</a></h2>
+<p>You can also provide a filename to extract the list of tickers to fetch from a
+Beancount input file, e.g.:</p>
+<blockquote>
+<div><p>bean-price /home/joe/finances/joe.beancount</p>
+</div></blockquote>
+<p>There are many ways to extract a list of commodities with needed prices from a
+Baancount input file:</p>
+<ul>
+<li><p>Prices for all the holdings that were seen held-at-cost at a particular date.</p></li>
+<li><p>Prices for holdings held at a particular date which were price converted from
+some other commodity in the past (i.e., for currencies).</p></li>
+<li><p>The list of all Commodity directives present in the file. For each of those
+holdings, the corresponding Commodity directive is consulted and its “ticker”
+metadata field is used to specify where to attempt to fetch prices. You should
+have directives like this in your input file:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>2007-07-20 commodity VEA</dt><dd><p>price: “google/NYSEARCA:VEA”</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>The “price” metadata can be a comma-separated list of sources to try out, in
+which case each of the sources will be looked at :</p>
+<blockquote>
+<div><dl class="simple">
+<dt>2007-07-20 commodity VEA</dt><dd><p>price: “google/CURRENCY:USDCAD,yahoo/USDCAD”</p>
+</dd>
+</dl>
+</div></blockquote>
+</li>
+<li><p>Existing price directives for the same data are excluded by default, since the
+price is already in the file.</p></li>
+</ul>
+<p>By default, the list of tickers to be fetched includes only the intersection of
+these lists. The general intent of the user of this script is to fetch missing
+prices, and only needed ones, for a particular date.</p>
+<ul class="simple">
+<li><p>Use the –date option to change the applied date.</p></li>
+<li><p>Use the –all option to fetch the entire set of prices, regardless
+of holdings and date.</p></li>
+<li><p>Use –clobber to ignore existing price directives.</p></li>
+</ul>
+<p>You can also print the list of prices to be fetched with the –dry-run option,
+which stops short of actually fetching the missing prices (it just prints the
+list of fetches it would otherwise attempt).</p>
+</div>
+<div class="section" id="caching">
+<h2>Caching<a class="headerlink" href="#caching" title="Permalink to this headline">¶</a></h2>
+<p>Prices are automatically cached. You can disable the cache with an option:</p>
+<blockquote>
+<div><p>bean-price –no-cache</p>
+</div></blockquote>
+<p>You can also instruct the script to clear the cache before fetching its prices:</p>
+<blockquote>
+<div><p>bean-price –clear-cache</p>
+</div></blockquote>
+</div>
+<div class="section" id="about-sources-and-data-availability">
+<h2>About Sources and Data Availability<a class="headerlink" href="#about-sources-and-data-availability" title="Permalink to this headline">¶</a></h2>
+<p>IMPORTANT: Note that each source may support a different routine for getting its
+latest data and for fetching historical/dated data, and that each of these may
+differ in their support. For example, Google Finance does not support fetching
+historical data for its CURRENCY:* instruments.</p>
+</div>
+<div class="section" id="module-beancount.prices.find_prices">
+<span id="beancount-prices-find-prices"></span><h2>beancount.prices.find_prices<a class="headerlink" href="#module-beancount.prices.find_prices" title="Permalink to this headline">¶</a></h2>
+<p>A library of codes create price fetching jobs from strings and files.</p>
+<dl class="class">
+<dt id="beancount.prices.find_prices.DatedPrice">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.prices.find_prices.</code><code class="sig-name descname">DatedPrice</code><span class="sig-paren">(</span><em class="sig-param">base</em>, <em class="sig-param">quote</em>, <em class="sig-param">date</em>, <em class="sig-param">sources</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.find_prices.DatedPrice" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="beancount.prices.find_prices.PriceSource">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.prices.find_prices.</code><code class="sig-name descname">PriceSource</code><span class="sig-paren">(</span><em class="sig-param">module</em>, <em class="sig-param">symbol</em>, <em class="sig-param">invert</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.find_prices.PriceSource" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="beancount.prices.find_prices.find_balance_currencies">
+<code class="sig-prename descclassname">beancount.prices.find_prices.</code><code class="sig-name descname">find_balance_currencies</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">date=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.find_prices.find_balance_currencies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return currencies relevant for the given date.</p>
+<p>This computes the account balances as of the date, and returns the union of:
+a) The currencies held at cost, and
+b) Currency pairs from previous conversions, but only for currencies with</p>
+<blockquote>
+<div><p>non-zero balances.</p>
+</div></blockquote>
+<p>This is intended to produce the list of currencies whose prices are relevant
+at a particular date, based on previous history.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives.</p></li>
+<li><p><strong>date</strong> – A datetime.date instance.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A set of (base, quote) currencies.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.prices.find_prices.find_currencies_at_cost">
+<code class="sig-prename descclassname">beancount.prices.find_prices.</code><code class="sig-name descname">find_currencies_at_cost</code><span class="sig-paren">(</span><em class="sig-param">entries</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.find_prices.find_currencies_at_cost" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all currencies that were held at cost at some point.</p>
+<p>This returns all of them, even if not on the books at a particular point in
+time. This code does not look at account balances.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives.</p></li>
+<li><p><strong>date</strong> – A datetime.date instance.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of (base, quote) currencies.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.prices.find_prices.find_currencies_converted">
+<code class="sig-prename descclassname">beancount.prices.find_prices.</code><code class="sig-name descname">find_currencies_converted</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">date=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.find_prices.find_currencies_converted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return currencies from price conversions.</p>
+<p>This function looks at all price conversions that occurred until some date
+and produces a list of them. Note: This does not include Price directives,
+only postings with price conversions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives.</p></li>
+<li><p><strong>date</strong> – A datetime.date instance.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of (base, quote) currencies.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.prices.find_prices.find_currencies_declared">
+<code class="sig-prename descclassname">beancount.prices.find_prices.</code><code class="sig-name descname">find_currencies_declared</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">date=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.find_prices.find_currencies_declared" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return currencies declared in Commodity directives.</p>
+<p>If a ‘price’ metadata field is provided, include all the quote currencies
+there-in. Otherwise, the Commodity directive is ignored.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives.</p></li>
+<li><p><strong>date</strong> – A datetime.date instance.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of (base, quote, list of PriceSource) currencies. The list of
+(base, quote) pairs is guaranteed to be unique.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.prices.find_prices.find_currencies_priced">
+<code class="sig-prename descclassname">beancount.prices.find_prices.</code><code class="sig-name descname">find_currencies_priced</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">date=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.find_prices.find_currencies_priced" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return currencies seen in Price directives.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives.</p></li>
+<li><p><strong>date</strong> – A datetime.date instance.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of (base, quote) currencies.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.prices.find_prices.format_dated_price_str">
+<code class="sig-prename descclassname">beancount.prices.find_prices.</code><code class="sig-name descname">format_dated_price_str</code><span class="sig-paren">(</span><em class="sig-param">dprice</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.find_prices.format_dated_price_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a dated price to a one-line printable string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dprice</strong> – A DatedPrice instance.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The string for a DatedPrice instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.prices.find_prices.get_price_jobs_at_date">
+<code class="sig-prename descclassname">beancount.prices.find_prices.</code><code class="sig-name descname">get_price_jobs_at_date</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">date=None</em>, <em class="sig-param">inactive=False</em>, <em class="sig-param">undeclared_source=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.find_prices.get_price_jobs_at_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of prices to fetch from a stream of entries.</p>
+<p>The active holdings held on the given date are included.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> – A string, the name of a file to process.</p></li>
+<li><p><strong>date</strong> – A datetime.date instance.</p></li>
+<li><p><strong>inactive</strong> – Include currencies with no balance at the given date. The default
+is to only include those currencies which have a non-zero balance.</p></li>
+<li><p><strong>undeclared_source</strong> – A string, the name of the default source module to use to
+pull prices for commodities without a price source metadata on their
+Commodity directive declaration.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of DatedPrice instances.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.prices.find_prices.import_source">
+<code class="sig-prename descclassname">beancount.prices.find_prices.</code><code class="sig-name descname">import_source</code><span class="sig-paren">(</span><em class="sig-param">module_name</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.find_prices.import_source" title="Permalink to this definition">¶</a></dt>
+<dd><p>Import the source module defined by the given name.</p>
+<p>The default location is handled here.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>short_module_name</strong> – A string, the name of a Python module, which may
+be within the default package or a full name.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A corresponding Python module object.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ImportError</strong> – If the module cannot be imported.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.prices.find_prices.log_currency_list">
+<code class="sig-prename descclassname">beancount.prices.find_prices.</code><code class="sig-name descname">log_currency_list</code><span class="sig-paren">(</span><em class="sig-param">message</em>, <em class="sig-param">currencies</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.find_prices.log_currency_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log a list of currencies to debug output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> – A message string to prepend.</p></li>
+<li><p><strong>currencies</strong> – A list of (base, quote) currency pair.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.prices.find_prices.parse_single_source">
+<code class="sig-prename descclassname">beancount.prices.find_prices.</code><code class="sig-name descname">parse_single_source</code><span class="sig-paren">(</span><em class="sig-param">source</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.find_prices.parse_single_source" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a single source string.</p>
+<p>Source specifications follow the syntax:</p>
+<blockquote>
+<div><p>&lt;module&gt;/[^]&lt;ticker&gt;</p>
+</div></blockquote>
+<p>The &lt;module&gt; is resolved against the Python path, but first looked up
+under the package where the default price extractors lie.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>source</strong> – A single source string specification.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A PriceSource tuple, or</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If invalid.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.prices.find_prices.parse_source_map">
+<code class="sig-prename descclassname">beancount.prices.find_prices.</code><code class="sig-name descname">parse_source_map</code><span class="sig-paren">(</span><em class="sig-param">source_map_spec</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.find_prices.parse_source_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a source map specification string.</p>
+<p>Source map specifications allow the speification of multiple sources for
+multiple quote currencies and follow the following syntax:</p>
+<blockquote>
+<div><p>&lt;currency1&gt;:&lt;source1&gt;,&lt;source2&gt;,… &lt;currency2&gt;:&lt;source1&gt;,…</p>
+</div></blockquote>
+<p>Where a &lt;source&gt; itself follows:</p>
+<blockquote>
+<div><p>&lt;module&gt;/[^]&lt;ticker&gt;</p>
+</div></blockquote>
+<p>The &lt;module&gt; is resolved against the Python path, but first looked up under
+the package where the default price extractors lie. The presence of a ‘^’
+character indicates that twe should use the inverse of the rate pull from
+this source.</p>
+<p>For example, for prices of AAPL in USD:</p>
+<blockquote>
+<div><p>USD:google/NASDAQ:AAPL,yahoo/AAPL</p>
+</div></blockquote>
+<p>Or for the exchange rate of a currency, such as INR in USD or in CAD:</p>
+<blockquote>
+<div><p>USD:google/^CURRENCY:USDINR CAD:google/^CURRENCY:CADINR</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>source_map_spec</strong> – A string, a full source map specification to be parsed.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>TODO</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>FIXME</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If an invalid pattern has been specified.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.prices.price">
+<span id="beancount-prices-price"></span><h2>beancount.prices.price<a class="headerlink" href="#module-beancount.prices.price" title="Permalink to this headline">¶</a></h2>
+<p>Driver code for the price script.</p>
+<dl class="function">
+<dt id="beancount.prices.price.fetch_cached_price">
+<code class="sig-prename descclassname">beancount.prices.price.</code><code class="sig-name descname">fetch_cached_price</code><span class="sig-paren">(</span><em class="sig-param">source</em>, <em class="sig-param">symbol</em>, <em class="sig-param">date</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.price.fetch_cached_price" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call Source to fetch a price, but look and/or update the cache first.</p>
+<p>This function entirely deals with caching and correct expiration. It keeps
+old prices if they were fetched in the past, and it quickly expires
+intra-day prices if they are fetched on the same day.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source</strong> – A Python module object.</p></li>
+<li><p><strong>symbol</strong> – A string, the ticker to fetch.</p></li>
+<li><p><strong>date</strong> – A datetime.date instance, None if we’re to fetch the latest date.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A SourcePrice instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.prices.price.fetch_price">
+<code class="sig-prename descclassname">beancount.prices.price.</code><code class="sig-name descname">fetch_price</code><span class="sig-paren">(</span><em class="sig-param">dprice</em>, <em class="sig-param">swap_inverted=False</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.price.fetch_price" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch a price for the DatePrice job.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dprice</strong> – A DatedPrice instances.</p></li>
+<li><p><strong>swap_inverted</strong> – A boolean, true if we should invert currencies instead of
+rate for an inverted price source.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A Price entry corresponding to the output of the jobs processed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.prices.price.filter_redundant_prices">
+<code class="sig-prename descclassname">beancount.prices.price.</code><code class="sig-name descname">filter_redundant_prices</code><span class="sig-paren">(</span><em class="sig-param">price_entries</em>, <em class="sig-param">existing_entries</em>, <em class="sig-param">diffs=False</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.price.filter_redundant_prices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filter out new entries that are redundant from an existing set.</p>
+<p>If the price differs, we override it with the new entry only on demand. This
+is because this would create conflict with existing price entries when
+parsing, if the new entries are simply inserted into the input.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>price_entries</strong> – A list of newly created, proposed to be added Price directives.</p></li>
+<li><p><strong>existing_entries</strong> – A list of existing entries we are proposing to add to.</p></li>
+<li><p><strong>diffs</strong> – A boolean, true if we should output differing price entries
+at the same date.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A filtered list of remaining entries, and a list of ignored entries.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.prices.price.main">
+<code class="sig-prename descclassname">beancount.prices.price.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.price.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="beancount.prices.price.now">
+<code class="sig-prename descclassname">beancount.prices.price.</code><code class="sig-name descname">now</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.price.now" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indirection in order to be able to mock it out in the tests.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.prices.price.process_args">
+<code class="sig-prename descclassname">beancount.prices.price.</code><code class="sig-name descname">process_args</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.price.process_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process the arguments. This also initializes the logging module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>args: The argparse receiver of command-line arguments.
+jobs: A list of DatedPrice job objects.
+entries: A list of all the parsed entries.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>A tuple of</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.prices.price.reset_cache">
+<code class="sig-prename descclassname">beancount.prices.price.</code><code class="sig-name descname">reset_cache</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.price.reset_cache" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the cache to its uninitialized state.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.prices.price.setup_cache">
+<code class="sig-prename descclassname">beancount.prices.price.</code><code class="sig-name descname">setup_cache</code><span class="sig-paren">(</span><em class="sig-param">cache_filename</em>, <em class="sig-param">clear_cache</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.price.setup_cache" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setup the results cache.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cache_filename</strong> – A string or None, the filename for the cache.</p></li>
+<li><p><strong>clear_cache</strong> – A boolean, if true, delete the cache before beginning.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.prices.source">
+<span id="beancount-prices-source"></span><h2>beancount.prices.source<a class="headerlink" href="#module-beancount.prices.source" title="Permalink to this headline">¶</a></h2>
+<p>Interface definition for all price sources.</p>
+<p>This module describes the contract to be fulfilled by all implementations of
+price sources.</p>
+<dl class="class">
+<dt id="beancount.prices.source.Source">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.prices.source.</code><code class="sig-name descname">Source</code><a class="headerlink" href="#beancount.prices.source.Source" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interface to be implemented by all price sources.</p>
+<dl class="method">
+<dt id="beancount.prices.source.Source.get_historical_price">
+<code class="sig-name descname">get_historical_price</code><span class="sig-paren">(</span><em class="sig-param">ticker</em>, <em class="sig-param">time</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.source.Source.get_historical_price" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the historical price found for the symbol at the given date.</p>
+<p>This could be the price of the close of the day, for instance. We assume
+that there is some single price representative of the day.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ticker</strong> – A string, the ticker to be fetched by the source. This ticker
+may include structure, such as the exchange code. Also note that
+this ticker is source-specified, and is not necessarily the same
+value as the commodity symbol used in the Beancount file.</p></li>
+<li><p><strong>time</strong> – The timestamp at which to query for the price. This is a
+timezone-aware timestamp you can convert to any timezone. For past
+dates we query for a time that is equivalent to 4pm in the user’s
+timezone.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A SourcePrice instance. If the price could not be fetched, None is
+returned and another source should be consulted. There is never any
+guarantee that a price source will be able to fetch its value; client
+code must be able to handle this. Also note that the price’s returned
+time must be timezone-aware.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.prices.source.Source.get_latest_price">
+<code class="sig-name descname">get_latest_price</code><span class="sig-paren">(</span><em class="sig-param">ticker</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.source.Source.get_latest_price" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch the current latest price. The date may differ.</p>
+<p>This routine attempts to fetch the most recent available price, and
+returns the actual date of the quoted price, which may differ from the
+date this call is made at. {1cfa25e37fc1}</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ticker</strong> – A string, the ticker to be fetched by the source. This ticker
+may include structure, such as the exchange code. Also note that
+this ticker is source-specified, and is not necessarily the same
+value as the commodity symbol used in the Beancount file.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A SourcePrice instance. If the price could not be fetched, None is
+returned and another source should be consulted. There is never any
+guarantee that a price source will be able to fetch its value; client
+code must be able to handle this. Also note that the price’s returned
+time must be timezone-aware.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.prices.source.SourcePrice">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.prices.source.</code><code class="sig-name descname">SourcePrice</code><span class="sig-paren">(</span><em class="sig-param">price</em>, <em class="sig-param">time</em>, <em class="sig-param">quote_currency</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.source.SourcePrice" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo.png" alt="Logo"/>
+    
+    <h1 class="logo logo-name">Fava</h1>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Web interface for <a href="http://furius.ca/beancount/">Beancount</a></p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development.html">Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="fava.html">fava</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.core.html">fava.core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.ext.html">fava.ext</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.ext.portfolio_list.html">fava.ext.portfolio_list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.help.html">fava.help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.util.html">fava.util</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.html">beancount</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.core.html">beancount.core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ingest.html">beancount.ingest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ingest.importers.html">beancount.ingest.importers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ingest.importers.mixins.html">beancount.ingest.importers.mixins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ops.html">beancount.ops</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.parser.html">beancount.parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.plugins.html">beancount.plugins</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">beancount.prices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#date">Date</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inverse">Inverse</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#swap-inverted">Swap Inverted</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prices-needed-for-a-beancount-file">Prices Needed for a Beancount File</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#caching">Caching</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#about-sources-and-data-availability">About Sources and Data Availability</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.prices.find_prices">beancount.prices.find_prices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.prices.price">beancount.prices.price</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.prices.source">beancount.prices.source</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.prices.sources.html">beancount.prices.sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.query.html">beancount.query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.reports.html">beancount.reports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.scripts.html">beancount.scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.tools.html">beancount.tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.utils.html">beancount.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.web.html">beancount.web</a></li>
+</ul>
+</li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/beancount/fava">fava @ GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://gitter.im/beancount/fava">Chat</a></li>
+    
+    <li class="toctree-l1"><a href="https://github.com/beancount/fava/issues">Issue Tracker</a></li>
+    
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Dominik Aumayr.
+      
+      |
+      <a href="../_sources/api/beancount.prices.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

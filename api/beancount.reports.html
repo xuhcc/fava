@@ -1,0 +1,2513 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>beancount.reports &#8212; Fava  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="beancount.scripts" href="beancount.scripts.html" />
+    <link rel="prev" title="beancount.query" href="beancount.query.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-beancount.reports">
+<span id="beancount-reports"></span><h1>beancount.reports<a class="headerlink" href="#module-beancount.reports" title="Permalink to this headline">¶</a></h1>
+<p>Routines to produce various reports, either to HTML or to text.</p>
+<div class="section" id="module-beancount.reports.balance_reports">
+<span id="beancount-reports-balance-reports"></span><h2>beancount.reports.balance_reports<a class="headerlink" href="#module-beancount.reports.balance_reports" title="Permalink to this headline">¶</a></h2>
+<p>Report classes for all reports that display ending balances of accounts.</p>
+<dl class="class">
+<dt id="beancount.reports.balance_reports.BalanceSheetReport">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.balance_reports.</code><code class="sig-name descname">BalanceSheetReport</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">formatter=None</em>, <em class="sig-param">css_id=None</em>, <em class="sig-param">css_class=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.balance_reports.BalanceSheetReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print out a balance sheet.</p>
+<dl class="attribute">
+<dt id="beancount.reports.balance_reports.BalanceSheetReport.default_format">
+<code class="sig-name descname">default_format</code><em class="property"> = 'html'</em><a class="headerlink" href="#beancount.reports.balance_reports.BalanceSheetReport.default_format" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.balance_reports.BalanceSheetReport.names">
+<code class="sig-name descname">names</code><em class="property"> = ['balsheet']</em><a class="headerlink" href="#beancount.reports.balance_reports.BalanceSheetReport.names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.balance_reports.BalanceSheetReport.render_htmldiv">
+<code class="sig-name descname">render_htmldiv</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em>, <em class="sig-param">fwdfunc=&lt;function BalanceSheetReport.render_real_htmldiv&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.balance_reports.BalanceSheetReport.render_htmldiv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.balance_reports.BalanceSheetReport.render_real_html">
+<code class="sig-name descname">render_real_html</code><span class="sig-paren">(</span><em class="sig-param">real_root</em>, <em class="sig-param">price_map</em>, <em class="sig-param">price_date</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.balance_reports.BalanceSheetReport.render_real_html" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrap an htmldiv into our standard HTML template.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>real_root</strong> – An instance of RealAccount.</p></li>
+<li><p><strong>price_map</strong> – A price database.</p></li>
+<li><p><strong>price_date</strong> – A date for evaluating prices.</p></li>
+<li><p><strong>options_map</strong> – A dict, options as produced by the parser.</p></li>
+<li><p><strong>file</strong> – A file object to write the output to.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.balance_reports.BalanceSheetReport.render_real_htmldiv">
+<code class="sig-name descname">render_real_htmldiv</code><span class="sig-paren">(</span><em class="sig-param">real_root</em>, <em class="sig-param">price_map</em>, <em class="sig-param">price_date</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.balance_reports.BalanceSheetReport.render_real_htmldiv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.reports.balance_reports.BalancesReport">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.balance_reports.</code><code class="sig-name descname">BalancesReport</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">formatter=None</em>, <em class="sig-param">css_id=None</em>, <em class="sig-param">css_class=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.balance_reports.BalancesReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print out the trial balance of accounts matching an expression.</p>
+<dl class="method">
+<dt id="beancount.reports.balance_reports.BalancesReport.add_args">
+<em class="property">classmethod </em><code class="sig-name descname">add_args</code><span class="sig-paren">(</span><em class="sig-param">parser</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.balance_reports.BalancesReport.add_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add arguments to parse for this report.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>parser</strong> – An instance of argparse.ArgumentParser.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.balance_reports.BalancesReport.default_format">
+<code class="sig-name descname">default_format</code><em class="property"> = 'text'</em><a class="headerlink" href="#beancount.reports.balance_reports.BalancesReport.default_format" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.balance_reports.BalancesReport.names">
+<code class="sig-name descname">names</code><em class="property"> = ['balances', 'bal', 'trial']</em><a class="headerlink" href="#beancount.reports.balance_reports.BalancesReport.names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.balance_reports.BalancesReport.render_htmldiv">
+<code class="sig-name descname">render_htmldiv</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em>, <em class="sig-param">fwdfunc=&lt;function BalancesReport.render_real_htmldiv&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.balance_reports.BalancesReport.render_htmldiv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.balance_reports.BalancesReport.render_real_html">
+<code class="sig-name descname">render_real_html</code><span class="sig-paren">(</span><em class="sig-param">real_root</em>, <em class="sig-param">price_map</em>, <em class="sig-param">price_date</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.balance_reports.BalancesReport.render_real_html" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrap an htmldiv into our standard HTML template.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>real_root</strong> – An instance of RealAccount.</p></li>
+<li><p><strong>price_map</strong> – A price database.</p></li>
+<li><p><strong>price_date</strong> – A date for evaluating prices.</p></li>
+<li><p><strong>options_map</strong> – A dict, options as produced by the parser.</p></li>
+<li><p><strong>file</strong> – A file object to write the output to.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.balance_reports.BalancesReport.render_real_htmldiv">
+<code class="sig-name descname">render_real_htmldiv</code><span class="sig-paren">(</span><em class="sig-param">real_root</em>, <em class="sig-param">price_map</em>, <em class="sig-param">price_date</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.balance_reports.BalancesReport.render_real_htmldiv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.balance_reports.BalancesReport.render_real_text">
+<code class="sig-name descname">render_real_text</code><span class="sig-paren">(</span><em class="sig-param">real_root</em>, <em class="sig-param">price_map</em>, <em class="sig-param">price_date</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.balance_reports.BalancesReport.render_real_text" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.balance_reports.BalancesReport.render_text">
+<code class="sig-name descname">render_text</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em>, <em class="sig-param">fwdfunc=&lt;function BalancesReport.render_real_text&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.balance_reports.BalancesReport.render_text" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.reports.balance_reports.IncomeStatementReport">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.balance_reports.</code><code class="sig-name descname">IncomeStatementReport</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">formatter=None</em>, <em class="sig-param">css_id=None</em>, <em class="sig-param">css_class=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.balance_reports.IncomeStatementReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print out an income statement.</p>
+<dl class="attribute">
+<dt id="beancount.reports.balance_reports.IncomeStatementReport.default_format">
+<code class="sig-name descname">default_format</code><em class="property"> = 'html'</em><a class="headerlink" href="#beancount.reports.balance_reports.IncomeStatementReport.default_format" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.balance_reports.IncomeStatementReport.names">
+<code class="sig-name descname">names</code><em class="property"> = ['income']</em><a class="headerlink" href="#beancount.reports.balance_reports.IncomeStatementReport.names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.balance_reports.IncomeStatementReport.render_htmldiv">
+<code class="sig-name descname">render_htmldiv</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em>, <em class="sig-param">fwdfunc=&lt;function IncomeStatementReport.render_real_htmldiv&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.balance_reports.IncomeStatementReport.render_htmldiv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.balance_reports.IncomeStatementReport.render_real_html">
+<code class="sig-name descname">render_real_html</code><span class="sig-paren">(</span><em class="sig-param">real_root</em>, <em class="sig-param">price_map</em>, <em class="sig-param">price_date</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.balance_reports.IncomeStatementReport.render_real_html" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrap an htmldiv into our standard HTML template.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>real_root</strong> – An instance of RealAccount.</p></li>
+<li><p><strong>price_map</strong> – A price database.</p></li>
+<li><p><strong>price_date</strong> – A date for evaluating prices.</p></li>
+<li><p><strong>options_map</strong> – A dict, options as produced by the parser.</p></li>
+<li><p><strong>file</strong> – A file object to write the output to.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.balance_reports.IncomeStatementReport.render_real_htmldiv">
+<code class="sig-name descname">render_real_htmldiv</code><span class="sig-paren">(</span><em class="sig-param">real_root</em>, <em class="sig-param">price_map</em>, <em class="sig-param">price_date</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.balance_reports.IncomeStatementReport.render_real_htmldiv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.reports.base">
+<span id="beancount-reports-base"></span><h2>beancount.reports.base<a class="headerlink" href="#module-beancount.reports.base" title="Permalink to this headline">¶</a></h2>
+<p>Base class for all reports classes.</p>
+<p>Each report class should be able to render a filtered list of entries to a
+variety of formats. Each report has a name, some command-line options, and
+supports some subset of formats.</p>
+<dl class="class">
+<dt id="beancount.reports.base.HTMLReport">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.base.</code><code class="sig-name descname">HTMLReport</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">formatter=None</em>, <em class="sig-param">css_id=None</em>, <em class="sig-param">css_class=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.base.HTMLReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>A mixin for reports that support forwarding html to htmldiv implementation.</p>
+<dl class="attribute">
+<dt id="beancount.reports.base.HTMLReport.default_format">
+<code class="sig-name descname">default_format</code><em class="property"> = 'html'</em><a class="headerlink" href="#beancount.reports.base.HTMLReport.default_format" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.base.HTMLReport.render_html">
+<code class="sig-name descname">render_html</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.base.HTMLReport.render_html" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.reports.base.RealizationMeta">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.base.</code><code class="sig-name descname">RealizationMeta</code><a class="headerlink" href="#beancount.reports.base.RealizationMeta" title="Permalink to this definition">¶</a></dt>
+<dd><p>A metaclass for reports that render a realization.</p>
+<p>The main use of this metaclass is to allow us to create report classes with
+render_real_*() methods that accept a RealAccount instance as the basis for
+producing a report.</p>
+<p>RealAccount can be expensive to build, and may be pre-computed and kept
+around to generate the various reports related to a particular filter of a
+subset of transactions, and it would be inconvenient to have to recalculate
+it every time we need to produce a report. In particular, this is the case
+for the web interface: the user selects a particular subset of transactions
+to view, and can then click to the various reports related to this subset of
+transactions. This is why this is useful.</p>
+<p>The classes generated with this metaclass respond to the same interface as
+the regular report classes, so that if invoked from the command-line, it
+will automatically build the realization from the given set of entries. This
+metaclass looks at the class’ existing render_real_*() methods and generate
+the corresponding render_*() methods automatically.</p>
+<dl class="method">
+<dt id="beancount.reports.base.RealizationMeta.render_real_html">
+<code class="sig-name descname">render_real_html</code><span class="sig-paren">(</span><em class="sig-param">real_root</em>, <em class="sig-param">price_map</em>, <em class="sig-param">price_date</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.base.RealizationMeta.render_real_html" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrap an htmldiv into our standard HTML template.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>real_root</strong> – An instance of RealAccount.</p></li>
+<li><p><strong>price_map</strong> – A price database.</p></li>
+<li><p><strong>price_date</strong> – A date for evaluating prices.</p></li>
+<li><p><strong>options_map</strong> – A dict, options as produced by the parser.</p></li>
+<li><p><strong>file</strong> – A file object to write the output to.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.reports.base.Report">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.base.</code><code class="sig-name descname">Report</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">parser</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.base.Report" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for all reports.</p>
+<dl class="attribute">
+<dt id="beancount.reports.base.Report.names">
+<code class="sig-name descname">names</code><a class="headerlink" href="#beancount.reports.base.Report.names" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of strings, the various names of this report. The first name
+is taken to be the authoritative name of the report; the rest are
+considered aliases.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.base.Report.parser">
+<code class="sig-name descname">parser</code><a class="headerlink" href="#beancount.reports.base.Report.parser" title="Permalink to this definition">¶</a></dt>
+<dd><p>The parser for the command’s arguments. This is used to raise errors.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.base.Report.args">
+<code class="sig-name descname">args</code><a class="headerlink" href="#beancount.reports.base.Report.args" title="Permalink to this definition">¶</a></dt>
+<dd><p>An object that contains the values of this command’s parsed arguments.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.base.Report.add_args">
+<em class="property">classmethod </em><code class="sig-name descname">add_args</code><span class="sig-paren">(</span><em class="sig-param">parser</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.base.Report.add_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add arguments to parse for this report.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>parser</strong> – An instance of argparse.ArgumentParser.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.base.Report.default_format">
+<code class="sig-name descname">default_format</code><em class="property"> = None</em><a class="headerlink" href="#beancount.reports.base.Report.default_format" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.base.Report.from_args">
+<em class="property">classmethod </em><code class="sig-name descname">from_args</code><span class="sig-paren">(</span><em class="sig-param">argv=None</em>, <em class="sig-param">**kwds</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.base.Report.from_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>A convenience method used to create an instance from arguments.</p>
+<p>This creates an instance of the report with default arguments. This is a
+convenience that may be used for tests. Our actual script uses subparsers
+and invokes add_args() and creates an appropriate instance directly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>argv</strong> – A list of strings, command-line arguments to use to construct tbe report.</p></li>
+<li><p><strong>kwds</strong> – A dict of other keyword arguments to pass to the report’s constructor.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A new instace of the report.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.base.Report.get_supported_formats">
+<em class="property">classmethod </em><code class="sig-name descname">get_supported_formats</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.base.Report.get_supported_formats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enumerates the list of supported formats, by inspecting methods of this object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A list of strings, such as [‘html’, ‘text’].</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">names</code><em class="property"> = None</em></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.base.Report.render">
+<code class="sig-name descname">render</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em>, <em class="sig-param">output_format=None</em>, <em class="sig-param">file=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.base.Report.render" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render a report of filtered entries to any format.</p>
+<p>This function dispatches to a specific method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives to render.</p></li>
+<li><p><strong>errors</strong> – A list of errors that occurred during processing.</p></li>
+<li><p><strong>options_map</strong> – A dict of options, as produced by the parser.</p></li>
+<li><p><strong>output_format</strong> – A string, the name of the format. I fnot specified, use
+the default format.</p></li>
+<li><p><strong>file</strong> – The file to write the output to.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>If no ‘file’ is provided, return the contents of the report as a
+string.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#beancount.reports.base.ReportError" title="beancount.reports.base.ReportError"><strong>ReportError</strong></a> – If the requested format is not supported.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="beancount.reports.base.ReportError">
+<em class="property">exception </em><code class="sig-prename descclassname">beancount.reports.base.</code><code class="sig-name descname">ReportError</code><a class="headerlink" href="#beancount.reports.base.ReportError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Error that occurred during report generation.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.reports.base.TableReport">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.base.</code><code class="sig-name descname">TableReport</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">formatter=None</em>, <em class="sig-param">css_id=None</em>, <em class="sig-param">css_class=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.base.TableReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>A base class for reports that supports automatic conversions from Table.</p>
+<dl class="attribute">
+<dt id="beancount.reports.base.TableReport.default_format">
+<code class="sig-name descname">default_format</code><em class="property"> = 'text'</em><a class="headerlink" href="#beancount.reports.base.TableReport.default_format" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.base.TableReport.generate_table">
+<code class="sig-name descname">generate_table</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.base.TableReport.generate_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render the report to a Table instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives to render.</p></li>
+<li><p><strong>errors</strong> – A list of errors that occurred during processing.</p></li>
+<li><p><strong>options_map</strong> – A dict of options, as produced by the parser.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An instance of Table, that will get converted to another format.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.base.TableReport.render_csv">
+<code class="sig-name descname">render_csv</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.base.TableReport.render_csv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.base.TableReport.render_htmldiv">
+<code class="sig-name descname">render_htmldiv</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.base.TableReport.render_htmldiv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.base.TableReport.render_text">
+<code class="sig-name descname">render_text</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.base.TableReport.render_text" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.reports.base.get_html_template">
+<code class="sig-prename descclassname">beancount.reports.base.</code><code class="sig-name descname">get_html_template</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.base.get_html_template" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns our vanilla HTML template for embedding an HTML div.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>{title}: for the title of the page.
+{body}: for the body, where the div goes.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>A string, with a formatting style placeholders</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.reports.context">
+<span id="beancount-reports-context"></span><h2>beancount.reports.context<a class="headerlink" href="#module-beancount.reports.context" title="Permalink to this headline">¶</a></h2>
+<p>Produce a rendering of the account balances just before and after a
+particular entry is applied.</p>
+<dl class="function">
+<dt id="beancount.reports.context.render_entry_context">
+<code class="sig-prename descclassname">beancount.reports.context.</code><code class="sig-name descname">render_entry_context</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">options_map</em>, <em class="sig-param">entry</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.context.render_entry_context" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render the context before and after a particular transaction is applied.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives.</p></li>
+<li><p><strong>options_map</strong> – A dict of options, as produced by the parser.</p></li>
+<li><p><strong>entry</strong> – The entry instance which should be rendered. (Note that this object is
+expected to be in the set of entries, not just structurally equal.)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A multiline string of text, which consists of the context before the
+transaction is applied, the transaction itself, and the context after it
+is applied. You can just print that, it is in form that is intended to be
+consumed by the user.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.reports.context.render_file_context">
+<code class="sig-prename descclassname">beancount.reports.context.</code><code class="sig-name descname">render_file_context</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">options_map</em>, <em class="sig-param">filename</em>, <em class="sig-param">lineno</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.context.render_file_context" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render the context before and after a particular transaction is applied.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives.</p></li>
+<li><p><strong>options_map</strong> – A dict of options, as produced by the parser.</p></li>
+<li><p><strong>filename</strong> – A string, the name of the file from which the transaction was parsed.</p></li>
+<li><p><strong>lineno</strong> – An integer, the line number in the file the transaction was parsed from.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A multiline string of text, which consists of the context before the
+transaction is applied, the transaction itself, and the context after it
+is applied. You can just print that, it is in form that is intended to be
+consumed by the user.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.reports.convert_reports">
+<span id="beancount-reports-convert-reports"></span><h2>beancount.reports.convert_reports<a class="headerlink" href="#module-beancount.reports.convert_reports" title="Permalink to this headline">¶</a></h2>
+<p>Format converter reports.</p>
+<p>This module contains reports that can convert an input file into other formats,
+such as Ledger.</p>
+<dl class="class">
+<dt id="beancount.reports.convert_reports.HLedgerPrinter">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.convert_reports.</code><code class="sig-name descname">HLedgerPrinter</code><span class="sig-paren">(</span><em class="sig-param">dcontext=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.convert_reports.HLedgerPrinter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multi-method for printing directives in HLedger format.</p>
+<dl class="method">
+<dt id="beancount.reports.convert_reports.HLedgerPrinter.Open">
+<code class="sig-name descname">Open</code><span class="sig-paren">(</span><em class="sig-param">entry</em>, <em class="sig-param">oss</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.convert_reports.HLedgerPrinter.Open" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.convert_reports.HLedgerPrinter.Posting">
+<code class="sig-name descname">Posting</code><span class="sig-paren">(</span><em class="sig-param">posting</em>, <em class="sig-param">entry</em>, <em class="sig-param">oss</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.convert_reports.HLedgerPrinter.Posting" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.convert_reports.HLedgerPrinter.Transaction">
+<code class="sig-name descname">Transaction</code><span class="sig-paren">(</span><em class="sig-param">entry</em>, <em class="sig-param">oss</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.convert_reports.HLedgerPrinter.Transaction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.reports.convert_reports.HLedgerReport">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.convert_reports.</code><code class="sig-name descname">HLedgerReport</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">parser</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.convert_reports.HLedgerReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print out the entries in a format that can be parsed by HLedger.</p>
+<dl class="attribute">
+<dt id="beancount.reports.convert_reports.HLedgerReport.default_format">
+<code class="sig-name descname">default_format</code><em class="property"> = 'hledger'</em><a class="headerlink" href="#beancount.reports.convert_reports.HLedgerReport.default_format" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.convert_reports.HLedgerReport.names">
+<code class="sig-name descname">names</code><em class="property"> = ['hledger']</em><a class="headerlink" href="#beancount.reports.convert_reports.HLedgerReport.names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.convert_reports.HLedgerReport.render_hledger">
+<code class="sig-name descname">render_hledger</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.convert_reports.HLedgerReport.render_hledger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.reports.convert_reports.LedgerPrinter">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.convert_reports.</code><code class="sig-name descname">LedgerPrinter</code><span class="sig-paren">(</span><em class="sig-param">dcontext=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.convert_reports.LedgerPrinter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multi-method for printing directives in Ledger format.</p>
+<dl class="method">
+<dt id="beancount.reports.convert_reports.LedgerPrinter.Balance">
+<code class="sig-name descname">Balance</code><span class="sig-paren">(</span><em class="sig-param">entry</em>, <em class="sig-param">oss</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.convert_reports.LedgerPrinter.Balance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.convert_reports.LedgerPrinter.Close">
+<code class="sig-name descname">Close</code><span class="sig-paren">(</span><em class="sig-param">entry</em>, <em class="sig-param">oss</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.convert_reports.LedgerPrinter.Close" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.convert_reports.LedgerPrinter.Commodity">
+<code class="sig-name descname">Commodity</code><span class="sig-paren">(</span><em class="sig-param">entry</em>, <em class="sig-param">oss</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.convert_reports.LedgerPrinter.Commodity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.convert_reports.LedgerPrinter.Custom">
+<code class="sig-name descname">Custom</code><span class="sig-paren">(</span><em class="sig-param">entry</em>, <em class="sig-param">oss</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.convert_reports.LedgerPrinter.Custom" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.convert_reports.LedgerPrinter.Document">
+<code class="sig-name descname">Document</code><span class="sig-paren">(</span><em class="sig-param">entry</em>, <em class="sig-param">oss</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.convert_reports.LedgerPrinter.Document" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.convert_reports.LedgerPrinter.Event">
+<code class="sig-name descname">Event</code><span class="sig-paren">(</span><em class="sig-param">entry</em>, <em class="sig-param">oss</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.convert_reports.LedgerPrinter.Event" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.convert_reports.LedgerPrinter.Note">
+<code class="sig-name descname">Note</code><span class="sig-paren">(</span><em class="sig-param">entry</em>, <em class="sig-param">oss</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.convert_reports.LedgerPrinter.Note" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.convert_reports.LedgerPrinter.Open">
+<code class="sig-name descname">Open</code><span class="sig-paren">(</span><em class="sig-param">entry</em>, <em class="sig-param">oss</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.convert_reports.LedgerPrinter.Open" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.convert_reports.LedgerPrinter.Pad">
+<code class="sig-name descname">Pad</code><span class="sig-paren">(</span><em class="sig-param">entry</em>, <em class="sig-param">oss</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.convert_reports.LedgerPrinter.Pad" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.convert_reports.LedgerPrinter.Posting">
+<code class="sig-name descname">Posting</code><span class="sig-paren">(</span><em class="sig-param">posting</em>, <em class="sig-param">entry</em>, <em class="sig-param">oss</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.convert_reports.LedgerPrinter.Posting" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.convert_reports.LedgerPrinter.Price">
+<code class="sig-name descname">Price</code><span class="sig-paren">(</span><em class="sig-param">entry</em>, <em class="sig-param">oss</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.convert_reports.LedgerPrinter.Price" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.convert_reports.LedgerPrinter.Query">
+<code class="sig-name descname">Query</code><span class="sig-paren">(</span><em class="sig-param">entry</em>, <em class="sig-param">oss</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.convert_reports.LedgerPrinter.Query" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.convert_reports.LedgerPrinter.Transaction">
+<code class="sig-name descname">Transaction</code><span class="sig-paren">(</span><em class="sig-param">entry</em>, <em class="sig-param">oss</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.convert_reports.LedgerPrinter.Transaction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.reports.convert_reports.LedgerReport">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.convert_reports.</code><code class="sig-name descname">LedgerReport</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">parser</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.convert_reports.LedgerReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print out the entries in a format that can be parsed by Ledger.</p>
+<dl class="attribute">
+<dt id="beancount.reports.convert_reports.LedgerReport.default_format">
+<code class="sig-name descname">default_format</code><em class="property"> = 'ledger'</em><a class="headerlink" href="#beancount.reports.convert_reports.LedgerReport.default_format" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.convert_reports.LedgerReport.names">
+<code class="sig-name descname">names</code><em class="property"> = ['ledger']</em><a class="headerlink" href="#beancount.reports.convert_reports.LedgerReport.names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.convert_reports.LedgerReport.render_ledger">
+<code class="sig-name descname">render_ledger</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.convert_reports.LedgerReport.render_ledger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.reports.convert_reports.postings_by_type">
+<code class="sig-prename descclassname">beancount.reports.convert_reports.</code><code class="sig-name descname">postings_by_type</code><span class="sig-paren">(</span><em class="sig-param">entry</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.convert_reports.postings_by_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Split up the postings by simple, at-cost, at-price.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>entry</strong> – An instance of Transaction.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tuple of simple postings, postings with price conversions, postings held at cost.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.reports.convert_reports.quote">
+<code class="sig-prename descclassname">beancount.reports.convert_reports.</code><code class="sig-name descname">quote</code><span class="sig-paren">(</span><em class="sig-param">match</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.convert_reports.quote" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add quotes around a re.MatchObject.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>match</strong> – A MatchObject from the re module.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A quoted string of the match contents.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.reports.convert_reports.quote_currency">
+<code class="sig-prename descclassname">beancount.reports.convert_reports.</code><code class="sig-name descname">quote_currency</code><span class="sig-paren">(</span><em class="sig-param">string</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.convert_reports.quote_currency" title="Permalink to this definition">¶</a></dt>
+<dd><p>Quote all the currencies with numbers from the given string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>string</strong> – A string of text.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A string of text, with the commodity expressions surrounded with quotes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.reports.convert_reports.split_currency_conversions">
+<code class="sig-prename descclassname">beancount.reports.convert_reports.</code><code class="sig-name descname">split_currency_conversions</code><span class="sig-paren">(</span><em class="sig-param">entry</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.convert_reports.split_currency_conversions" title="Permalink to this definition">¶</a></dt>
+<dd><p>If the transcation has a mix of conversion at cost and a
+currency conversion, split the transction into two transactions: one
+that applies the currency conversion in the same account, and one
+that uses the other currency without conversion.</p>
+<p>This is required because Ledger does not appear to be able to grok a
+transaction like this one:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>2014-11-02 * “Buy some stock with foreign currency funds”</dt><dd><p>Assets:CA:Investment:HOOL          5 HOOL {520.0 USD}
+Expenses:Commissions            9.95 USD
+Assets:CA:Investment:Cash   -2939.46 CAD &#64; 0.8879 USD</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>HISTORICAL NOTE: Adding a price directive on the first posting above makes
+Ledger accept the transaction. So we will not split the transaction here
+now. However, since Ledger’s treatment of this type of conflict is subject
+to revision (See <a class="reference external" href="http://bugs.ledger-cli.org/show_bug.cgi?id=630">http://bugs.ledger-cli.org/show_bug.cgi?id=630</a>), we will
+keep this code around, it might become useful eventually. See
+<a class="reference external" href="https://groups.google.com/d/msg/ledger-cli/35hA0Dvhom0/WX8gY_5kHy0J">https://groups.google.com/d/msg/ledger-cli/35hA0Dvhom0/WX8gY_5kHy0J</a> for
+details of the discussion.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>entry</strong> – An instance of Transaction.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl>
+<dt>A pair of</dt><dd><p>converted: boolean, true if a conversion was made.
+entries: A list of the original entry if converted was False,</p>
+<blockquote>
+<div><p>or a list of the split converted entries if True.</p>
+</div></blockquote>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.reports.export_reports">
+<span id="beancount-reports-export-reports"></span><h2>beancount.reports.export_reports<a class="headerlink" href="#module-beancount.reports.export_reports" title="Permalink to this headline">¶</a></h2>
+<p>Reports to Export to third-party portfolio sites.</p>
+<dl class="class">
+<dt id="beancount.reports.export_reports.ExportEntry">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.export_reports.</code><code class="sig-name descname">ExportEntry</code><span class="sig-paren">(</span><em class="sig-param">symbol</em>, <em class="sig-param">cost_currency</em>, <em class="sig-param">number</em>, <em class="sig-param">cost_number</em>, <em class="sig-param">mutual_fund</em>, <em class="sig-param">memo</em>, <em class="sig-param">holdings</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.export_reports.ExportEntry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="beancount.reports.export_reports.ExportPortfolioReport">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.export_reports.</code><code class="sig-name descname">ExportPortfolioReport</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">formatter=None</em>, <em class="sig-param">css_id=None</em>, <em class="sig-param">css_class=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.export_reports.ExportPortfolioReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Holdings lists that can be exported to external portfolio management software.</p>
+<dl class="attribute">
+<dt id="beancount.reports.export_reports.ExportPortfolioReport.EXPORT_FORMAT">
+<code class="sig-name descname">EXPORT_FORMAT</code><em class="property"> = '{atype}  {0.number:10.2f} {0.symbol:16}  {cost_number:10.2f} {0.cost_currency:16}  {0.memo}\n'</em><a class="headerlink" href="#beancount.reports.export_reports.ExportPortfolioReport.EXPORT_FORMAT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.export_reports.ExportPortfolioReport.HOLDING_FORMAT">
+<code class="sig-name descname">HOLDING_FORMAT</code><em class="property"> = '  Holding: {h.account:48} {h.number:10.2f} {h.currency:12} {cost_number:10.2f} {cost_currency:12}\n'</em><a class="headerlink" href="#beancount.reports.export_reports.ExportPortfolioReport.HOLDING_FORMAT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.export_reports.ExportPortfolioReport.PREFIX">
+<code class="sig-name descname">PREFIX</code><em class="property"> = 'OFXHEADER:100\nDATA:OFXSGML\nVERSION:102\nSECURITY:NONE\nENCODING:USASCII\nCHARSET:1252\nCOMPRESSION:NONE\nOLDFILEUID:NONE\nNEWFILEUID:NONE\n\n'</em><a class="headerlink" href="#beancount.reports.export_reports.ExportPortfolioReport.PREFIX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.export_reports.ExportPortfolioReport.SECURITY">
+<code class="sig-name descname">SECURITY</code><em class="property"> = '\n&lt;{infotype}&gt;\n  &lt;SECINFO&gt;\n    &lt;SECID&gt;\n      &lt;UNIQUEID&gt;{uniqueid}\n      &lt;UNIQUEIDTYPE&gt;TICKER\n    &lt;/SECID&gt;\n    &lt;SECNAME&gt;{secname}\n    &lt;TICKER&gt;{ticker}\n  &lt;/SECINFO&gt;\n&lt;/{infotype}&gt;\n'</em><a class="headerlink" href="#beancount.reports.export_reports.ExportPortfolioReport.SECURITY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.export_reports.ExportPortfolioReport.TEMPLATE">
+<code class="sig-name descname">TEMPLATE</code><em class="property"> = '\n&lt;OFX&gt;\n  &lt;SIGNONMSGSRSV1&gt;\n    &lt;SONRS&gt;\n      &lt;STATUS&gt;\n        &lt;CODE&gt;0\n        &lt;SEVERITY&gt;INFO\n      &lt;/STATUS&gt;\n      &lt;DTSERVER&gt;{dtserver}\n      &lt;LANGUAGE&gt;ENG\n    &lt;/SONRS&gt;\n  &lt;/SIGNONMSGSRSV1&gt;\n  &lt;INVSTMTMSGSRSV1&gt;\n    &lt;INVSTMTTRNRS&gt;\n      &lt;TRNUID&gt;1001\n      &lt;STATUS&gt;\n        &lt;CODE&gt;0\n        &lt;SEVERITY&gt;INFO\n      &lt;/STATUS&gt;\n      &lt;INVSTMTRS&gt;\n        &lt;DTASOF&gt;{dtasof}\n        &lt;CURDEF&gt;USD\n        &lt;INVACCTFROM&gt;\n          &lt;BROKERID&gt;{broker}\n          &lt;ACCTID&gt;{account}\n        &lt;/INVACCTFROM&gt;\n        &lt;INVTRANLIST&gt;\n          &lt;DTSTART&gt;{dtstart}\n          &lt;DTEND&gt;{dtend}\n          {invtranlist}\n        &lt;/INVTRANLIST&gt;\n      &lt;/INVSTMTRS&gt;\n    &lt;/INVSTMTTRNRS&gt;\n  &lt;/INVSTMTMSGSRSV1&gt;\n  &lt;SECLISTMSGSRSV1&gt;\n    &lt;SECLIST&gt;\n     {seclist}\n    &lt;/SECLIST&gt;\n  &lt;/SECLISTMSGSRSV1&gt;\n&lt;/OFX&gt;\n'</em><a class="headerlink" href="#beancount.reports.export_reports.ExportPortfolioReport.TEMPLATE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.export_reports.ExportPortfolioReport.TRANSACTION">
+<code class="sig-name descname">TRANSACTION</code><em class="property"> = '\n&lt;{txntype}&gt;\n  &lt;INVBUY&gt;\n    &lt;INVTRAN&gt;\n      &lt;FITID&gt;{fitid}\n      &lt;DTTRADE&gt;{dttrade}\n      &lt;MEMO&gt;{memo}\n    &lt;/INVTRAN&gt;\n    &lt;SECID&gt;\n      &lt;UNIQUEID&gt;{uniqueid}\n      &lt;UNIQUEIDTYPE&gt;TICKER\n    &lt;/SECID&gt;\n    &lt;UNITS&gt;{units}\n    &lt;UNITPRICE&gt;{unitprice}\n    &lt;COMMISSION&gt;{fee}\n    &lt;TOTAL&gt;{total}\n    &lt;SUBACCTSEC&gt;CASH\n    &lt;SUBACCTFUND&gt;CASH\n  &lt;/INVBUY&gt;\n  &lt;BUYTYPE&gt;{buytype}\n&lt;/{txntype}&gt;\n'</em><a class="headerlink" href="#beancount.reports.export_reports.ExportPortfolioReport.TRANSACTION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.export_reports.ExportPortfolioReport.add_args">
+<em class="property">classmethod </em><code class="sig-name descname">add_args</code><span class="sig-paren">(</span><em class="sig-param">parser</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.export_reports.ExportPortfolioReport.add_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add arguments to parse for this report.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>parser</strong> – An instance of argparse.ArgumentParser.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.export_reports.ExportPortfolioReport.default_format">
+<code class="sig-name descname">default_format</code><em class="property"> = 'ofx'</em><a class="headerlink" href="#beancount.reports.export_reports.ExportPortfolioReport.default_format" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.export_reports.ExportPortfolioReport.names">
+<code class="sig-name descname">names</code><em class="property"> = ['export_holdings', 'export_portfolio', 'pfexport', 'exportpf']</em><a class="headerlink" href="#beancount.reports.export_reports.ExportPortfolioReport.names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.export_reports.ExportPortfolioReport.render_csv">
+<code class="sig-name descname">render_csv</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">unused_errors</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.export_reports.ExportPortfolioReport.render_csv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.export_reports.ExportPortfolioReport.render_ofx">
+<code class="sig-name descname">render_ofx</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">unused_errors</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.export_reports.ExportPortfolioReport.render_ofx" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.reports.export_reports.classify_holdings_for_export">
+<code class="sig-prename descclassname">beancount.reports.export_reports.</code><code class="sig-name descname">classify_holdings_for_export</code><span class="sig-paren">(</span><em class="sig-param">holdings_list</em>, <em class="sig-param">commodities_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.export_reports.classify_holdings_for_export" title="Permalink to this definition">¶</a></dt>
+<dd><p>Figure out what to do for example with each holding.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>holdings_list</strong> – A list of Holding instances to be exported.</p></li>
+<li><p><strong>commodities_map</strong> – A dict of commodity to Commodity instances.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>action_holdings: A list of (symbol, holding) for each holding. ‘Symbol’</dt><dd><p>is the ticker to use for export, and may be “CASH” or “IGNORE” for
+holdings to be converted or ignored.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>A pair of</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.reports.export_reports.export_holdings">
+<code class="sig-prename descclassname">beancount.reports.export_reports.</code><code class="sig-name descname">export_holdings</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">options_map</em>, <em class="sig-param">promiscuous</em>, <em class="sig-param">aggregate_by_commodity=False</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.export_reports.export_holdings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute a list of holdings to export.</p>
+<p>Holdings that are converted to cash equivalents will receive a currency of
+“CASH:&lt;currency&gt;” where &lt;currency&gt; is the converted cash currency.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives.</p></li>
+<li><p><strong>options_map</strong> – A dict of options as provided by the parser.</p></li>
+<li><p><strong>promiscuous</strong> – A boolean, true if we should output a promiscuious memo.</p></li>
+<li><p><strong>aggregate_by_commodity</strong> – A boolean, true if we should group the holdings by account.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl>
+<dt>A pair of</dt><dd><p>exported: A list of ExportEntry tuples, one for each exported position.
+converted: A list of ExportEntry tuples, one for each converted position.</p>
+<blockquote>
+<div><p>These will contain multiple holdings.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>holdings_ignored: A list of Holding instances that were ignored, either</dt><dd><p>because they were explicitly marked to be ignored, or because we could
+not convert them to a money vehicle matching the holding’s cost-currency.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.reports.export_reports.get_money_instruments">
+<code class="sig-prename descclassname">beancount.reports.export_reports.</code><code class="sig-name descname">get_money_instruments</code><span class="sig-paren">(</span><em class="sig-param">commodities_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.export_reports.get_money_instruments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the money-market stand-ins for cash positions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>commodities_map</strong> – A map of currency to their corresponding Commodity directives.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A dict of quote currency to the ticker symbol that stands for it,
+e.g. {‘USD’: ‘VMMXX’}.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.reports.export_reports.get_symbol">
+<code class="sig-prename descclassname">beancount.reports.export_reports.</code><code class="sig-name descname">get_symbol</code><span class="sig-paren">(</span><em class="sig-param">sources</em>, <em class="sig-param">prefer='google'</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.export_reports.get_symbol" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filter a source specification to some corresponding ticker.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>source</strong> – A comma-separated list of sources as a string, such as
+“google/NASDAQ:AAPL,yahoo/AAPL”.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The symbol string.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the sources does not contain a ticker for the
+    google source.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.reports.export_reports.is_mutual_fund">
+<code class="sig-prename descclassname">beancount.reports.export_reports.</code><code class="sig-name descname">is_mutual_fund</code><span class="sig-paren">(</span><em class="sig-param">ticker</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.export_reports.is_mutual_fund" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return true if the GFinanc ticker is for a mutual fund.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ticker</strong> – A string, the symbol for GFinance.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A boolean, true for mutual funds.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.reports.export_reports.render_ofx_date">
+<code class="sig-prename descclassname">beancount.reports.export_reports.</code><code class="sig-name descname">render_ofx_date</code><span class="sig-paren">(</span><em class="sig-param">dtime</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.export_reports.render_ofx_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render a datetime to the OFX format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dtime</strong> – A datetime.datetime instance.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A string, rendered to milliseconds.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.reports.gviz">
+<span id="beancount-reports-gviz"></span><h2>beancount.reports.gviz<a class="headerlink" href="#module-beancount.reports.gviz" title="Permalink to this headline">¶</a></h2>
+<p>Support for creating Google gviz timeline charts.</p>
+<dl class="function">
+<dt id="beancount.reports.gviz.gviz_timeline">
+<code class="sig-prename descclassname">beancount.reports.gviz.</code><code class="sig-name descname">gviz_timeline</code><span class="sig-paren">(</span><em class="sig-param">time_array</em>, <em class="sig-param">data_array_map</em>, <em class="sig-param">css_id='chart'</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.gviz.gviz_timeline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a HTML rendering of the given arrays.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>time_array</strong> – A sequence of datetime objects.</p></li>
+<li><p><strong>data_array_map</strong> – A dict or list of items of name to
+sequence of data points.</p></li>
+<li><p><strong>css_id</strong> – A string, the CSS id attribute of the target node.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Javascript code for rendering the chart. (It’s up to you to
+insert the a div with the correct CSS id in your accompanying
+HTML page.)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.reports.holdings_reports">
+<span id="beancount-reports-holdings-reports"></span><h2>beancount.reports.holdings_reports<a class="headerlink" href="#module-beancount.reports.holdings_reports" title="Permalink to this headline">¶</a></h2>
+<p>Generate reports no holdings.</p>
+<dl class="class">
+<dt id="beancount.reports.holdings_reports.CashReport">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.holdings_reports.</code><code class="sig-name descname">CashReport</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">formatter=None</em>, <em class="sig-param">css_id=None</em>, <em class="sig-param">css_class=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.holdings_reports.CashReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>The list of cash holdings (defined as currency = cost-currency).</p>
+<dl class="method">
+<dt id="beancount.reports.holdings_reports.CashReport.add_args">
+<em class="property">classmethod </em><code class="sig-name descname">add_args</code><span class="sig-paren">(</span><em class="sig-param">parser</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.holdings_reports.CashReport.add_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add arguments to parse for this report.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>parser</strong> – An instance of argparse.ArgumentParser.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.holdings_reports.CashReport.generate_table">
+<code class="sig-name descname">generate_table</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.holdings_reports.CashReport.generate_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render the report to a Table instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives to render.</p></li>
+<li><p><strong>errors</strong> – A list of errors that occurred during processing.</p></li>
+<li><p><strong>options_map</strong> – A dict of options, as produced by the parser.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An instance of Table, that will get converted to another format.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.holdings_reports.CashReport.names">
+<code class="sig-name descname">names</code><em class="property"> = ['cash']</em><a class="headerlink" href="#beancount.reports.holdings_reports.CashReport.names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.reports.holdings_reports.HoldingsReport">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.holdings_reports.</code><code class="sig-name descname">HoldingsReport</code><span class="sig-paren">(</span><em class="sig-param">*rest</em>, <em class="sig-param">**kwds</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.holdings_reports.HoldingsReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>The full list of holdings for Asset and Liabilities accounts.</p>
+<dl class="method">
+<dt id="beancount.reports.holdings_reports.HoldingsReport.add_args">
+<em class="property">classmethod </em><code class="sig-name descname">add_args</code><span class="sig-paren">(</span><em class="sig-param">parser</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.holdings_reports.HoldingsReport.add_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add arguments to parse for this report.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>parser</strong> – An instance of argparse.ArgumentParser.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.holdings_reports.HoldingsReport.aggregations">
+<code class="sig-name descname">aggregations</code><em class="property"> = {'account': {'aggregation_key': &lt;function HoldingsReport.&lt;lambda&gt;&gt;}, 'commodity': {'aggregation_key': &lt;function HoldingsReport.&lt;lambda&gt;&gt;}, 'currency': {'aggregation_key': &lt;function HoldingsReport.&lt;lambda&gt;&gt;}, 'root-account': {'aggregation_key': &lt;function HoldingsReport.&lt;lambda&gt;&gt;, 'sort_key': &lt;function HoldingsReport.&lt;lambda&gt;&gt;}}</em><a class="headerlink" href="#beancount.reports.holdings_reports.HoldingsReport.aggregations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.holdings_reports.HoldingsReport.generate_table">
+<code class="sig-name descname">generate_table</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.holdings_reports.HoldingsReport.generate_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render the report to a Table instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives to render.</p></li>
+<li><p><strong>errors</strong> – A list of errors that occurred during processing.</p></li>
+<li><p><strong>options_map</strong> – A dict of options, as produced by the parser.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An instance of Table, that will get converted to another format.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.holdings_reports.HoldingsReport.names">
+<code class="sig-name descname">names</code><em class="property"> = ['holdings']</em><a class="headerlink" href="#beancount.reports.holdings_reports.HoldingsReport.names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.holdings_reports.HoldingsReport.render_beancount">
+<code class="sig-name descname">render_beancount</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.holdings_reports.HoldingsReport.render_beancount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.reports.holdings_reports.NetWorthReport">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.holdings_reports.</code><code class="sig-name descname">NetWorthReport</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">formatter=None</em>, <em class="sig-param">css_id=None</em>, <em class="sig-param">css_class=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.holdings_reports.NetWorthReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a table of total net worth for each operating currency.</p>
+<dl class="method">
+<dt id="beancount.reports.holdings_reports.NetWorthReport.generate_table">
+<code class="sig-name descname">generate_table</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.holdings_reports.NetWorthReport.generate_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render the report to a Table instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives to render.</p></li>
+<li><p><strong>errors</strong> – A list of errors that occurred during processing.</p></li>
+<li><p><strong>options_map</strong> – A dict of options, as produced by the parser.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An instance of Table, that will get converted to another format.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.holdings_reports.NetWorthReport.names">
+<code class="sig-name descname">names</code><em class="property"> = ['networth', 'equity']</em><a class="headerlink" href="#beancount.reports.holdings_reports.NetWorthReport.names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.reports.holdings_reports.get_assets_holdings">
+<code class="sig-prename descclassname">beancount.reports.holdings_reports.</code><code class="sig-name descname">get_assets_holdings</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">options_map</em>, <em class="sig-param">currency=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.holdings_reports.get_assets_holdings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return holdings for all assets and liabilities.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives.</p></li>
+<li><p><strong>options_map</strong> – A dict of parsed options.</p></li>
+<li><p><strong>currency</strong> – If specified, a string, the target currency to convert all
+holding values to.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of Holding instances and a price-map.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.reports.holdings_reports.get_holdings_entries">
+<code class="sig-prename descclassname">beancount.reports.holdings_reports.</code><code class="sig-name descname">get_holdings_entries</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">options_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.holdings_reports.get_holdings_entries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summarizes the entries to list of entries representing the final holdings..</p>
+<p>This list includes the latest prices entries as well. This can be used to
+load a full snapshot of holdings without including the entire history. This
+is a way of summarizing a balance sheet in a way that filters away history.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives.</p></li>
+<li><p><strong>options_map</strong> – A dict of parsed options.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A string, the entries to print out.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.reports.holdings_reports.load_from_csv">
+<code class="sig-prename descclassname">beancount.reports.holdings_reports.</code><code class="sig-name descname">load_from_csv</code><span class="sig-paren">(</span><em class="sig-param">fileobj</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.holdings_reports.load_from_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a list of holdings from a CSV file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fileobj</strong> – A file object.</p>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p>Instances of Holding, as read from the file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.reports.holdings_reports.report_holdings">
+<code class="sig-prename descclassname">beancount.reports.holdings_reports.</code><code class="sig-name descname">report_holdings</code><span class="sig-paren">(</span><em class="sig-param">currency</em>, <em class="sig-param">relative</em>, <em class="sig-param">entries</em>, <em class="sig-param">options_map</em>, <em class="sig-param">aggregation_key=None</em>, <em class="sig-param">sort_key=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.holdings_reports.report_holdings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a detailed list of all holdings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>currency</strong> – A string, a currency to convert to. If left to None, no
+conversion is carried out.</p></li>
+<li><p><strong>relative</strong> – A boolean, true if we should reduce this to a relative value.</p></li>
+<li><p><strong>entries</strong> – A list of directives.</p></li>
+<li><p><strong>options_map</strong> – A dict of parsed options.</p></li>
+<li><p><strong>aggregation_key</strong> – A callable use to generate aggregations.</p></li>
+<li><p><strong>sort_key</strong> – A function to use to sort the holdings, if specified.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A Table instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.reports.html_formatter">
+<span id="beancount-reports-html-formatter"></span><h2>beancount.reports.html_formatter<a class="headerlink" href="#module-beancount.reports.html_formatter" title="Permalink to this headline">¶</a></h2>
+<p>Base class for HTML formatters.</p>
+<p>This object encapsulates the rendering of various objects to HTML.
+You may, and should, derive and override from this object in order to
+provide links within a web interface.</p>
+<dl class="class">
+<dt id="beancount.reports.html_formatter.HTMLFormatter">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.html_formatter.</code><code class="sig-name descname">HTMLFormatter</code><span class="sig-paren">(</span><em class="sig-param">dcontext</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.html_formatter.HTMLFormatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>A trivial formatter object that can be used to format strings as themselves.
+This mainly defines an interface to implement.</p>
+<dl class="method">
+<dt id="beancount.reports.html_formatter.HTMLFormatter.render_account">
+<code class="sig-name descname">render_account</code><span class="sig-paren">(</span><em class="sig-param">account_name</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.html_formatter.HTMLFormatter.render_account" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render an account name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>account_name</strong> – A string, the name of the account to render.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A string of HTML to be spliced inside an HTML template.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.html_formatter.HTMLFormatter.render_amount">
+<code class="sig-name descname">render_amount</code><span class="sig-paren">(</span><em class="sig-param">amount</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.html_formatter.HTMLFormatter.render_amount" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render an amount.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>amount</strong> – An Amount instance.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A string of HTML to be spliced inside a table cell.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.html_formatter.HTMLFormatter.render_commodity">
+<code class="sig-name descname">render_commodity</code><span class="sig-paren">(</span><em class="sig-param">base_quote</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.html_formatter.HTMLFormatter.render_commodity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render a commodity (base currency / quote currency).</p>
+<p>This is only used when we want the commodity to link to its prices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>commodity</strong> – A pair of strings, the base and quote currency names.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A string of HTML to be spliced inside an HTML template.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.html_formatter.HTMLFormatter.render_context">
+<code class="sig-name descname">render_context</code><span class="sig-paren">(</span><em class="sig-param">entry</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.html_formatter.HTMLFormatter.render_context" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render a reference to context around a transaction (maybe as an HTML link).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>entry</strong> – A directive.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A string of HTML to be spliced inside an HTML template.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.html_formatter.HTMLFormatter.render_doc">
+<code class="sig-name descname">render_doc</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.html_formatter.HTMLFormatter.render_doc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render a document path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> – A string, the filename for the document.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A string of HTML to be spliced inside an HTML template.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.html_formatter.HTMLFormatter.render_event_type">
+<code class="sig-name descname">render_event_type</code><span class="sig-paren">(</span><em class="sig-param">event</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.html_formatter.HTMLFormatter.render_event_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render an event type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>event</strong> – A string, the name of the even type.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A string of HTML to be spliced inside an HTML template.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.html_formatter.HTMLFormatter.render_inventory">
+<code class="sig-name descname">render_inventory</code><span class="sig-paren">(</span><em class="sig-param">inv</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.html_formatter.HTMLFormatter.render_inventory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render an inventory.</p>
+<p>You can use this opportunity to convert the inventory to units or cost
+or whatever.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>inv</strong> – An Inventory instance.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A string of HTML to be spliced inside a table cell.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.html_formatter.HTMLFormatter.render_link">
+<code class="sig-name descname">render_link</code><span class="sig-paren">(</span><em class="sig-param">link</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.html_formatter.HTMLFormatter.render_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render a transaction link (maybe as an HTML link).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>link</strong> – A string, the name of the link to render.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A string of HTML to be spliced inside an HTML template.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.html_formatter.HTMLFormatter.render_number">
+<code class="sig-name descname">render_number</code><span class="sig-paren">(</span><em class="sig-param">number</em>, <em class="sig-param">currency</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.html_formatter.HTMLFormatter.render_number" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render a number for a currency using the formatter’s display context.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>number</strong> – A Decimal instance, the number to be rendered.</p></li>
+<li><p><strong>currency</strong> – A string, the commodity the number represent.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A string, the formatted number to render.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.html_formatter.HTMLFormatter.render_source">
+<code class="sig-name descname">render_source</code><span class="sig-paren">(</span><em class="sig-param">meta</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.html_formatter.HTMLFormatter.render_source" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render a reference to the source file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>meta</strong> – A metadata dict object.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A string of HTML to be spliced inside an HTML template.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.reports.journal_html">
+<span id="beancount-reports-journal-html"></span><h2>beancount.reports.journal_html<a class="headerlink" href="#module-beancount.reports.journal_html" title="Permalink to this headline">¶</a></h2>
+<p>HTML rendering routines for serving a lists of postings/entries.</p>
+<dl class="class">
+<dt id="beancount.reports.journal_html.Row">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.journal_html.</code><code class="sig-name descname">Row</code><span class="sig-paren">(</span><em class="sig-param">entry</em>, <em class="sig-param">leg_postings</em>, <em class="sig-param">rowtype</em>, <em class="sig-param">extra_class</em>, <em class="sig-param">flag</em>, <em class="sig-param">description</em>, <em class="sig-param">links</em>, <em class="sig-param">amount_str</em>, <em class="sig-param">balance_str</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.journal_html.Row" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="beancount.reports.journal_html.html_entries_table">
+<code class="sig-prename descclassname">beancount.reports.journal_html.</code><code class="sig-name descname">html_entries_table</code><span class="sig-paren">(</span><em class="sig-param">oss</em>, <em class="sig-param">txn_postings</em>, <em class="sig-param">formatter</em>, <em class="sig-param">render_postings=True</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.journal_html.html_entries_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render a list of entries into an HTML table, with no running balance.</p>
+<p>This is appropriate for rendering tables of entries for postings with
+multiple accounts, whereby computing the running balances makes little
+sense.</p>
+<p>(This function returns nothing, it write to oss as a side-effect.)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>oss</strong> – A file object to write the output to.</p></li>
+<li><p><strong>txn_postings</strong> – A list of Posting or directive instances.</p></li>
+<li><p><strong>formatter</strong> – An instance of HTMLFormatter, to be render accounts,
+inventories, links and docs.</p></li>
+<li><p><strong>render_postings</strong> – A boolean; if true, render the postings as rows under the
+main transaction row.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.reports.journal_html.html_entries_table_with_balance">
+<code class="sig-prename descclassname">beancount.reports.journal_html.</code><code class="sig-name descname">html_entries_table_with_balance</code><span class="sig-paren">(</span><em class="sig-param">oss</em>, <em class="sig-param">txn_postings</em>, <em class="sig-param">formatter</em>, <em class="sig-param">render_postings=True</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.journal_html.html_entries_table_with_balance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render a list of entries into an HTML table, with a running balance.</p>
+<p>(This function returns nothing, it write to oss as a side-effect.)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>oss</strong> – A file object to write the output to.</p></li>
+<li><p><strong>txn_postings</strong> – A list of Posting or directive instances.</p></li>
+<li><p><strong>formatter</strong> – An instance of HTMLFormatter, to be render accounts,
+inventories, links and docs.</p></li>
+<li><p><strong>render_postings</strong> – A boolean; if true, render the postings as rows under the
+main transaction row.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.reports.journal_html.iterate_html_postings">
+<code class="sig-prename descclassname">beancount.reports.journal_html.</code><code class="sig-name descname">iterate_html_postings</code><span class="sig-paren">(</span><em class="sig-param">txn_postings</em>, <em class="sig-param">formatter</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.journal_html.iterate_html_postings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate through the list of transactions with rendered HTML strings for each cell.</p>
+<p>This pre-renders all the data for each row to HTML. This is reused by the entries
+table rendering routines.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>txn_postings</strong> – A list of TxnPosting or directive instances.</p></li>
+<li><p><strong>formatter</strong> – An instance of HTMLFormatter, to be render accounts,
+inventories, links and docs.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p>Instances of Row tuples. See above.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.reports.journal_html.render_links">
+<code class="sig-prename descclassname">beancount.reports.journal_html.</code><code class="sig-name descname">render_links</code><span class="sig-paren">(</span><em class="sig-param">links</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.journal_html.render_links" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render Transaction links to HTML.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>links</strong> – A list of set of strings, transaction “links” to be rendered.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A string, a snippet of HTML to be rendering somewhere.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.reports.journal_reports">
+<span id="beancount-reports-journal-reports"></span><h2>beancount.reports.journal_reports<a class="headerlink" href="#module-beancount.reports.journal_reports" title="Permalink to this headline">¶</a></h2>
+<p>Report classes for all reports that display ending journals of accounts.</p>
+<dl class="class">
+<dt id="beancount.reports.journal_reports.ConversionsReport">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.journal_reports.</code><code class="sig-name descname">ConversionsReport</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">formatter=None</em>, <em class="sig-param">css_id=None</em>, <em class="sig-param">css_class=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.journal_reports.ConversionsReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print out a report of all conversions.</p>
+<dl class="attribute">
+<dt id="beancount.reports.journal_reports.ConversionsReport.names">
+<code class="sig-name descname">names</code><em class="property"> = ['conversions']</em><a class="headerlink" href="#beancount.reports.journal_reports.ConversionsReport.names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.journal_reports.ConversionsReport.render_htmldiv">
+<code class="sig-name descname">render_htmldiv</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.journal_reports.ConversionsReport.render_htmldiv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.reports.journal_reports.DocumentsReport">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.journal_reports.</code><code class="sig-name descname">DocumentsReport</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">formatter=None</em>, <em class="sig-param">css_id=None</em>, <em class="sig-param">css_class=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.journal_reports.DocumentsReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print out a report of documents.</p>
+<dl class="attribute">
+<dt id="beancount.reports.journal_reports.DocumentsReport.names">
+<code class="sig-name descname">names</code><em class="property"> = ['documents']</em><a class="headerlink" href="#beancount.reports.journal_reports.DocumentsReport.names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.journal_reports.DocumentsReport.render_htmldiv">
+<code class="sig-name descname">render_htmldiv</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.journal_reports.DocumentsReport.render_htmldiv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.reports.journal_reports.JournalReport">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.journal_reports.</code><code class="sig-name descname">JournalReport</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">formatter=None</em>, <em class="sig-param">css_id=None</em>, <em class="sig-param">css_class=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.journal_reports.JournalReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print out an account register/journal.</p>
+<dl class="method">
+<dt id="beancount.reports.journal_reports.JournalReport.add_args">
+<em class="property">classmethod </em><code class="sig-name descname">add_args</code><span class="sig-paren">(</span><em class="sig-param">parser</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.journal_reports.JournalReport.add_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add arguments to parse for this report.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>parser</strong> – An instance of argparse.ArgumentParser.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.journal_reports.JournalReport.default_format">
+<code class="sig-name descname">default_format</code><em class="property"> = 'text'</em><a class="headerlink" href="#beancount.reports.journal_reports.JournalReport.default_format" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.journal_reports.JournalReport.default_width">
+<code class="sig-name descname">default_width</code><em class="property"> = 80</em><a class="headerlink" href="#beancount.reports.journal_reports.JournalReport.default_width" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.journal_reports.JournalReport.get_postings">
+<code class="sig-name descname">get_postings</code><span class="sig-paren">(</span><em class="sig-param">real_root</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.journal_reports.JournalReport.get_postings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the postings corresponding to the account filter option.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>real_root</strong> – A RealAccount node for the root of all accounts.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of posting or directive instances.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.journal_reports.JournalReport.names">
+<code class="sig-name descname">names</code><em class="property"> = ['journal', 'register', 'account']</em><a class="headerlink" href="#beancount.reports.journal_reports.JournalReport.names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.journal_reports.JournalReport.render_csv">
+<code class="sig-name descname">render_csv</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em>, <em class="sig-param">fwdfunc=&lt;function JournalReport.render_real_csv&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.journal_reports.JournalReport.render_csv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.journal_reports.JournalReport.render_htmldiv">
+<code class="sig-name descname">render_htmldiv</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em>, <em class="sig-param">fwdfunc=&lt;function JournalReport.render_real_htmldiv&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.journal_reports.JournalReport.render_htmldiv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.journal_reports.JournalReport.render_real_csv">
+<code class="sig-name descname">render_real_csv</code><span class="sig-paren">(</span><em class="sig-param">real_root</em>, <em class="sig-param">price_map</em>, <em class="sig-param">price_date</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.journal_reports.JournalReport.render_real_csv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.journal_reports.JournalReport.render_real_html">
+<code class="sig-name descname">render_real_html</code><span class="sig-paren">(</span><em class="sig-param">real_root</em>, <em class="sig-param">price_map</em>, <em class="sig-param">price_date</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.journal_reports.JournalReport.render_real_html" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrap an htmldiv into our standard HTML template.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>real_root</strong> – An instance of RealAccount.</p></li>
+<li><p><strong>price_map</strong> – A price database.</p></li>
+<li><p><strong>price_date</strong> – A date for evaluating prices.</p></li>
+<li><p><strong>options_map</strong> – A dict, options as produced by the parser.</p></li>
+<li><p><strong>file</strong> – A file object to write the output to.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.journal_reports.JournalReport.render_real_htmldiv">
+<code class="sig-name descname">render_real_htmldiv</code><span class="sig-paren">(</span><em class="sig-param">real_root</em>, <em class="sig-param">price_map</em>, <em class="sig-param">price_date</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.journal_reports.JournalReport.render_real_htmldiv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.journal_reports.JournalReport.render_real_text">
+<code class="sig-name descname">render_real_text</code><span class="sig-paren">(</span><em class="sig-param">real_root</em>, <em class="sig-param">price_map</em>, <em class="sig-param">price_date</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.journal_reports.JournalReport.render_real_text" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.journal_reports.JournalReport.render_text">
+<code class="sig-name descname">render_text</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em>, <em class="sig-param">fwdfunc=&lt;function JournalReport.render_real_text&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.journal_reports.JournalReport.render_text" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.journal_reports.JournalReport.test_args">
+<code class="sig-name descname">test_args</code><em class="property"> = ['--width=80']</em><a class="headerlink" href="#beancount.reports.journal_reports.JournalReport.test_args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.reports.journal_text">
+<span id="beancount-reports-journal-text"></span><h2>beancount.reports.journal_text<a class="headerlink" href="#module-beancount.reports.journal_text" title="Permalink to this headline">¶</a></h2>
+<p>Text rendering routines for serving a lists of postings/entries.</p>
+<dl class="class">
+<dt id="beancount.reports.journal_text.AmountColumnSizer">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.journal_text.</code><code class="sig-name descname">AmountColumnSizer</code><span class="sig-paren">(</span><em class="sig-param">prefix</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.journal_text.AmountColumnSizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class that computes minimal sizes for columns of numbers and their currencies.</p>
+<dl class="method">
+<dt id="beancount.reports.journal_text.AmountColumnSizer.get_format">
+<code class="sig-name descname">get_format</code><span class="sig-paren">(</span><em class="sig-param">precision</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.journal_text.AmountColumnSizer.get_format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a format string for the column of numbers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>precision</strong> – An integer, the number of digits to render after the period.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A new-style Python format string, with PREFIX_number and PREFIX_currency named
+fields.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.journal_text.AmountColumnSizer.get_generic_format">
+<code class="sig-name descname">get_generic_format</code><span class="sig-paren">(</span><em class="sig-param">precision</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.journal_text.AmountColumnSizer.get_generic_format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a generic format string for rendering as wide as required.
+This can be used to render an empty string in-lieu of a number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>precision</strong> – An integer, the number of digits to render after the period.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A new-style Python format string, with PREFIX_number and PREFIX_currency named
+fields.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.journal_text.AmountColumnSizer.get_number_width">
+<code class="sig-name descname">get_number_width</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.journal_text.AmountColumnSizer.get_number_width" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the width of the integer part of the max number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>An integer, the number of digits required to render the integral part.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.journal_text.AmountColumnSizer.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">number</em>, <em class="sig-param">currency</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.journal_text.AmountColumnSizer.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the sizer with the given number and currency.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>number</strong> – A Decimal instance.</p></li>
+<li><p><strong>currency</strong> – A string, the currency to render for it.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.reports.journal_text.get_entry_text_description">
+<code class="sig-prename descclassname">beancount.reports.journal_text.</code><code class="sig-name descname">get_entry_text_description</code><span class="sig-paren">(</span><em class="sig-param">entry</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.journal_text.get_entry_text_description" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the text of a description.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>entry</strong> – A directive, of any type.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A string to use for the filling the description field in text reports.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.reports.journal_text.render_posting">
+<code class="sig-prename descclassname">beancount.reports.journal_text.</code><code class="sig-name descname">render_posting</code><span class="sig-paren">(</span><em class="sig-param">posting</em>, <em class="sig-param">number_format</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.journal_text.render_posting" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render a posting compactly, for text report rendering.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>posting</strong> – An instance of Posting.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A string, the rendered posting.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.reports.journal_text.size_and_render_amounts">
+<code class="sig-prename descclassname">beancount.reports.journal_text.</code><code class="sig-name descname">size_and_render_amounts</code><span class="sig-paren">(</span><em class="sig-param">postings</em>, <em class="sig-param">at_cost</em>, <em class="sig-param">render_balance</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.journal_text.size_and_render_amounts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate through postings and compute sizers and render amounts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>postings</strong> – A list of Posting or directive instances.</p></li>
+<li><p><strong>at_cost</strong> – A boolean, if true, render the cost value, not the actual.</p></li>
+<li><p><strong>render_balance</strong> – A boolean, if true, renders a running balance column.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.reports.journal_text.text_entries_table">
+<code class="sig-prename descclassname">beancount.reports.journal_text.</code><code class="sig-name descname">text_entries_table</code><span class="sig-paren">(</span><em class="sig-param">oss</em>, <em class="sig-param">postings</em>, <em class="sig-param">width</em>, <em class="sig-param">at_cost</em>, <em class="sig-param">render_balance</em>, <em class="sig-param">precision</em>, <em class="sig-param">verbosity</em>, <em class="sig-param">output_format</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.journal_text.text_entries_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render a table of postings or directives with an accumulated balance.</p>
+<p>This function has three verbosity modes for rendering:
+1. COMPACT: no separating line, no postings
+2. NORMAL: a separating line between entries, no postings
+3. VERBOSE: renders all the postings in addition to normal.</p>
+<p>The output is written to the ‘oss’ file object. Nothing is returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>oss</strong> – A file object to write the output to.</p></li>
+<li><p><strong>postings</strong> – A list of Posting or directive instances.</p></li>
+<li><p><strong>width</strong> – An integer, the width to render the table to.</p></li>
+<li><p><strong>at_cost</strong> – A boolean, if true, render the cost value, not the actual.</p></li>
+<li><p><strong>render_balance</strong> – A boolean, if true, renders a running balance column.</p></li>
+<li><p><strong>precision</strong> – An integer, the number of digits to render after the period.</p></li>
+<li><p><strong>verbosity</strong> – An integer, the verbosity level. See COMPACT, NORMAL, VERBOSE, etc.</p></li>
+<li><p><strong>output_format</strong> – A string, either ‘text’ or ‘csv’ for the chosen output format.
+This routine’s inner loop calculations are complex enough it gets reused by both
+formats.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the width is insufficient to render the description.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.reports.misc_reports">
+<span id="beancount-reports-misc-reports"></span><h2>beancount.reports.misc_reports<a class="headerlink" href="#module-beancount.reports.misc_reports" title="Permalink to this headline">¶</a></h2>
+<p>Miscellaneous report classes.</p>
+<dl class="class">
+<dt id="beancount.reports.misc_reports.AccountsReport">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.misc_reports.</code><code class="sig-name descname">AccountsReport</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">parser</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.misc_reports.AccountsReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print out the list of all accounts.</p>
+<dl class="attribute">
+<dt id="beancount.reports.misc_reports.AccountsReport.default_format">
+<code class="sig-name descname">default_format</code><em class="property"> = 'beancount'</em><a class="headerlink" href="#beancount.reports.misc_reports.AccountsReport.default_format" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.misc_reports.AccountsReport.names">
+<code class="sig-name descname">names</code><em class="property"> = ['accounts']</em><a class="headerlink" href="#beancount.reports.misc_reports.AccountsReport.names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.misc_reports.AccountsReport.render_beancount">
+<code class="sig-name descname">render_beancount</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.misc_reports.AccountsReport.render_beancount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.reports.misc_reports.ActivityReport">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.misc_reports.</code><code class="sig-name descname">ActivityReport</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">formatter=None</em>, <em class="sig-param">css_id=None</em>, <em class="sig-param">css_class=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.misc_reports.ActivityReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render the last or recent update activity.</p>
+<dl class="method">
+<dt id="beancount.reports.misc_reports.ActivityReport.add_args">
+<em class="property">classmethod </em><code class="sig-name descname">add_args</code><span class="sig-paren">(</span><em class="sig-param">parser</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.misc_reports.ActivityReport.add_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add arguments to parse for this report.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>parser</strong> – An instance of argparse.ArgumentParser.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.misc_reports.ActivityReport.default_format">
+<code class="sig-name descname">default_format</code><em class="property"> = 'text'</em><a class="headerlink" href="#beancount.reports.misc_reports.ActivityReport.default_format" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.misc_reports.ActivityReport.names">
+<code class="sig-name descname">names</code><em class="property"> = ['activity', 'updated']</em><a class="headerlink" href="#beancount.reports.misc_reports.ActivityReport.names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.misc_reports.ActivityReport.render_htmldiv">
+<code class="sig-name descname">render_htmldiv</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em>, <em class="sig-param">fwdfunc=&lt;function ActivityReport.render_real_htmldiv&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.misc_reports.ActivityReport.render_htmldiv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.misc_reports.ActivityReport.render_real_html">
+<code class="sig-name descname">render_real_html</code><span class="sig-paren">(</span><em class="sig-param">real_root</em>, <em class="sig-param">price_map</em>, <em class="sig-param">price_date</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.misc_reports.ActivityReport.render_real_html" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrap an htmldiv into our standard HTML template.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>real_root</strong> – An instance of RealAccount.</p></li>
+<li><p><strong>price_map</strong> – A price database.</p></li>
+<li><p><strong>price_date</strong> – A date for evaluating prices.</p></li>
+<li><p><strong>options_map</strong> – A dict, options as produced by the parser.</p></li>
+<li><p><strong>file</strong> – A file object to write the output to.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.misc_reports.ActivityReport.render_real_htmldiv">
+<code class="sig-name descname">render_real_htmldiv</code><span class="sig-paren">(</span><em class="sig-param">real_root</em>, <em class="sig-param">price_map</em>, <em class="sig-param">price_date</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.misc_reports.ActivityReport.render_real_htmldiv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.misc_reports.ActivityReport.render_real_text">
+<code class="sig-name descname">render_real_text</code><span class="sig-paren">(</span><em class="sig-param">real_root</em>, <em class="sig-param">price_map</em>, <em class="sig-param">price_date</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.misc_reports.ActivityReport.render_real_text" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.misc_reports.ActivityReport.render_text">
+<code class="sig-name descname">render_text</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em>, <em class="sig-param">fwdfunc=&lt;function ActivityReport.render_real_text&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.misc_reports.ActivityReport.render_text" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.reports.misc_reports.CurrentEventsReport">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.misc_reports.</code><code class="sig-name descname">CurrentEventsReport</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">formatter=None</em>, <em class="sig-param">css_id=None</em>, <em class="sig-param">css_class=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.misc_reports.CurrentEventsReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Produce a table of the current values of all event types.</p>
+<dl class="method">
+<dt id="beancount.reports.misc_reports.CurrentEventsReport.generate_table">
+<code class="sig-name descname">generate_table</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.misc_reports.CurrentEventsReport.generate_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render the report to a Table instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives to render.</p></li>
+<li><p><strong>errors</strong> – A list of errors that occurred during processing.</p></li>
+<li><p><strong>options_map</strong> – A dict of options, as produced by the parser.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An instance of Table, that will get converted to another format.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.misc_reports.CurrentEventsReport.names">
+<code class="sig-name descname">names</code><em class="property"> = ['current_events', 'latest_events']</em><a class="headerlink" href="#beancount.reports.misc_reports.CurrentEventsReport.names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.reports.misc_reports.ErrorReport">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.misc_reports.</code><code class="sig-name descname">ErrorReport</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">formatter=None</em>, <em class="sig-param">css_id=None</em>, <em class="sig-param">css_class=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.misc_reports.ErrorReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Report the errors.</p>
+<dl class="attribute">
+<dt id="beancount.reports.misc_reports.ErrorReport.default_format">
+<code class="sig-name descname">default_format</code><em class="property"> = 'text'</em><a class="headerlink" href="#beancount.reports.misc_reports.ErrorReport.default_format" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.misc_reports.ErrorReport.names">
+<code class="sig-name descname">names</code><em class="property"> = ['errors']</em><a class="headerlink" href="#beancount.reports.misc_reports.ErrorReport.names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.misc_reports.ErrorReport.render_htmldiv">
+<code class="sig-name descname">render_htmldiv</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.misc_reports.ErrorReport.render_htmldiv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.misc_reports.ErrorReport.render_text">
+<code class="sig-name descname">render_text</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.misc_reports.ErrorReport.render_text" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.reports.misc_reports.EventsReport">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.misc_reports.</code><code class="sig-name descname">EventsReport</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">formatter=None</em>, <em class="sig-param">css_id=None</em>, <em class="sig-param">css_class=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.misc_reports.EventsReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Produce a table of all the values of a particular event.</p>
+<dl class="method">
+<dt id="beancount.reports.misc_reports.EventsReport.add_args">
+<em class="property">classmethod </em><code class="sig-name descname">add_args</code><span class="sig-paren">(</span><em class="sig-param">parser</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.misc_reports.EventsReport.add_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add arguments to parse for this report.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>parser</strong> – An instance of argparse.ArgumentParser.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.misc_reports.EventsReport.generate_table">
+<code class="sig-name descname">generate_table</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.misc_reports.EventsReport.generate_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render the report to a Table instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives to render.</p></li>
+<li><p><strong>errors</strong> – A list of errors that occurred during processing.</p></li>
+<li><p><strong>options_map</strong> – A dict of options, as produced by the parser.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An instance of Table, that will get converted to another format.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.misc_reports.EventsReport.names">
+<code class="sig-name descname">names</code><em class="property"> = ['events']</em><a class="headerlink" href="#beancount.reports.misc_reports.EventsReport.names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.reports.misc_reports.NoopReport">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.misc_reports.</code><code class="sig-name descname">NoopReport</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">parser</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.misc_reports.NoopReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Report nothing.</p>
+<dl class="attribute">
+<dt id="beancount.reports.misc_reports.NoopReport.default_format">
+<code class="sig-name descname">default_format</code><em class="property"> = 'text'</em><a class="headerlink" href="#beancount.reports.misc_reports.NoopReport.default_format" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.misc_reports.NoopReport.names">
+<code class="sig-name descname">names</code><em class="property"> = ['check', 'validate']</em><a class="headerlink" href="#beancount.reports.misc_reports.NoopReport.names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.misc_reports.NoopReport.render_text">
+<code class="sig-name descname">render_text</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.misc_reports.NoopReport.render_text" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.reports.misc_reports.PrintReport">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.misc_reports.</code><code class="sig-name descname">PrintReport</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">parser</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.misc_reports.PrintReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print out the entries.</p>
+<dl class="attribute">
+<dt id="beancount.reports.misc_reports.PrintReport.default_format">
+<code class="sig-name descname">default_format</code><em class="property"> = 'beancount'</em><a class="headerlink" href="#beancount.reports.misc_reports.PrintReport.default_format" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.misc_reports.PrintReport.names">
+<code class="sig-name descname">names</code><em class="property"> = ['print']</em><a class="headerlink" href="#beancount.reports.misc_reports.PrintReport.names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.misc_reports.PrintReport.render_beancount">
+<code class="sig-name descname">render_beancount</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.misc_reports.PrintReport.render_beancount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.reports.misc_reports.StatsDirectivesReport">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.misc_reports.</code><code class="sig-name descname">StatsDirectivesReport</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">formatter=None</em>, <em class="sig-param">css_id=None</em>, <em class="sig-param">css_class=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.misc_reports.StatsDirectivesReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render statistics on each directive type, the number of entries by type.</p>
+<dl class="method">
+<dt id="beancount.reports.misc_reports.StatsDirectivesReport.generate_table">
+<code class="sig-name descname">generate_table</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">_</em>, <em class="sig-param">__</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.misc_reports.StatsDirectivesReport.generate_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render the report to a Table instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives to render.</p></li>
+<li><p><strong>errors</strong> – A list of errors that occurred during processing.</p></li>
+<li><p><strong>options_map</strong> – A dict of options, as produced by the parser.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An instance of Table, that will get converted to another format.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.misc_reports.StatsDirectivesReport.names">
+<code class="sig-name descname">names</code><em class="property"> = ['stats-types', 'stats-directives', 'stats-entries']</em><a class="headerlink" href="#beancount.reports.misc_reports.StatsDirectivesReport.names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.reports.misc_reports.StatsPostingsReport">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.misc_reports.</code><code class="sig-name descname">StatsPostingsReport</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">formatter=None</em>, <em class="sig-param">css_id=None</em>, <em class="sig-param">css_class=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.misc_reports.StatsPostingsReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render the number of postings for each account.</p>
+<dl class="method">
+<dt id="beancount.reports.misc_reports.StatsPostingsReport.generate_table">
+<code class="sig-name descname">generate_table</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">_</em>, <em class="sig-param">__</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.misc_reports.StatsPostingsReport.generate_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render the report to a Table instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives to render.</p></li>
+<li><p><strong>errors</strong> – A list of errors that occurred during processing.</p></li>
+<li><p><strong>options_map</strong> – A dict of options, as produced by the parser.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An instance of Table, that will get converted to another format.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.misc_reports.StatsPostingsReport.names">
+<code class="sig-name descname">names</code><em class="property"> = ['stats-postings']</em><a class="headerlink" href="#beancount.reports.misc_reports.StatsPostingsReport.names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.reports.price_reports">
+<span id="beancount-reports-price-reports"></span><h2>beancount.reports.price_reports<a class="headerlink" href="#module-beancount.reports.price_reports" title="Permalink to this headline">¶</a></h2>
+<p>Miscellaneous report classes.</p>
+<dl class="class">
+<dt id="beancount.reports.price_reports.CommoditiesReport">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.price_reports.</code><code class="sig-name descname">CommoditiesReport</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">formatter=None</em>, <em class="sig-param">css_id=None</em>, <em class="sig-param">css_class=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.price_reports.CommoditiesReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print out a list of commodities.</p>
+<dl class="attribute">
+<dt id="beancount.reports.price_reports.CommoditiesReport.default_format">
+<code class="sig-name descname">default_format</code><em class="property"> = 'text'</em><a class="headerlink" href="#beancount.reports.price_reports.CommoditiesReport.default_format" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.price_reports.CommoditiesReport.generate_table">
+<code class="sig-name descname">generate_table</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.price_reports.CommoditiesReport.generate_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render the report to a Table instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives to render.</p></li>
+<li><p><strong>errors</strong> – A list of errors that occurred during processing.</p></li>
+<li><p><strong>options_map</strong> – A dict of options, as produced by the parser.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An instance of Table, that will get converted to another format.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.price_reports.CommoditiesReport.names">
+<code class="sig-name descname">names</code><em class="property"> = ['commodities']</em><a class="headerlink" href="#beancount.reports.price_reports.CommoditiesReport.names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.reports.price_reports.CommodityLifetimes">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.price_reports.</code><code class="sig-name descname">CommodityLifetimes</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">formatter=None</em>, <em class="sig-param">css_id=None</em>, <em class="sig-param">css_class=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.price_reports.CommodityLifetimes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print out a list of lifetimes of each commodity.</p>
+<dl class="method">
+<dt id="beancount.reports.price_reports.CommodityLifetimes.add_args">
+<em class="property">classmethod </em><code class="sig-name descname">add_args</code><span class="sig-paren">(</span><em class="sig-param">parser</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.price_reports.CommodityLifetimes.add_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add arguments to parse for this report.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>parser</strong> – An instance of argparse.ArgumentParser.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.price_reports.CommodityLifetimes.default_format">
+<code class="sig-name descname">default_format</code><em class="property"> = 'text'</em><a class="headerlink" href="#beancount.reports.price_reports.CommodityLifetimes.default_format" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.price_reports.CommodityLifetimes.names">
+<code class="sig-name descname">names</code><em class="property"> = ['lifetimes']</em><a class="headerlink" href="#beancount.reports.price_reports.CommodityLifetimes.names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.price_reports.CommodityLifetimes.render_text">
+<code class="sig-name descname">render_text</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.price_reports.CommodityLifetimes.render_text" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.reports.price_reports.CommodityPricesReport">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.price_reports.</code><code class="sig-name descname">CommodityPricesReport</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">formatter=None</em>, <em class="sig-param">css_id=None</em>, <em class="sig-param">css_class=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.price_reports.CommodityPricesReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print all the prices for a particular commodity.</p>
+<dl class="method">
+<dt id="beancount.reports.price_reports.CommodityPricesReport.add_args">
+<em class="property">classmethod </em><code class="sig-name descname">add_args</code><span class="sig-paren">(</span><em class="sig-param">parser</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.price_reports.CommodityPricesReport.add_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add arguments to parse for this report.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>parser</strong> – An instance of argparse.ArgumentParser.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.price_reports.CommodityPricesReport.default_format">
+<code class="sig-name descname">default_format</code><em class="property"> = 'text'</em><a class="headerlink" href="#beancount.reports.price_reports.CommodityPricesReport.default_format" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.price_reports.CommodityPricesReport.generate_table">
+<code class="sig-name descname">generate_table</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.price_reports.CommodityPricesReport.generate_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render the report to a Table instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives to render.</p></li>
+<li><p><strong>errors</strong> – A list of errors that occurred during processing.</p></li>
+<li><p><strong>options_map</strong> – A dict of options, as produced by the parser.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An instance of Table, that will get converted to another format.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.price_reports.CommodityPricesReport.get_date_rates">
+<code class="sig-name descname">get_date_rates</code><span class="sig-paren">(</span><em class="sig-param">entries</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.price_reports.CommodityPricesReport.get_date_rates" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.price_reports.CommodityPricesReport.names">
+<code class="sig-name descname">names</code><em class="property"> = ['prices']</em><a class="headerlink" href="#beancount.reports.price_reports.CommodityPricesReport.names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.price_reports.CommodityPricesReport.render_htmldiv">
+<code class="sig-name descname">render_htmldiv</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.price_reports.CommodityPricesReport.render_htmldiv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.reports.price_reports.PriceDBReport">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.price_reports.</code><code class="sig-name descname">PriceDBReport</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">parser</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.price_reports.PriceDBReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print out the normalized price entries from the price db.
+Normalized means that we print prices in the most common (base, quote) order.
+This can be used to rebuild a prices database without having to share the
+entire ledger file.</p>
+<p>Only the forward prices are printed; which (base, quote) pair is selected is
+selected based on the most common occurrence between (base, quote) and
+(quote, base). This is done in the price map.</p>
+<dl class="attribute">
+<dt id="beancount.reports.price_reports.PriceDBReport.default_format">
+<code class="sig-name descname">default_format</code><em class="property"> = 'beancount'</em><a class="headerlink" href="#beancount.reports.price_reports.PriceDBReport.default_format" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.price_reports.PriceDBReport.names">
+<code class="sig-name descname">names</code><em class="property"> = ['pricedb', 'pricesdb', 'prices_db']</em><a class="headerlink" href="#beancount.reports.price_reports.PriceDBReport.names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.price_reports.PriceDBReport.render_beancount">
+<code class="sig-name descname">render_beancount</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.price_reports.PriceDBReport.render_beancount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.reports.price_reports.PricesReport">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.price_reports.</code><code class="sig-name descname">PricesReport</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">parser</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.price_reports.PricesReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print out the unnormalized price entries that we input.
+Unnormalized means that we may render both (base,quote) and (quote,base).
+This can be used to rebuild a prices database without having to share the
+entire ledger file.</p>
+<p>Note: this type of report should be removed once we have filtering on
+directive type, this is simply the ‘print’ report with type:price. Maybe
+rename the ‘pricedb’ report to just ‘prices’ for simplicity’s sake.</p>
+<dl class="attribute">
+<dt id="beancount.reports.price_reports.PricesReport.default_format">
+<code class="sig-name descname">default_format</code><em class="property"> = 'beancount'</em><a class="headerlink" href="#beancount.reports.price_reports.PricesReport.default_format" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.price_reports.PricesReport.names">
+<code class="sig-name descname">names</code><em class="property"> = ['all_prices']</em><a class="headerlink" href="#beancount.reports.price_reports.PricesReport.names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="beancount.reports.price_reports.PricesReport.render_beancount">
+<code class="sig-name descname">render_beancount</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em>, <em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.price_reports.PricesReport.render_beancount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.reports.price_reports.TickerReport">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.price_reports.</code><code class="sig-name descname">TickerReport</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">formatter=None</em>, <em class="sig-param">css_id=None</em>, <em class="sig-param">css_class=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.price_reports.TickerReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print a parseable mapping of (base, quote, ticker, name) for all commodities.</p>
+<dl class="method">
+<dt id="beancount.reports.price_reports.TickerReport.generate_table">
+<code class="sig-name descname">generate_table</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">errors</em>, <em class="sig-param">options_map</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.price_reports.TickerReport.generate_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render the report to a Table instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> – A list of directives to render.</p></li>
+<li><p><strong>errors</strong> – A list of errors that occurred during processing.</p></li>
+<li><p><strong>options_map</strong> – A dict of options, as produced by the parser.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An instance of Table, that will get converted to another format.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.price_reports.TickerReport.names">
+<code class="sig-name descname">names</code><em class="property"> = ['tickers', 'symbols']</em><a class="headerlink" href="#beancount.reports.price_reports.TickerReport.names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.reports.report">
+<span id="beancount-reports-report"></span><h2>beancount.reports.report<a class="headerlink" href="#module-beancount.reports.report" title="Permalink to this headline">¶</a></h2>
+<p>Produce various custom implemented reports.</p>
+<dl class="class">
+<dt id="beancount.reports.report.ListFormatsAction">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.report.</code><code class="sig-name descname">ListFormatsAction</code><span class="sig-paren">(</span><em class="sig-param">option_strings</em>, <em class="sig-param">dest</em>, <em class="sig-param">nargs=None</em>, <em class="sig-param">const=None</em>, <em class="sig-param">default=None</em>, <em class="sig-param">type=None</em>, <em class="sig-param">choices=None</em>, <em class="sig-param">required=False</em>, <em class="sig-param">help=None</em>, <em class="sig-param">metavar=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.report.ListFormatsAction" title="Permalink to this definition">¶</a></dt>
+<dd><p>An argparse action that prints all supported formats (for each report).</p>
+<dl class="attribute">
+<dt id="beancount.reports.report.ListFormatsAction.format_order">
+<code class="sig-name descname">format_order</code><em class="property"> = {'beancount': 99, 'csv': 4, 'html': 2, 'htmldiv': 3, 'text': 1}</em><a class="headerlink" href="#beancount.reports.report.ListFormatsAction.format_order" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="beancount.reports.report.ListFormatsAction.format_order_last">
+<code class="sig-name descname">format_order_last</code><em class="property"> = 100</em><a class="headerlink" href="#beancount.reports.report.ListFormatsAction.format_order_last" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.reports.report.ListReportsAction">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.report.</code><code class="sig-name descname">ListReportsAction</code><span class="sig-paren">(</span><em class="sig-param">option_strings</em>, <em class="sig-param">dest</em>, <em class="sig-param">nargs=None</em>, <em class="sig-param">const=None</em>, <em class="sig-param">default=None</em>, <em class="sig-param">type=None</em>, <em class="sig-param">choices=None</em>, <em class="sig-param">required=False</em>, <em class="sig-param">help=None</em>, <em class="sig-param">metavar=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.report.ListReportsAction" title="Permalink to this definition">¶</a></dt>
+<dd><p>An argparse action that just prints the list of reports and exits.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.reports.report.get_all_reports">
+<code class="sig-prename descclassname">beancount.reports.report.</code><code class="sig-name descname">get_all_reports</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.report.get_all_reports" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all report classes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A list of all available report classes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.reports.report.get_list_report_string">
+<code class="sig-prename descclassname">beancount.reports.report.</code><code class="sig-name descname">get_list_report_string</code><span class="sig-paren">(</span><em class="sig-param">only_report=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.report.get_list_report_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a formatted string for the list of supported reports.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>only_report</strong> – A string, the name of a single report to produce the help
+for. If not specified, list all the available reports.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A help string, or None, if ‘only_report’ was provided and is not a valid
+report name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.reports.report.main">
+<code class="sig-prename descclassname">beancount.reports.report.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.report.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-beancount.reports.table">
+<span id="beancount-reports-table"></span><h2>beancount.reports.table<a class="headerlink" href="#module-beancount.reports.table" title="Permalink to this headline">¶</a></h2>
+<p>Table rendering.</p>
+<dl class="class">
+<dt id="beancount.reports.table.Table">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.reports.table.</code><code class="sig-name descname">Table</code><span class="sig-paren">(</span><em class="sig-param">columns</em>, <em class="sig-param">header</em>, <em class="sig-param">body</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.table.Table" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="beancount.reports.table.attribute_to_title">
+<code class="sig-prename descclassname">beancount.reports.table.</code><code class="sig-name descname">attribute_to_title</code><span class="sig-paren">(</span><em class="sig-param">fieldname</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.table.attribute_to_title" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert programming id into readable field name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fieldname</strong> – A string, a programming ids, such as ‘book_value’.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A readable string, such as ‘Book Value.’</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.reports.table.compute_table_widths">
+<code class="sig-prename descclassname">beancount.reports.table.</code><code class="sig-name descname">compute_table_widths</code><span class="sig-paren">(</span><em class="sig-param">rows</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.table.compute_table_widths" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the max character widths of a list of rows.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>rows</strong> – A list of rows, which are sequences of strings.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of integers, the maximum widths required to render the columns of
+this table.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>IndexError</strong> – If the rows are of different lengths.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.reports.table.create_table">
+<code class="sig-prename descclassname">beancount.reports.table.</code><code class="sig-name descname">create_table</code><span class="sig-paren">(</span><em class="sig-param">rows</em>, <em class="sig-param">field_spec=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.table.create_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a list of tuples to an table report object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rows</strong> – A list of tuples.</p></li>
+<li><p><strong>field_spec</strong> – A list of strings, or a list of
+(FIELDNAME-OR-INDEX, HEADER, FORMATTER-FUNCTION)
+triplets, that selects a subset of the fields is to be rendered as well
+as their ordering. If this is a dict, the values are functions to call
+on the fields to render them. If a function is set to None, we will just
+call str() on the field.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A Table instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.reports.table.render_table">
+<code class="sig-prename descclassname">beancount.reports.table.</code><code class="sig-name descname">render_table</code><span class="sig-paren">(</span><em class="sig-param">table_</em>, <em class="sig-param">output</em>, <em class="sig-param">output_format</em>, <em class="sig-param">css_id=None</em>, <em class="sig-param">css_class=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.table.render_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render the given table to the output file object in the requested format.</p>
+<p>The table gets written out to the ‘output’ file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table_</strong> – An instance of Table.</p></li>
+<li><p><strong>output</strong> – A file object you can write to.</p></li>
+<li><p><strong>output_format</strong> – A string, the format to write the table to,
+either ‘csv’, ‘txt’ or ‘html’.</p></li>
+<li><p><strong>css_id</strong> – A string, an optional CSS id for the table object (only used for HTML).</p></li>
+<li><p><strong>css_class</strong> – A string, an optional CSS class for the table object (only used for HTML).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.reports.table.table_to_csv">
+<code class="sig-prename descclassname">beancount.reports.table.</code><code class="sig-name descname">table_to_csv</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">file=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.table.table_to_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render a Table to a CSV file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table</strong> – An instance of a Table.</p></li>
+<li><p><strong>file</strong> – A file object to write to. If no object is provided, this
+function returns a string.</p></li>
+<li><p><strong>**kwargs</strong> – Optional arguments forwarded to csv.writer().</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A string, the rendered table, or None, if a file object is provided
+to write to.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.reports.table.table_to_html">
+<code class="sig-prename descclassname">beancount.reports.table.</code><code class="sig-name descname">table_to_html</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">classes=None</em>, <em class="sig-param">file=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.table.table_to_html" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render a Table to HTML.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table</strong> – An instance of a Table.</p></li>
+<li><p><strong>classes</strong> – A list of string, CSS classes to set on the table.</p></li>
+<li><p><strong>file</strong> – A file object to write to. If no object is provided, this
+function returns a string.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A string, the rendered table, or None, if a file object is provided
+to write to.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.reports.table.table_to_text">
+<code class="sig-prename descclassname">beancount.reports.table.</code><code class="sig-name descname">table_to_text</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">column_interspace=' '</em>, <em class="sig-param">formats=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.table.table_to_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render a Table to ASCII text.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table</strong> – An instance of a Table.</p></li>
+<li><p><strong>column_interspace</strong> – A string to render between the columns as spacer.</p></li>
+<li><p><strong>formats</strong> – An optional dict of column name to a format character that gets
+inserted in a format string specified, like this (where ‘&lt;char&gt;’ is):
+{:&lt;char&gt;&lt;width&gt;}. A key of ‘*’ will provide a default value, like
+this, for example: (… formats={‘*’: ‘&gt;’}).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A string, the rendered text table.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.reports.tree_table">
+<span id="beancount-reports-tree-table"></span><h2>beancount.reports.tree_table<a class="headerlink" href="#module-beancount.reports.tree_table" title="Permalink to this headline">¶</a></h2>
+<p>Routines to render an HTML table with a tree of accounts.</p>
+<dl class="function">
+<dt id="beancount.reports.tree_table.is_account_active">
+<code class="sig-prename descclassname">beancount.reports.tree_table.</code><code class="sig-name descname">is_account_active</code><span class="sig-paren">(</span><em class="sig-param">real_account</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.tree_table.is_account_active" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return true if the account should be rendered. An active account has
+at least one directive that is not an Open directive.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>real_account</strong> – An instance of RealAccount.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A boolean, true if the account is active, according to the definition above.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.reports.tree_table.table_of_balances">
+<code class="sig-prename descclassname">beancount.reports.tree_table.</code><code class="sig-name descname">table_of_balances</code><span class="sig-paren">(</span><em class="sig-param">real_root</em>, <em class="sig-param">price_map</em>, <em class="sig-param">price_date</em>, <em class="sig-param">operating_currencies</em>, <em class="sig-param">formatter</em>, <em class="sig-param">classes=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.tree_table.table_of_balances" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render a tree table with the balance of each accounts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>real_root</strong> – A RealAccount node, the root node to render.</p></li>
+<li><p><strong>price_map</strong> – A prices map, a built by build_price_map.</p></li>
+<li><p><strong>price_date</strong> – A datetime.date instance, the date at which to compute market value.</p></li>
+<li><p><strong>operating_currencies</strong> – A list of strings, the operating currencies to render
+to their own dedicated columns.</p></li>
+<li><p><strong>formatter</strong> – A object used to render account names and other links.</p></li>
+<li><p><strong>classes</strong> – A list of strings, the CSS classes to attach to the renderd
+top-level table objet.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A string with HTML contents, the rendered table.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.reports.tree_table.tree_table">
+<code class="sig-prename descclassname">beancount.reports.tree_table.</code><code class="sig-name descname">tree_table</code><span class="sig-paren">(</span><em class="sig-param">oss</em>, <em class="sig-param">real_account</em>, <em class="sig-param">formatter</em>, <em class="sig-param">header=None</em>, <em class="sig-param">classes=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.reports.tree_table.tree_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generator to a tree of accounts as an HTML table.</p>
+<p>This yields each real_account object in turn and a list object used to
+provide the values for the various columns to render.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>oss</strong> – a io.StringIO instance, into which we will render the HTML.</p></li>
+<li><p><strong>real_account</strong> – an instance of a RealAccount node.</p></li>
+<li><p><strong>formatter</strong> – A object used to render account names and other links.</p></li>
+<li><p><strong>header</strong> – a list of header columns to render. The first column is special,
+and is used for the account name.</p></li>
+<li><p><strong>classes</strong> – a list of CSS class strings to apply to the table element.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl>
+<dt>A generator of tuples of</dt><dd><p>real_account: An instance of RealAccount to render as a row
+cells: A mutable list object to accumulate values for each column you</p>
+<blockquote>
+<div><p>want to render.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>row_classes: A mutable list object to accumulate css classes that you</dt><dd><p>want to add for the row.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>You need to append to the given ‘cells’ object; if you don’t append
+anything, this tells this routine to skip rendering the row. On the very
+last line, the ‘real_account’ object will be a special sentinel value to
+indicate that it is meant to render the totals line: TOTALS_LINE.</p>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo.png" alt="Logo"/>
+    
+    <h1 class="logo logo-name">Fava</h1>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Web interface for <a href="http://furius.ca/beancount/">Beancount</a></p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development.html">Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="fava.html">fava</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.core.html">fava.core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.ext.html">fava.ext</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.ext.portfolio_list.html">fava.ext.portfolio_list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.help.html">fava.help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.util.html">fava.util</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.html">beancount</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.core.html">beancount.core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ingest.html">beancount.ingest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ingest.importers.html">beancount.ingest.importers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ingest.importers.mixins.html">beancount.ingest.importers.mixins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ops.html">beancount.ops</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.parser.html">beancount.parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.plugins.html">beancount.plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.prices.html">beancount.prices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.prices.sources.html">beancount.prices.sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.query.html">beancount.query</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">beancount.reports</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.reports.balance_reports">beancount.reports.balance_reports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.reports.base">beancount.reports.base</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.reports.context">beancount.reports.context</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.reports.convert_reports">beancount.reports.convert_reports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.reports.export_reports">beancount.reports.export_reports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.reports.gviz">beancount.reports.gviz</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.reports.holdings_reports">beancount.reports.holdings_reports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.reports.html_formatter">beancount.reports.html_formatter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.reports.journal_html">beancount.reports.journal_html</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.reports.journal_reports">beancount.reports.journal_reports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.reports.journal_text">beancount.reports.journal_text</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.reports.misc_reports">beancount.reports.misc_reports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.reports.price_reports">beancount.reports.price_reports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.reports.report">beancount.reports.report</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.reports.table">beancount.reports.table</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.reports.tree_table">beancount.reports.tree_table</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.scripts.html">beancount.scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.tools.html">beancount.tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.utils.html">beancount.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.web.html">beancount.web</a></li>
+</ul>
+</li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/beancount/fava">fava @ GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://gitter.im/beancount/fava">Chat</a></li>
+    
+    <li class="toctree-l1"><a href="https://github.com/beancount/fava/issues">Issue Tracker</a></li>
+    
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Dominik Aumayr.
+      
+      |
+      <a href="../_sources/api/beancount.reports.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

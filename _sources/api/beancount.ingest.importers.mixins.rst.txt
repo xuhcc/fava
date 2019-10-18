@@ -1,0 +1,20 @@
+beancount.ingest.importers.mixins
+=================================
+
+.. automodule:: beancount.ingest.importers.mixins
+
+beancount.ingest.importers.mixins.config
+----------------------------------------
+
+.. automodule:: beancount.ingest.importers.mixins.config
+
+beancount.ingest.importers.mixins.filing
+----------------------------------------
+
+.. automodule:: beancount.ingest.importers.mixins.filing
+
+beancount.ingest.importers.mixins.identifier
+--------------------------------------------
+
+.. automodule:: beancount.ingest.importers.mixins.identifier
+

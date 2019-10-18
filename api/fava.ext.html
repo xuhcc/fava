@@ -1,0 +1,198 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>fava.ext &#8212; Fava  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="fava.ext.portfolio_list" href="fava.ext.portfolio_list.html" />
+    <link rel="prev" title="fava.core" href="fava.core.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-fava.ext">
+<span id="fava-ext"></span><h1>fava.ext<a class="headerlink" href="#module-fava.ext" title="Permalink to this headline">¶</a></h1>
+<p>Fava’s extension system.</p>
+<dl class="class">
+<dt id="fava.ext.FavaExtensionBase">
+<em class="property">class </em><code class="sig-prename descclassname">fava.ext.</code><code class="sig-name descname">FavaExtensionBase</code><span class="sig-paren">(</span><em class="sig-param">ledger</em>, <em class="sig-param">config=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fava.ext.FavaExtensionBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for extensions for Fava.</p>
+<p>Any extension should inherit from this class. <code class="xref py py-func docutils literal notranslate"><span class="pre">find_extension()</span></code> will
+discover all subclasses of this class in the specified modules.</p>
+<dl class="method">
+<dt id="fava.ext.FavaExtensionBase.run_hook">
+<code class="sig-name descname">run_hook</code><span class="sig-paren">(</span><em class="sig-param">event</em>, <em class="sig-param">*args</em><span class="sig-paren">)</span><a class="headerlink" href="#fava.ext.FavaExtensionBase.run_hook" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run a hook.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>event</strong> – One of the possible events.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="fava.ext.FavaExtensionError">
+<em class="property">class </em><code class="sig-prename descclassname">fava.ext.</code><code class="sig-name descname">FavaExtensionError</code><span class="sig-paren">(</span><em class="sig-param">source</em>, <em class="sig-param">message</em>, <em class="sig-param">entry</em><span class="sig-paren">)</span><a class="headerlink" href="#fava.ext.FavaExtensionError" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="fava.ext.find_extensions">
+<code class="sig-prename descclassname">fava.ext.</code><code class="sig-name descname">find_extensions</code><span class="sig-paren">(</span><em class="sig-param">base_path</em>, <em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#fava.ext.find_extensions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find extensions in a module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_path</strong> – The module can be relative to this path.</p></li>
+<li><p><strong>name</strong> – The name of the module containing the extensions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tuple (classes, errors) where classes is a list of subclasses of
+<a class="reference internal" href="#fava.ext.FavaExtensionBase" title="fava.ext.FavaExtensionBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">FavaExtensionBase</span></code></a> found in <code class="docutils literal notranslate"><span class="pre">name</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="section" id="module-fava.ext.auto_commit">
+<span id="fava-ext-auto-commit"></span><h2>fava.ext.auto_commit<a class="headerlink" href="#module-fava.ext.auto_commit" title="Permalink to this headline">¶</a></h2>
+<p>Auto-commit hook for Fava.</p>
+<p>This mainly serves as an example how Fava’s extension systems, which only
+really does hooks at the moment, works.</p>
+<dl class="class">
+<dt id="fava.ext.auto_commit.AutoCommit">
+<em class="property">class </em><code class="sig-prename descclassname">fava.ext.auto_commit.</code><code class="sig-name descname">AutoCommit</code><span class="sig-paren">(</span><em class="sig-param">ledger</em>, <em class="sig-param">config=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fava.ext.auto_commit.AutoCommit" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="fava.ext.auto_commit.AutoCommit.after_insert_entry">
+<code class="sig-name descname">after_insert_entry</code><span class="sig-paren">(</span><em class="sig-param">entry</em><span class="sig-paren">)</span><a class="headerlink" href="#fava.ext.auto_commit.AutoCommit.after_insert_entry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fava.ext.auto_commit.AutoCommit.after_insert_metadata">
+<code class="sig-name descname">after_insert_metadata</code><span class="sig-paren">(</span><em class="sig-param">*_</em><span class="sig-paren">)</span><a class="headerlink" href="#fava.ext.auto_commit.AutoCommit.after_insert_metadata" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fava.ext.auto_commit.AutoCommit.after_write_source">
+<code class="sig-name descname">after_write_source</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">_</em><span class="sig-paren">)</span><a class="headerlink" href="#fava.ext.auto_commit.AutoCommit.after_write_source" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo.png" alt="Logo"/>
+    
+    <h1 class="logo logo-name">Fava</h1>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Web interface for <a href="http://furius.ca/beancount/">Beancount</a></p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development.html">Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="fava.html">fava</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.core.html">fava.core</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">fava.ext</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-fava.ext.auto_commit">fava.ext.auto_commit</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="fava.ext.portfolio_list.html">fava.ext.portfolio_list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.help.html">fava.help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.util.html">fava.util</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.html">beancount</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.core.html">beancount.core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ingest.html">beancount.ingest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ingest.importers.html">beancount.ingest.importers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ingest.importers.mixins.html">beancount.ingest.importers.mixins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ops.html">beancount.ops</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.parser.html">beancount.parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.plugins.html">beancount.plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.prices.html">beancount.prices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.prices.sources.html">beancount.prices.sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.query.html">beancount.query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.reports.html">beancount.reports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.scripts.html">beancount.scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.tools.html">beancount.tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.utils.html">beancount.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.web.html">beancount.web</a></li>
+</ul>
+</li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/beancount/fava">fava @ GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://gitter.im/beancount/fava">Chat</a></li>
+    
+    <li class="toctree-l1"><a href="https://github.com/beancount/fava/issues">Issue Tracker</a></li>
+    
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Dominik Aumayr.
+      
+      |
+      <a href="../_sources/api/fava.ext.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

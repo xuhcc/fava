@@ -1,0 +1,10 @@
+beancount
+=========
+
+.. automodule:: beancount
+
+beancount.loader
+----------------
+
+.. automodule:: beancount.loader
+

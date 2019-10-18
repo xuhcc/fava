@@ -1,0 +1,321 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>beancount.prices.sources &#8212; Fava  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="beancount.query" href="beancount.query.html" />
+    <link rel="prev" title="beancount.prices" href="beancount.prices.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-beancount.prices.sources">
+<span id="beancount-prices-sources"></span><h1>beancount.prices.sources<a class="headerlink" href="#module-beancount.prices.sources" title="Permalink to this headline">¶</a></h1>
+<p>Implementation of various price extractors.</p>
+<p>This package is looked up by the driver script to figure out which extractor to
+use.</p>
+<div class="section" id="module-beancount.prices.sources.iex">
+<span id="beancount-prices-sources-iex"></span><h2>beancount.prices.sources.iex<a class="headerlink" href="#module-beancount.prices.sources.iex" title="Permalink to this headline">¶</a></h2>
+<p>Fetch prices from the IEX 1.0 public API.</p>
+<p>This is a really fantastic exchange API with a lot of relevant information.</p>
+<p>Timezone information: There is currency no support for historical prices. The
+output datetime is provided as a UNIX timestamp.</p>
+<dl class="exception">
+<dt id="beancount.prices.sources.iex.IEXError">
+<em class="property">exception </em><code class="sig-prename descclassname">beancount.prices.sources.iex.</code><code class="sig-name descname">IEXError</code><a class="headerlink" href="#beancount.prices.sources.iex.IEXError" title="Permalink to this definition">¶</a></dt>
+<dd><p>An error from the IEX API.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.prices.sources.iex.Source">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.prices.sources.iex.</code><code class="sig-name descname">Source</code><a class="headerlink" href="#beancount.prices.sources.iex.Source" title="Permalink to this definition">¶</a></dt>
+<dd><p>IEX API price extractor.</p>
+<dl class="method">
+<dt id="beancount.prices.sources.iex.Source.get_historical_price">
+<code class="sig-name descname">get_historical_price</code><span class="sig-paren">(</span><em class="sig-param">ticker</em>, <em class="sig-param">time</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.sources.iex.Source.get_historical_price" title="Permalink to this definition">¶</a></dt>
+<dd><p>See contract in beancount.prices.source.Source.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.prices.sources.iex.Source.get_latest_price">
+<code class="sig-name descname">get_latest_price</code><span class="sig-paren">(</span><em class="sig-param">ticker</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.sources.iex.Source.get_latest_price" title="Permalink to this definition">¶</a></dt>
+<dd><p>See contract in beancount.prices.source.Source.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.prices.sources.iex.fetch_quote">
+<code class="sig-prename descclassname">beancount.prices.sources.iex.</code><code class="sig-name descname">fetch_quote</code><span class="sig-paren">(</span><em class="sig-param">ticker</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.sources.iex.fetch_quote" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.prices.sources.oanda">
+<span id="beancount-prices-sources-oanda"></span><h2>beancount.prices.sources.oanda<a class="headerlink" href="#module-beancount.prices.sources.oanda" title="Permalink to this headline">¶</a></h2>
+<p>A source fetching currency prices from OANDA.</p>
+<p>Valid tickers are in the form “XXX_YYY”, such as “EUR_USD”.</p>
+<p>Here is the API documentation:
+<a class="reference external" href="https://developer.oanda.com/rest-live/rates/">https://developer.oanda.com/rest-live/rates/</a></p>
+<p>For example:
+<a class="reference external" href="https://api-fxtrade.oanda.com/v1/candles?instrument=EUR_USD&amp;granularity=D&amp;start=2016-03-27T00%3A00%3A00Z&amp;end=2016-04-04T00%3A00%3A00Z&amp;candleFormat=midpoint">https://api-fxtrade.oanda.com/v1/candles?instrument=EUR_USD&amp;granularity=D&amp;start=2016-03-27T00%3A00%3A00Z&amp;end=2016-04-04T00%3A00%3A00Z&amp;candleFormat=midpoint</a></p>
+<p>Timezone information: Input and output datetimes are specified via UTC
+timestamps.</p>
+<dl class="class">
+<dt id="beancount.prices.sources.oanda.Source">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.prices.sources.oanda.</code><code class="sig-name descname">Source</code><a class="headerlink" href="#beancount.prices.sources.oanda.Source" title="Permalink to this definition">¶</a></dt>
+<dd><p>OANDA price source extractor.</p>
+<dl class="method">
+<dt id="beancount.prices.sources.oanda.Source.get_historical_price">
+<code class="sig-name descname">get_historical_price</code><span class="sig-paren">(</span><em class="sig-param">ticker</em>, <em class="sig-param">time</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.sources.oanda.Source.get_historical_price" title="Permalink to this definition">¶</a></dt>
+<dd><p>See contract in beancount.prices.source.Source.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.prices.sources.oanda.Source.get_latest_price">
+<code class="sig-name descname">get_latest_price</code><span class="sig-paren">(</span><em class="sig-param">ticker</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.sources.oanda.Source.get_latest_price" title="Permalink to this definition">¶</a></dt>
+<dd><p>See contract in beancount.prices.source.Source.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.prices.sources.quandl">
+<span id="beancount-prices-sources-quandl"></span><h2>beancount.prices.sources.quandl<a class="headerlink" href="#module-beancount.prices.sources.quandl" title="Permalink to this headline">¶</a></h2>
+<p>Fetch prices from Quandl’s simple URL-based API.</p>
+<p>Quandl is a useful source of alternative data and it offers a simple REST API
+that serves CSV and JSON and XML formats. There’s also a Python client library,
+but we specifically avoid using that here, in order to keep Beancount
+dependency-free.</p>
+<p>Many of the datasets are freely available, which is why this is included here.
+You can get information about the available databases and associated lists of
+symbols you can use here: <a class="reference external" href="https://www.quandl.com/search">https://www.quandl.com/search</a></p>
+<p>If you have a paid account and would like to be able to access the premium
+databases from the Quandl site, you can set QUANDL_API_KEY environment variable.</p>
+<p>Use the “&lt;DATABASE_CODE&gt;:&lt;DATASET_CODE&gt;” format to refer to Quandl symbols.
+Note that their symbols are usually identified by “&lt;DATABASE_CODE&gt;/&lt;DATASET_CODE&gt;”.</p>
+<p>(For now, this supports only the Time-Series API. There is also a Tables API,
+which could easily get integrated. We would just have to encode the
+‘datatable_code’ and ‘format’ and perhaps other fields in the ticker name.)</p>
+<p>Timezone information: Input and output datetimes are limited to dates, and I
+believe the dates are presumed to live in the timezone of each particular data
+source. (It’s unclear, not documented.)</p>
+<dl class="exception">
+<dt id="beancount.prices.sources.quandl.QuandlError">
+<em class="property">exception </em><code class="sig-prename descclassname">beancount.prices.sources.quandl.</code><code class="sig-name descname">QuandlError</code><a class="headerlink" href="#beancount.prices.sources.quandl.QuandlError" title="Permalink to this definition">¶</a></dt>
+<dd><p>An error from the Quandl API.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="beancount.prices.sources.quandl.Source">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.prices.sources.quandl.</code><code class="sig-name descname">Source</code><a class="headerlink" href="#beancount.prices.sources.quandl.Source" title="Permalink to this definition">¶</a></dt>
+<dd><p>Quandl API price extractor.</p>
+<dl class="method">
+<dt id="beancount.prices.sources.quandl.Source.get_historical_price">
+<code class="sig-name descname">get_historical_price</code><span class="sig-paren">(</span><em class="sig-param">ticker</em>, <em class="sig-param">time</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.sources.quandl.Source.get_historical_price" title="Permalink to this definition">¶</a></dt>
+<dd><p>See contract in beancount.prices.source.Source.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.prices.sources.quandl.Source.get_latest_price">
+<code class="sig-name descname">get_latest_price</code><span class="sig-paren">(</span><em class="sig-param">ticker</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.sources.quandl.Source.get_latest_price" title="Permalink to this definition">¶</a></dt>
+<dd><p>See contract in beancount.prices.source.Source.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.prices.sources.quandl.fetch_time_series">
+<code class="sig-prename descclassname">beancount.prices.sources.quandl.</code><code class="sig-name descname">fetch_time_series</code><span class="sig-paren">(</span><em class="sig-param">ticker</em>, <em class="sig-param">time=None</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.sources.quandl.fetch_time_series" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.prices.sources.quandl.parse_ticker">
+<code class="sig-prename descclassname">beancount.prices.sources.quandl.</code><code class="sig-name descname">parse_ticker</code><span class="sig-paren">(</span><em class="sig-param">ticker</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.sources.quandl.parse_ticker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert ticker to Quandl codes.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-beancount.prices.sources.yahoo">
+<span id="beancount-prices-sources-yahoo"></span><h2>beancount.prices.sources.yahoo<a class="headerlink" href="#module-beancount.prices.sources.yahoo" title="Permalink to this headline">¶</a></h2>
+<p>Fetch prices from Yahoo Finance’s CSV API.</p>
+<p>As of lated 2017, the older Yahoo finance API deprecated. In particular, the
+ichart endpoint is gone, and the download endpoint requires a cookie (which
+could be gotten - here’s some documentation for that
+<a class="reference external" href="http://blog.bradlucas.com/posts/2017-06-02-new-yahoo-finance-quote-download-url/">http://blog.bradlucas.com/posts/2017-06-02-new-yahoo-finance-quote-download-url/</a>).</p>
+<p>We’re using both the v7 and v8 APIs here, both of which are, as far as I can
+tell, undocumented:</p>
+<p><a class="reference external" href="https://query1.finance.yahoo.com/v7/finance/quote">https://query1.finance.yahoo.com/v7/finance/quote</a>
+<a class="reference external" href="https://query1.finance.yahoo.com/v8/finance/chart/SYMBOL">https://query1.finance.yahoo.com/v8/finance/chart/SYMBOL</a></p>
+<p>Timezone information: Input and output datetimes are specified via UNIX
+timestamps, but the timezone of the particular market is included in the output.</p>
+<dl class="class">
+<dt id="beancount.prices.sources.yahoo.Source">
+<em class="property">class </em><code class="sig-prename descclassname">beancount.prices.sources.yahoo.</code><code class="sig-name descname">Source</code><a class="headerlink" href="#beancount.prices.sources.yahoo.Source" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yahoo Finance CSV API price extractor.</p>
+<dl class="method">
+<dt id="beancount.prices.sources.yahoo.Source.get_historical_price">
+<code class="sig-name descname">get_historical_price</code><span class="sig-paren">(</span><em class="sig-param">ticker</em>, <em class="sig-param">time</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.sources.yahoo.Source.get_historical_price" title="Permalink to this definition">¶</a></dt>
+<dd><p>See contract in beancount.prices.source.Source.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="beancount.prices.sources.yahoo.Source.get_latest_price">
+<code class="sig-name descname">get_latest_price</code><span class="sig-paren">(</span><em class="sig-param">ticker</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.sources.yahoo.Source.get_latest_price" title="Permalink to this definition">¶</a></dt>
+<dd><p>See contract in beancount.prices.source.Source.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="beancount.prices.sources.yahoo.YahooError">
+<em class="property">exception </em><code class="sig-prename descclassname">beancount.prices.sources.yahoo.</code><code class="sig-name descname">YahooError</code><a class="headerlink" href="#beancount.prices.sources.yahoo.YahooError" title="Permalink to this definition">¶</a></dt>
+<dd><p>An error from the Yahoo API.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.prices.sources.yahoo.parse_currency">
+<code class="sig-prename descclassname">beancount.prices.sources.yahoo.</code><code class="sig-name descname">parse_currency</code><span class="sig-paren">(</span><em class="sig-param">result</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.sources.yahoo.parse_currency" title="Permalink to this definition">¶</a></dt>
+<dd><p>Infer the currency from the result.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="beancount.prices.sources.yahoo.parse_response">
+<code class="sig-prename descclassname">beancount.prices.sources.yahoo.</code><code class="sig-name descname">parse_response</code><span class="sig-paren">(</span><em class="sig-param">response</em><span class="sig-paren">)</span><a class="headerlink" href="#beancount.prices.sources.yahoo.parse_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process as response from Yahoo.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#beancount.prices.sources.yahoo.YahooError" title="beancount.prices.sources.yahoo.YahooError"><strong>YahooError</strong></a> – If there is an error in the response.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[~KT, ~VT]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo.png" alt="Logo"/>
+    
+    <h1 class="logo logo-name">Fava</h1>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Web interface for <a href="http://furius.ca/beancount/">Beancount</a></p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development.html">Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="fava.html">fava</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.core.html">fava.core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.ext.html">fava.ext</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.ext.portfolio_list.html">fava.ext.portfolio_list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.help.html">fava.help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fava.util.html">fava.util</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.html">beancount</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.core.html">beancount.core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ingest.html">beancount.ingest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ingest.importers.html">beancount.ingest.importers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ingest.importers.mixins.html">beancount.ingest.importers.mixins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.ops.html">beancount.ops</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.parser.html">beancount.parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.plugins.html">beancount.plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.prices.html">beancount.prices</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">beancount.prices.sources</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.prices.sources.iex">beancount.prices.sources.iex</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.prices.sources.oanda">beancount.prices.sources.oanda</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.prices.sources.quandl">beancount.prices.sources.quandl</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-beancount.prices.sources.yahoo">beancount.prices.sources.yahoo</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.query.html">beancount.query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.reports.html">beancount.reports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.scripts.html">beancount.scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.tools.html">beancount.tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.utils.html">beancount.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beancount.web.html">beancount.web</a></li>
+</ul>
+</li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/beancount/fava">fava @ GitHub</a></li>
+    
+    <li class="toctree-l1"><a href="https://gitter.im/beancount/fava">Chat</a></li>
+    
+    <li class="toctree-l1"><a href="https://github.com/beancount/fava/issues">Issue Tracker</a></li>
+    
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Dominik Aumayr.
+      
+      |
+      <a href="../_sources/api/beancount.prices.sources.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

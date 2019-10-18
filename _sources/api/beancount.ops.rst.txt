@@ -1,0 +1,50 @@
+beancount.ops
+=============
+
+.. automodule:: beancount.ops
+
+beancount.ops.balance
+---------------------
+
+.. automodule:: beancount.ops.balance
+
+beancount.ops.basicops
+----------------------
+
+.. automodule:: beancount.ops.basicops
+
+beancount.ops.compress
+----------------------
+
+.. automodule:: beancount.ops.compress
+
+beancount.ops.documents
+-----------------------
+
+.. automodule:: beancount.ops.documents
+
+beancount.ops.holdings
+----------------------
+
+.. automodule:: beancount.ops.holdings
+
+beancount.ops.lifetimes
+-----------------------
+
+.. automodule:: beancount.ops.lifetimes
+
+beancount.ops.pad
+-----------------
+
+.. automodule:: beancount.ops.pad
+
+beancount.ops.summarize
+-----------------------
+
+.. automodule:: beancount.ops.summarize
+
+beancount.ops.validation
+------------------------
+
+.. automodule:: beancount.ops.validation
+
